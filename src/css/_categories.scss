@@ -1,0 +1,129 @@
+/* CATEGORY BLOCKS */
+
+.category-add{
+  position: absolute;
+  right: 35px;
+  top: 20px;
+}
+.category-togglefull{
+  position: absolute;
+  left: 35px;
+  top: 20px;
+}
+.phonescreen{
+  width: 100%;
+  min-height: 100%;
+  list-style: none;
+  padding: 0px;
+}
+.phonescreen .category-block{
+  float: left;
+  text-align: center;
+  height: 200px;
+  color: #FFF;
+  font-size: 1.4em;
+  text-transform: uppercase;
+  /*background-size: contain;*/
+  background-size: cover;
+  text-align: center;
+}
+
+.phonescreen .category-block .fader{
+  background: rgba(0,0,0,0.7);
+}
+
+.phonescreen .category-block.size-1{width: 50%;}
+.phonescreen .category-block.size-2{width: 100%;}
+
+
+/* PHONE FRAME */
+
+
+@keyframes pisca{
+  0% {
+    background-color: #333;
+    box-shadow: 0px 0px 0px 0px #333;
+  }
+  50%{
+    background-color: #AAA;
+    box-shadow: 0px 0px 5px 0px #fff;
+  }
+  100%{
+    background-color: #333;
+    box-shadow: 0px 0px 0px 0px #333;
+  }
+}
+
+.smartphone .notification.on .badge{
+  height: 8px;
+  width: 8px;
+  display: table;
+  position: absolute;
+  float: left;
+  background-color: #333;
+  border-radius: 8px;
+  margin-top: 20px;
+  margin-left: 25px;
+  box-shadow: none;
+  animation: pisca 3s infinite;
+}
+
+.smartphone .screen{
+  height: 568px;
+  width: 320px;
+  background-color: #222;
+  border: solid 2px #222;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.smartphone .screen.overflow-y{
+  overflow-y: auto;
+}
+
+.smartphone{
+  display: table;
+  margin: 0 auto;
+  padding: 10px;
+  background-color: #111;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  position: relative;
+  border: solid 1px #222;
+}
+
+.smartphone .btn-up-down{
+  height: 100px;
+  float: left;
+  position: absolute;
+  margin-left: -17px;
+  margin-top: 90px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+.smartphone .btnsm{
+  display: table;
+  display: none;
+  width: 8px;
+  background-color: #333;
+}
+
+.smartphone .cam{
+  border-radius: 15px;
+  height: 15px;
+  width: 15px;
+  display: table;
+  background-color: #444;
+  border: solid 1px #222;
+  margin: 0 auto;
+  margin-top: 15px;
+  
+}
+
+.smartphone .controls,.smartphone .header{
+  height: 30px;
+  display: table;
+  width: 100%;
+  
+}
