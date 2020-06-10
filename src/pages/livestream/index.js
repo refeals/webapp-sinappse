@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
 import { connect } from "react-redux"
 import { Link } from "react-router-dom"
 
 import TopMenu from "../main/TopMenu"
 
-import { api } from "../../api"
+import { getLivestream } from "../../actions/livestream_actions"
 
-const Livestream = ({ event }) => {
-  const [lives, setLives] = useState([])
-
+const Livestream = ({ getLivestream, event, lives }) => {
   useEffect(() => {
     if (event.id) {
-      api
-        .get(`/act.php?action=prog-view-livestream&event=${event.id}`)
-        .then((res) => setLives(res.data.data))
+      const fetchData = async () => {
+        await getLivestream(event.id)
+      }
+      fetchData()
     }
-  }, [event.id])
+  }, [getLivestream, event.id])
 
   const renderLivestreamList = () => {
     return lives.map((live) => {
@@ -41,8 +40,10 @@ const Livestream = ({ event }) => {
 }
 
 function mapStateToProps(state) {
-  const { event } = state
-  return { event }
+  const { event, lives } = state
+  return { event, lives }
 }
 
-export default connect(mapStateToProps)(Livestream)
+const mapDispatchToProps = { getLivestream }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Livestream)

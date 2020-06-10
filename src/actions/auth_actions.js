@@ -8,7 +8,7 @@ import { LOGIN, LOGOUT, LOGOUT_EXPIRED_TOKEN, SIGNUP } from "./actionTypes"
 export const doLogin = (email, password, callback) => (dispatch, getState) => {
   api
     .post("/login", {}, { auth: { username: email, password } })
-    .then(response => {
+    .then((response) => {
       if (response.data.success) {
         dispatch({ type: LOGIN, payload: response.data })
       } else {
@@ -18,8 +18,8 @@ export const doLogin = (email, password, callback) => (dispatch, getState) => {
         })
       }
     })
-    .then(() => (callback ? callback() : undefined))
-    .catch(err => console.log(err))
+    .then(() => callback && callback())
+    .catch((err) => console.log(err))
 }
 
 export const doLogout = () => (dispatch, getState) => {
@@ -55,13 +55,13 @@ export const doSignUp = (user, callback) => (dispatch, getState) => {
     form.set("cnpj", user.cnpj)
   }
 
-  _.each(user.documents, doc => {
+  _.each(user.documents, (doc) => {
     form.append("documents[]", doc, doc.name)
   })
 
   api
     .post("/user", form, { headers: { "Content-Type": "multipart/form-data" } })
-    .then(response => {
+    .then((response) => {
       if (response.data.success) {
         response.data.token &&
           dispatch({ type: SIGNUP, payload: response.data })
@@ -72,5 +72,5 @@ export const doSignUp = (user, callback) => (dispatch, getState) => {
         toast(response.data.message)
       }
     })
-    .catch(err => console.log(err))
+    .catch((err) => console.log(err))
 }
