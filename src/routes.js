@@ -39,14 +39,11 @@ const Routes = () => {
       <BrowserRouter>
         <TopMenu goHome />
         <div className="mainarea">
-          <ul className="viewer-menu">
-            <Switch>
-              <Route path="/" exact render={redirectToSinappse} />
-              <Route path="/:event_id" component={RoutesEvent} />
-              <Route path="*" render={() => <Redirect to="/" />} />
-            </Switch>
-          </ul>
-          <div className="open-section hide"></div>
+          <Switch>
+            <Route path="/" exact render={redirectToSinappse} />
+            <Route path="/:event_id" component={RoutesEvent} />
+            <Route path="*" render={() => <Redirect to="/" />} />
+          </Switch>
         </div>
       </BrowserRouter>
     </>

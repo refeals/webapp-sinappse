@@ -18,7 +18,7 @@ const Exhibitors = ({ getExhibitors, event, exhibitors }) => {
   const renderExhibitorList = () => {
     return exhibitors.map((exh) => {
       return (
-        <Link to={`/${event.id}/exhibitors/${exh.id}`} key={exh.businessid}>
+        <Link to={`/${event.id}/exhibitors/${exh.id}`} key={exh.id}>
           <li className="exhibitor-block">
             <div
               className="exhibitor-image"
