@@ -3,8 +3,6 @@ import { connect } from "react-redux"
 import { isEmpty, find, isUndefined } from "lodash"
 import { Redirect } from "react-router-dom"
 
-import TopMenu from "../main/TopMenu"
-
 import { getExhibitors } from "../../actions/exhibitor_actions"
 
 const Exhibitor = ({ event, getExhibitors, exhibitors, match }) => {
@@ -25,7 +23,6 @@ const Exhibitor = ({ event, getExhibitors, exhibitors, match }) => {
 
   return (
     <>
-      <TopMenu />
       <section id="viewer-exhibitor">
         <div className="over-mainarea">
           <div className="over-exhibitor">

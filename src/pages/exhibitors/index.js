@@ -3,8 +3,6 @@ import { connect } from "react-redux"
 import { Link } from "react-router-dom"
 import { isEmpty } from "lodash"
 
-import TopMenu from "../main/TopMenu"
-
 import { getExhibitors } from "../../actions/exhibitor_actions"
 
 const Exhibitors = ({ getExhibitors, event, exhibitors }) => {
@@ -34,7 +32,6 @@ const Exhibitors = ({ getExhibitors, event, exhibitors }) => {
 
   return (
     <>
-      <TopMenu />
       <section id="viewer-exhibitors">
         <ul className="viewer-blocklist">{renderExhibitorList()}</ul>
       </section>

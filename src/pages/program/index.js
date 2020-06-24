@@ -1,10 +1,8 @@
 import React from "react"
-import TopMenu from "../main/TopMenu"
 
 const Program = () => {
   return (
     <>
-      <TopMenu />
       <section id="viewer-programacao">
         <ul className="viewer-program phonescreen">
           <li>

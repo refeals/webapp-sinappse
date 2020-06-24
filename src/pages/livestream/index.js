@@ -2,8 +2,6 @@ import React, { useEffect } from "react"
 import { connect } from "react-redux"
 import { Link } from "react-router-dom"
 
-import TopMenu from "../main/TopMenu"
-
 import { getLivestream } from "../../actions/livestream_actions"
 
 const Livestream = ({ getLivestream, event, lives }) => {
@@ -33,7 +31,6 @@ const Livestream = ({ getLivestream, event, lives }) => {
 
   return (
     <>
-      <TopMenu goHome />
       <ul className="livestream-list">{renderLivestreamList()}</ul>
     </>
   )

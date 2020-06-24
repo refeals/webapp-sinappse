@@ -2,8 +2,6 @@ import React from "react"
 import { connect } from "react-redux"
 import { Link } from "react-router-dom"
 
-import TopMenu from "./TopMenu"
-
 const Main = ({ event }) => {
   const setSectionUrl = ({ type, eventid }) => {
     switch (type) {
@@ -29,36 +27,24 @@ const Main = ({ event }) => {
     }
   }
 
-  const renderSections = () => {
-    return event.sections.map((section) => {
-      return (
-        <Link
-          to={setSectionUrl(section)}
-          key={section.sectionid}
-          className="nounderline"
+  return event.sections.map((section) => {
+    return (
+      <Link
+        to={setSectionUrl(section)}
+        key={section.sectionid}
+        className="nounderline"
+      >
+        <li
+          style={{
+            backgroundImage: `url(${section.image})`,
+            backgroundColor: "#000"
+          }}
         >
-          <li
-            style={{
-              backgroundImage: `url(${section.image})`,
-              backgroundColor: "#000"
-            }}
-          >
-            {section.name}
-          </li>
-        </Link>
-      )
-    })
-  }
-
-  return (
-    <>
-      <TopMenu />
-      <div className="mainarea">
-        <ul className="viewer-menu">{renderSections()}</ul>
-        <div className="open-section hide"></div>
-      </div>
-    </>
-  )
+          {section.name}
+        </li>
+      </Link>
+    )
+  })
 }
 
 function mapStateToProps(state) {
