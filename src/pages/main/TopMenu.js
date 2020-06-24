@@ -2,7 +2,7 @@ import React from "react"
 import { connect } from "react-redux"
 import { useHistory } from "react-router-dom"
 
-const TopMenu = ({ event, hide, goHome }) => {
+const TopMenu = ({ event, hide, title = event["event-name"], goHome }) => {
   const history = useHistory()
 
   const redirectToHome = () => {
@@ -27,7 +27,7 @@ const TopMenu = ({ event, hide, goHome }) => {
         >
           <i className="fa fa-home"></i>
         </button>
-        <h1 className="event-name">{event["event-name"]}</h1>
+        <h1 className="event-name">{title}</h1>
       </div>
     )
 }
