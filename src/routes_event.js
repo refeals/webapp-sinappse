@@ -8,6 +8,7 @@ import Speakers from "./pages/speakers"
 import Speaker from "./pages/speakers/show"
 import Exhibitors from "./pages/exhibitors"
 import Exhibitor from "./pages/exhibitors/show"
+import Map from "./pages/map"
 import Livestream from "./pages/livestream"
 
 import { getEvent } from "./actions/event_actions"
@@ -54,7 +55,7 @@ const RoutesEvent = ({ event, getEvent, match }) => {
           component={Exhibitor}
         />
         <Route exact path="/:event_id/sponsors" component={Program} />
-        <Route exact path="/:event_id/map" component={Program} />
+        <Route exact path="/:event_id/map" component={Map} />
         <Route exact path="/:event_id/webview" component={Program} />
         <Route exact path="/:event_id/lives" component={Livestream} />
       </div>
