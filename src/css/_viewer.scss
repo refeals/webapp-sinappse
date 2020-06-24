@@ -1,5 +1,5 @@
 .viewer-loading {
-  position: absolute;
+  position: fixed;
   height: 100vh;
   width: 100vw;
   background: #00a157 url("../images/logo-white.png") 50% 50% no-repeat;
@@ -231,7 +231,7 @@ body.viewermode {
       color: #aaa;
       text-align: center;
       padding-bottom: 20px;
-      .eval:hover {
+      .eval.active {
         color: rgb(208, 255, 0);
       }
     }
@@ -485,7 +485,6 @@ body.viewermode {
     }
   }
   #viewer-eval {
-    display: none;
     width: 80%;
     height: 100px;
     margin: 25% auto;

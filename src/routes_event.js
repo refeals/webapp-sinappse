@@ -6,6 +6,8 @@ import Main from "./pages/main"
 import Program from "./pages/program"
 import Speakers from "./pages/speakers"
 import Speaker from "./pages/speakers/show"
+import Abstracts from "./pages/abstracts"
+import Abstract from "./pages/abstracts/show"
 import Exhibitors from "./pages/exhibitors"
 import Exhibitor from "./pages/exhibitors/show"
 import Map from "./pages/map"
@@ -47,7 +49,12 @@ const RoutesEvent = ({ event, getEvent, match }) => {
           path="/:event_id/speakers/:speaker_id"
           component={Speaker}
         />
-        <Route exact path="/:event_id/abstracts" component={Program} />
+        <Route exact path="/:event_id/abstracts" component={Abstracts} />
+        <Route
+          exact
+          path="/:event_id/abstracts/:abstract_id"
+          component={Abstract}
+        />
         <Route exact path="/:event_id/exhibitors" component={Exhibitors} />
         <Route
           exact

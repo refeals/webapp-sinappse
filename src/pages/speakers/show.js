@@ -7,7 +7,6 @@ import { getSpeakers } from "../../actions/speaker_actions"
 
 const Speaker = ({ event, getSpeakers, speakers, match }) => {
   const spk = find(speakers, (s) => s.speakerid === match.params.speaker_id)
-  console.log(spk)
 
   useEffect(() => {
     if (event.id && isEmpty(speakers)) {
