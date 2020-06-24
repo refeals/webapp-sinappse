@@ -2,6 +2,7 @@ import React from "react"
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom"
 
 import RoutesEvent from "./routes_event"
+import TopMenu from "./pages/main/TopMenu"
 
 // import { store } from "../index"
 // import { isAuthenticated, isTokenExpired } from "../api/auth"
@@ -34,13 +35,21 @@ const redirectToSinappse = () => {
 
 const Routes = () => {
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route path="/" exact render={redirectToSinappse} />
-        <Route path="/:event_id" component={RoutesEvent} />
-        <Route path="*" render={() => <Redirect to="/" />} />
-      </Switch>
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <TopMenu goHome />
+        <div className="mainarea">
+          <ul className="viewer-menu">
+            <Switch>
+              <Route path="/" exact render={redirectToSinappse} />
+              <Route path="/:event_id" component={RoutesEvent} />
+              <Route path="*" render={() => <Redirect to="/" />} />
+            </Switch>
+          </ul>
+          <div className="open-section hide"></div>
+        </div>
+      </BrowserRouter>
+    </>
   )
 }
 

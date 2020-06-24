@@ -13,7 +13,7 @@ const Exhibitors = ({ getExhibitors, event, exhibitors }) => {
       }
       fetchData()
     }
-  }, [getExhibitors, event.id])
+  }, [getExhibitors, exhibitors, event.id])
 
   const renderExhibitorList = () => {
     return exhibitors.map((exh) => {

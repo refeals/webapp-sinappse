@@ -15,7 +15,7 @@ const Exhibitor = ({ event, getExhibitors, exhibitors, match }) => {
       }
       fetchData()
     }
-  }, [getExhibitors, event.id])
+  }, [getExhibitors, exhibitors, event.id])
 
   if (isUndefined(exh)) {
     return <Redirect to={`/${event.id}/exhibitors`} />
