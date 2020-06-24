@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
 import { connect } from "react-redux"
+import { Link } from "react-router-dom"
+import { isEmpty } from "lodash"
 
 import TopMenu from "../main/TopMenu"
 
 import { getExhibitors } from "../../actions/exhibitor_actions"
 
 const Exhibitors = ({ getExhibitors, event, exhibitors }) => {
-  const [selectedExhibitor, setSelectedExhibitor] = useState(null)
-
   useEffect(() => {
-    if (event.id) {
+    if (event.id && isEmpty(exhibitors)) {
       const fetchData = async () => {
         await getExhibitors(event.id)
       }
@@ -20,62 +20,16 @@ const Exhibitors = ({ getExhibitors, event, exhibitors }) => {
   const renderExhibitorList = () => {
     return exhibitors.map((exh) => {
       return (
-        <li
-          key={exh.businessid}
-          className="exhibitor-block"
-          onClick={() => setSelectedExhibitor(exh)}
-        >
-          <div
-            className="exhibitor-image"
-            style={{ backgroundImage: `url(${exh.image_url})` }}
-          ></div>
-        </li>
+        <Link to={`/${event.id}/exhibitors/${exh.id}`} key={exh.businessid}>
+          <li className="exhibitor-block">
+            <div
+              className="exhibitor-image"
+              style={{ backgroundImage: `url(${exh.image_url})` }}
+            ></div>
+          </li>
+        </Link>
       )
     })
-  }
-
-  const exh = selectedExhibitor
-
-  if (exh) {
-    return (
-      <>
-        <div
-          className="topmenu"
-          style={{
-            backgroundColor: event["event-color"],
-            color: event["text-color"]
-          }}
-        >
-          <button
-            className="va-home"
-            onClick={() => setSelectedExhibitor(null)}
-          >
-            <i className="fa fa-home"></i>
-          </button>
-          <h1 className="event-name">{exh.name}</h1>
-        </div>
-        <section id="viewer-exhibitor">
-          <div className="over-mainarea">
-            <div className="over-exhibitor">
-              <img className="over-image" src={exh.image_url} alt={exh.name} />
-              <h1 className="over-name">{exh.name}</h1>
-            </div>
-          </div>
-          {exh.presentation_url && (
-            <div className="over-footer">
-              <a
-                href={exh.presentation_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-viewer"
-              >
-                Acessar Site
-              </a>
-            </div>
-          )}
-        </section>
-      </>
-    )
   }
 
   return (

@@ -5,6 +5,7 @@ import { Route } from "react-router-dom"
 import Main from "./pages/main"
 import Program from "./pages/program"
 import Exhibitors from "./pages/exhibitors"
+import Exhibitor from "./pages/exhibitors/show"
 import Livestream from "./pages/livestream"
 
 import { getEvent } from "./actions/event_actions"
@@ -30,15 +31,20 @@ const RoutesEvent = ({ event, getEvent, match }) => {
 
   return (
     <>
-      <Route path="/:event_id" exact component={Main} />
-      <Route path="/:event_id/program" exact component={Program} />
-      <Route path="/:event_id/speakers" exact component={Program} />
-      <Route path="/:event_id/abstracts" exact component={Program} />
-      <Route path="/:event_id/exhibitors" exact component={Exhibitors} />
-      <Route path="/:event_id/sponsors" exact component={Program} />
-      <Route path="/:event_id/map" exact component={Program} />
-      <Route path="/:event_id/webview" exact component={Program} />
-      <Route path="/:event_id/lives" exact component={Livestream} />
+      <Route exact path="/:event_id" component={Main} />
+      <Route exact path="/:event_id/program" component={Program} />
+      <Route exact path="/:event_id/speakers" component={Program} />
+      <Route exact path="/:event_id/abstracts" component={Program} />
+      <Route exact path="/:event_id/exhibitors" component={Exhibitors} />
+      <Route
+        exact
+        path="/:event_id/exhibitors/:exhibitor_id"
+        component={Exhibitor}
+      />
+      <Route exact path="/:event_id/sponsors" component={Program} />
+      <Route exact path="/:event_id/map" component={Program} />
+      <Route exact path="/:event_id/webview" component={Program} />
+      <Route exact path="/:event_id/lives" component={Livestream} />
     </>
   )
 }
