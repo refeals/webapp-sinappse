@@ -3,7 +3,7 @@ import { connect } from "react-redux"
 import { Link } from "react-router-dom"
 
 const Main = ({ event }) => {
-  const setSectionUrl = ({ type, eventid }) => {
+  const setSectionUrl = ({ type, eventid, params }) => {
     switch (type) {
       case "PROGRAM":
         return `/${eventid}/program`
@@ -17,10 +17,10 @@ const Main = ({ event }) => {
         return `/${eventid}/sponsors`
       case "MAP":
         return `/${eventid}/map`
-      case "WEBVIEW":
-        return `/${eventid}/webview`
       case "LIVESTREAM":
         return `/${eventid}/lives`
+      case "WEBVIEW":
+        return `/${eventid}/${params.type}`
 
       default:
         return "#"

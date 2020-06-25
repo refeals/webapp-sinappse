@@ -13,6 +13,7 @@ import Exhibitor from "./pages/exhibitors/show"
 import Sponsors from "./pages/sponsors"
 import Sponsor from "./pages/sponsors/show"
 import Map from "./pages/map"
+import WebView from "./pages/webview"
 import Livestream from "./pages/livestream"
 
 import { getEvent } from "./actions/event_actions"
@@ -38,40 +39,79 @@ const RoutesEvent = ({ event, getEvent, match }) => {
 
   const hide = match.path === "/:event_id" && match.isExact ? "hide" : ""
 
+  const sections = event.sections
+    .filter((s) => s.type !== "WEBVIEW")
+    .map((s) => s.type)
+  const sections_webview = event.sections
+    .filter((s) => s.type === "WEBVIEW")
+    .map((s) => ({ type: s.type, params: s.params }))
+
   return (
     <>
       <ul className="viewer-menu">
         <Route exact path="/:event_id" component={Main} />
       </ul>
       <div className={`open-section ${hide}`}>
-        <Route exact path="/:event_id/program" component={Program} />
-        <Route exact path="/:event_id/speakers" component={Speakers} />
-        <Route
-          exact
-          path="/:event_id/speakers/:speaker_id"
-          component={Speaker}
-        />
-        <Route exact path="/:event_id/abstracts" component={Abstracts} />
-        <Route
-          exact
-          path="/:event_id/abstracts/:abstract_id"
-          component={Abstract}
-        />
-        <Route exact path="/:event_id/exhibitors" component={Exhibitors} />
-        <Route
-          exact
-          path="/:event_id/exhibitors/:exhibitor_id"
-          component={Exhibitor}
-        />
-        <Route exact path="/:event_id/sponsors" component={Sponsors} />
-        <Route
-          exact
-          path="/:event_id/sponsors/:sponsor_id"
-          component={Sponsor}
-        />
-        <Route exact path="/:event_id/map" component={Map} />
-        <Route exact path="/:event_id/webview" component={Program} />
-        <Route exact path="/:event_id/lives" component={Livestream} />
+        {sections.includes("PROGRAM") && (
+          <Route exact path="/:event_id/program" component={Program} />
+        )}
+        {sections.includes("SPEAKERS") && (
+          <>
+            <Route exact path="/:event_id/speakers" component={Speakers} />
+            <Route
+              exact
+              path="/:event_id/speakers/:speaker_id"
+              component={Speaker}
+            />
+          </>
+        )}
+        {sections.includes("ABSTRACTS") && (
+          <>
+            <Route exact path="/:event_id/abstracts" component={Abstracts} />
+            <Route
+              exact
+              path="/:event_id/abstracts/:abstract_id"
+              component={Abstract}
+            />
+          </>
+        )}
+        {sections.includes("EXHIBITORS") && (
+          <>
+            <Route exact path="/:event_id/exhibitors" component={Exhibitors} />
+            <Route
+              exact
+              path="/:event_id/exhibitors/:exhibitor_id"
+              component={Exhibitor}
+            />
+          </>
+        )}
+        {sections.includes("SPONSORS") && (
+          <>
+            <Route exact path="/:event_id/sponsors" component={Sponsors} />
+            <Route
+              exact
+              path="/:event_id/sponsors/:sponsor_id"
+              component={Sponsor}
+            />
+          </>
+        )}
+        {sections.includes("MAP") && (
+          <Route exact path="/:event_id/map" component={Map} />
+        )}
+        {sections.includes("LIVES") && (
+          <Route exact path="/:event_id/lives" component={Livestream} />
+        )}
+
+        {sections_webview.map((s) => {
+          return (
+            <Route
+              exact
+              path={`/:event_id/${s.params.type}`}
+              render={(props) => <WebView {...props} {...s.params} />}
+              key={s.params.type}
+            />
+          )
+        })}
       </div>
     </>
   )

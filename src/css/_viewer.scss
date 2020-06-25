@@ -458,6 +458,7 @@ body.viewermode {
   #viewer-webview {
     width: 100%;
     height: calc(100vh - 46px);
+    color: #000;
     > iframe {
       border: none;
       overflow: hidden;
