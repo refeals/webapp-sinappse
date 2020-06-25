@@ -10,6 +10,8 @@ import Abstracts from "./pages/abstracts"
 import Abstract from "./pages/abstracts/show"
 import Exhibitors from "./pages/exhibitors"
 import Exhibitor from "./pages/exhibitors/show"
+import Sponsors from "./pages/sponsors"
+import Sponsor from "./pages/sponsors/show"
 import Map from "./pages/map"
 import Livestream from "./pages/livestream"
 
@@ -61,7 +63,12 @@ const RoutesEvent = ({ event, getEvent, match }) => {
           path="/:event_id/exhibitors/:exhibitor_id"
           component={Exhibitor}
         />
-        <Route exact path="/:event_id/sponsors" component={Program} />
+        <Route exact path="/:event_id/sponsors" component={Sponsors} />
+        <Route
+          exact
+          path="/:event_id/sponsors/:sponsor_id"
+          component={Sponsor}
+        />
         <Route exact path="/:event_id/map" component={Map} />
         <Route exact path="/:event_id/webview" component={Program} />
         <Route exact path="/:event_id/lives" component={Livestream} />
