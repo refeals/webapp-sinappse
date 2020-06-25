@@ -4,7 +4,6 @@ import { Route } from "react-router-dom"
 
 import Main from "./pages/main"
 import Program from "./pages/program"
-import Category from "./pages/program/category"
 import Speakers from "./pages/speakers"
 import Speaker from "./pages/speakers/show"
 import Abstracts from "./pages/abstracts"
@@ -60,11 +59,6 @@ const RoutesEvent = ({ event, getEvent, match }) => {
         {sections.includes("PROGRAM") && (
           <>
             <Route exact path="/:event_id/program" component={Program} />
-            <Route
-              exact
-              path="/:event_id/program/:category_id"
-              component={Category}
-            />
           </>
         )}
         {sections.includes("SPEAKERS") && (
