@@ -1,8 +1,6 @@
 import React from "react"
 
 const WebView = ({ type, value }) => {
-  console.log(type, value)
-
   const renderWebview = () => {
     switch (type) {
       case "news":
