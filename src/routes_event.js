@@ -4,6 +4,7 @@ import { Route } from "react-router-dom"
 
 import Main from "./pages/main"
 import Program from "./pages/program"
+import Category from "./pages/program/category"
 import Speakers from "./pages/speakers"
 import Speaker from "./pages/speakers/show"
 import Abstracts from "./pages/abstracts"
@@ -17,6 +18,8 @@ import WebView from "./pages/webview"
 import Livestream from "./pages/livestream"
 
 import { getEvent } from "./actions/event_actions"
+
+import setManifest from "./setManifest"
 
 const RoutesEvent = ({ event, getEvent, match }) => {
   const [isLoading, setIsLoading] = useState(true)
@@ -32,6 +35,8 @@ const RoutesEvent = ({ event, getEvent, match }) => {
   if (isLoading) {
     return <div className="viewer-loading"></div>
   }
+
+  setManifest(event)
 
   // if (isLoading && !event.id) {
   //   return <Redirect to="/" />
@@ -53,7 +58,14 @@ const RoutesEvent = ({ event, getEvent, match }) => {
       </ul>
       <div className={`open-section ${hide}`}>
         {sections.includes("PROGRAM") && (
-          <Route exact path="/:event_id/program" component={Program} />
+          <>
+            <Route exact path="/:event_id/program" component={Program} />
+            <Route
+              exact
+              path="/:event_id/program/:category_id"
+              component={Category}
+            />
+          </>
         )}
         {sections.includes("SPEAKERS") && (
           <>
