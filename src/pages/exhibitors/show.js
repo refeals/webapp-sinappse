@@ -3,6 +3,8 @@ import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { find, isUndefined, isEmpty } from "lodash"
 import { Redirect } from "react-router-dom"
 
+import ViewerLoading from "../../ViewerLoading"
+
 import { getExhibitors } from "../../actions/exhibitor_actions"
 
 const Exhibitor = ({ match }) => {
@@ -23,7 +25,7 @@ const Exhibitor = ({ match }) => {
       return <Redirect to={`/${event.id}`} />
     }
   } else {
-    return <div className="viewer-loading" />
+    return <ViewerLoading />
   }
 
   return (

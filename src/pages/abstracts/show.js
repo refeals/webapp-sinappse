@@ -3,6 +3,8 @@ import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { find, isUndefined, isNull, isEmpty } from "lodash"
 import { Redirect } from "react-router-dom"
 
+import ViewerLoading from "../../ViewerLoading"
+
 import { getAbstracts, saveAbstractEval } from "../../actions/abstract_actions"
 
 const Abstract = ({ match }) => {
@@ -26,7 +28,7 @@ const Abstract = ({ match }) => {
       return <Redirect to={`/${event.id}`} />
     }
   } else {
-    return <div className="viewer-loading" />
+    return <ViewerLoading />
   }
 
   if (localStorage.getItem(`abstract-${abs.abstractid}`)) {

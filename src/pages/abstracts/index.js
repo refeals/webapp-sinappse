@@ -4,14 +4,14 @@ import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { getAbstracts } from "../../actions/abstract_actions"
 import { Link } from "react-router-dom"
 
-const Abstracts = () => {
+const Abstracts = ({ match }) => {
   const event = useSelector((state) => state.event, shallowEqual)
   const abstracts = useSelector((state) => state.abstracts, shallowEqual)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getAbstracts(event.id))
-  }, [dispatch, event.id])
+    dispatch(getAbstracts(match.params.event_id))
+  }, [dispatch, match.params.event_id])
 
   const renderAbstracts = () => {
     return abstracts.map((abs) => {

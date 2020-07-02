@@ -4,14 +4,14 @@ import { Link } from "react-router-dom"
 
 import { getSpeakers } from "../../actions/speaker_actions"
 
-const Speakers = () => {
+const Speakers = ({ match }) => {
   const event = useSelector((state) => state.event, shallowEqual)
   const speakers = useSelector((state) => state.speakers, shallowEqual)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getSpeakers(event.id))
-  }, [dispatch, event.id])
+    dispatch(getSpeakers(match.params.event_id))
+  }, [dispatch, match.params.event_id])
 
   const renderSpeakerList = () => {
     return speakers.map((spk) => {

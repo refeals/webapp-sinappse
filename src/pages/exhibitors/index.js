@@ -4,14 +4,14 @@ import { Link } from "react-router-dom"
 
 import { getExhibitors } from "../../actions/exhibitor_actions"
 
-const Exhibitors = () => {
+const Exhibitors = ({ match }) => {
   const event = useSelector((state) => state.event, shallowEqual)
   const exhibitors = useSelector((state) => state.exhibitors, shallowEqual)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getExhibitors(event.id))
-  }, [dispatch, event.id])
+    dispatch(getExhibitors(match.params.event_id))
+  }, [dispatch, match.params.event_id])
 
   const renderExhibitorList = () => {
     return exhibitors.map((exh) => {

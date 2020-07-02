@@ -4,6 +4,8 @@ import { isUndefined, map, find, flatten, isNull, isEmpty } from "lodash"
 import { toast } from "react-toastify"
 import { Redirect } from "react-router-dom"
 
+import ViewerLoading from "../../ViewerLoading"
+
 import { getPrograms, talkVote, askSend } from "../../actions/programs_actions"
 
 const Talk = ({ match }) => {
@@ -35,7 +37,7 @@ const Talk = ({ match }) => {
       return <Redirect to={`/${event.id}`} />
     }
   } else {
-    return <div className="viewer-loading" />
+    return <ViewerLoading />
   }
 
   if (localStorage.getItem(`talk-${talk.talkID}`)) {

@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { isUndefined, map, sortBy, isEmpty } from "lodash"
 import { Redirect, Link } from "react-router-dom"
+import moment from "moment"
+
+import ViewerLoading from "../../ViewerLoading"
 
 import { getPrograms } from "../../actions/programs_actions"
-import moment from "moment"
 
 const Category = ({ match }) => {
   const event = useSelector((state) => state.event, shallowEqual)
@@ -32,7 +34,7 @@ const Category = ({ match }) => {
       return <Redirect to={`/${event.id}`} />
     }
   } else {
-    return <div className="viewer-loading" />
+    return <ViewerLoading />
   }
 
   const renderTalks = (index) => {
