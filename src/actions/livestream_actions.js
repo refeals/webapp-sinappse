@@ -11,7 +11,7 @@ export const getLivestream = (event_id, callback) => (dispatch, getState) => {
     .then((response) => {
       if (response.data.success)
         dispatch({ type: GET_LIVESTREAM, payload: response.data.data })
-      else throw Object.assign(new Error(response.data.message), { code: 401 })
+      else throw Object.assign(new Error(response.data.msg), { code: 401 })
     })
     .then(() => callback && callback())
     .catch((err) => console.log(err))

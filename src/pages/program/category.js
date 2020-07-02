@@ -11,7 +11,7 @@ const Category = ({ match }) => {
   const programs = useSelector((state) => state.programs, shallowEqual)
   const dispatch = useDispatch()
 
-  const [selectedCat, setSelectedCat] = useState(2)
+  const [selectedCat, setSelectedCat] = useState(0)
 
   const catArr = map(programs[match.params.category_id], (val, key) => {
     return {
@@ -20,12 +20,9 @@ const Category = ({ match }) => {
     }
   })
   const cat = sortBy(catArr, ["key"])
-  // console.log(cat)
 
   useEffect(() => {
-    // if (isEmpty(programs)) {
     dispatch(getPrograms(match.params.event_id))
-    // }
   }, [dispatch, match])
 
   if (isUndefined(cat)) {
@@ -33,30 +30,28 @@ const Category = ({ match }) => {
   }
 
   const renderTalks = (index) => {
-    return cat[index].value.map((cat) => {
+    return cat[index].value.map((c) => {
       return (
         <Link
-          to="#"
-          // to={`/${event.id}/program/${cat.categoryid}`}
-          key={cat.talkID}
+          to={`/${event.id}/program/${c.talkCategory}/${c.talkID}`}
+          key={c.talkID}
+          className="nounderline"
         >
           <ul className="viewer-talks">
-            {/* {{props prop ~tab=key}} */}
             <li className="viewer-talk">
-              <span className="talk-title">{cat.talkTitle}</span>
+              <span className="talk-title">{c.talkTitle}</span>
               <div className="footer row">
                 <div className="talk-date col-xs-6">
                   <i className="fa fa-calendar"></i>{" "}
-                  {moment(cat.talkStartTime.timestamp).format("DD/MM")}
+                  {moment(c.talkStartTime.timestamp).format("DD/MM")}
                 </div>
                 <div className="talk-interval col-xs-6">
                   <i className="fa fa-clock"></i>{" "}
-                  {moment(cat.talkStartTime.timestamp).format("hh:mm")} -{" "}
-                  {moment(cat.talkFinishTime.timestamp).format("hh:mm")}
+                  {moment(c.talkStartTime.timestamp).format("hh:mm")} -{" "}
+                  {moment(c.talkFinishTime.timestamp).format("hh:mm")}
                 </div>
               </div>
             </li>
-            {/* {{/props}} */}
           </ul>
         </Link>
       )
