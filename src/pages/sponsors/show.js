@@ -17,8 +17,8 @@ const Sponsor = ({ match }) => {
   const spn = find(sponsors, (e) => e.id === match.params.sponsor_id)
 
   useEffect(() => {
-    dispatch(getSponsors(event.id, () => setLoaded(true)))
-  }, [dispatch, event.id])
+    dispatch(getSponsors(match.params.event_id, () => setLoaded(true)))
+  }, [dispatch, match.params.event_id])
 
   if (loaded) {
     if (isEmpty(sponsors) || isUndefined(spn)) {

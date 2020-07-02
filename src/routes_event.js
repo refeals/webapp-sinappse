@@ -32,7 +32,7 @@ const RoutesEvent = ({ match }) => {
 
   useEffect(() => {
     dispatch(getEvent(match.params.event_id, () => setLoaded(true)))
-  }, [dispatch, match])
+  }, [dispatch, match.params.event_id])
 
   setManifest(event)
 

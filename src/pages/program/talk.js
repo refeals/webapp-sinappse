@@ -30,7 +30,7 @@ const Talk = ({ match }) => {
 
   useEffect(() => {
     dispatch(getPrograms(match.params.event_id, () => setLoaded(true)))
-  }, [dispatch, match])
+  }, [dispatch, match.params.event_id])
 
   if (loaded) {
     if (isEmpty(programs) || isUndefined(talk)) {
