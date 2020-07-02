@@ -1,37 +1,36 @@
-import React, { useState, useEffect } from "react"
-import { connect } from "react-redux"
+import React, { useEffect, lazy, Suspense } from "react"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { Route } from "react-router-dom"
-
-import Main from "./pages/main"
-import Program from "./pages/program"
-import Speakers from "./pages/speakers"
-import Speaker from "./pages/speakers/show"
-import Abstracts from "./pages/abstracts"
-import Abstract from "./pages/abstracts/show"
-import Exhibitors from "./pages/exhibitors"
-import Exhibitor from "./pages/exhibitors/show"
-import Sponsors from "./pages/sponsors"
-import Sponsor from "./pages/sponsors/show"
-import Map from "./pages/map"
-import WebView from "./pages/webview"
-import Livestream from "./pages/livestream"
 
 import { getEvent } from "./actions/event_actions"
 
 import setManifest from "./setManifest"
 
-const RoutesEvent = ({ event, getEvent, match }) => {
-  const [isLoading, setIsLoading] = useState(true)
-  const event_id = match.params.event_id
+const Main = lazy(() => import("./pages/main"))
+const Program = lazy(() => import("./pages/program"))
+const Category = lazy(() => import("./pages/program/category"))
+const Talk = lazy(() => import("./pages/program/talk"))
+const Speakers = lazy(() => import("./pages/speakers"))
+const Speaker = lazy(() => import("./pages/speakers/show"))
+const Abstracts = lazy(() => import("./pages/abstracts"))
+const Abstract = lazy(() => import("./pages/abstracts/show"))
+const Exhibitors = lazy(() => import("./pages/exhibitors"))
+const Exhibitor = lazy(() => import("./pages/exhibitors/show"))
+const Sponsors = lazy(() => import("./pages/sponsors"))
+const Sponsor = lazy(() => import("./pages/sponsors/show"))
+const Map = lazy(() => import("./pages/map"))
+const WebView = lazy(() => import("./pages/webview"))
+const Livestream = lazy(() => import("./pages/livestream"))
+
+const RoutesEvent = ({ match }) => {
+  const dispatch = useDispatch()
+  const event = useSelector((state) => state.event, shallowEqual)
 
   useEffect(() => {
-    const fetchData = async () => {
-      await getEvent(event_id, () => setIsLoading(false))
-    }
-    fetchData()
-  }, [getEvent, event_id])
+    dispatch(getEvent(match.params.event_id))
+  }, [dispatch, match])
 
-  if (isLoading) {
+  if (!event.id) {
     return <div className="viewer-loading"></div>
   }
 
@@ -51,7 +50,7 @@ const RoutesEvent = ({ event, getEvent, match }) => {
     .map((s) => ({ type: s.type, params: s.params }))
 
   return (
-    <>
+    <Suspense fallback={<div className="viewer-loading"></div>}>
       <ul className="viewer-menu">
         <Route exact path="/:event_id" component={Main} />
       </ul>
@@ -59,6 +58,16 @@ const RoutesEvent = ({ event, getEvent, match }) => {
         {sections.includes("PROGRAM") && (
           <>
             <Route exact path="/:event_id/program" component={Program} />
+            <Route
+              exact
+              path="/:event_id/program/:category_id"
+              component={Category}
+            />
+            <Route
+              exact
+              path="/:event_id/program/:category_id/:talk_id"
+              component={Talk}
+            />
           </>
         )}
         {sections.includes("SPEAKERS") && (
@@ -119,15 +128,8 @@ const RoutesEvent = ({ event, getEvent, match }) => {
           )
         })}
       </div>
-    </>
+    </Suspense>
   )
 }
 
-function mapStateToProps(state) {
-  const { event } = state
-  return { event }
-}
-
-const mapDispatchToProps = { getEvent }
-
-export default connect(mapStateToProps, mapDispatchToProps)(RoutesEvent)
+export default RoutesEvent

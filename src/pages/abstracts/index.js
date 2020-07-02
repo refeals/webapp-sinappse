@@ -1,19 +1,17 @@
 import React, { useEffect } from "react"
-import { connect } from "react-redux"
-import { isEmpty } from "lodash"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
 
 import { getAbstracts } from "../../actions/abstract_actions"
 import { Link } from "react-router-dom"
 
-const Abstracts = ({ event, abstracts, getAbstracts }) => {
+const Abstracts = () => {
+  const event = useSelector((state) => state.event, shallowEqual)
+  const abstracts = useSelector((state) => state.abstracts, shallowEqual)
+  const dispatch = useDispatch()
+
   useEffect(() => {
-    if (event.id && isEmpty(abstracts)) {
-      const fetchData = async () => {
-        await getAbstracts(event.id)
-      }
-      fetchData()
-    }
-  }, [getAbstracts, abstracts, event.id])
+    dispatch(getAbstracts(event.id))
+  }, [dispatch, event.id])
 
   const renderAbstracts = () => {
     return abstracts.map((abs) => {
@@ -45,11 +43,4 @@ const Abstracts = ({ event, abstracts, getAbstracts }) => {
   )
 }
 
-function mapStateToProps(state) {
-  const { event, abstracts } = state
-  return { event, abstracts }
-}
-
-const mapDispatchToProps = { getAbstracts }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Abstracts)
+export default Abstracts

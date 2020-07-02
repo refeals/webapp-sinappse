@@ -1,21 +1,20 @@
 import React, { useEffect } from "react"
-import { connect } from "react-redux"
-import { isEmpty, find, isUndefined } from "lodash"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
+import { find, isUndefined } from "lodash"
 import { Redirect } from "react-router-dom"
 
 import { getExhibitors } from "../../actions/exhibitor_actions"
 
-const Exhibitor = ({ event, getExhibitors, exhibitors, match }) => {
+const Exhibitor = ({ match }) => {
+  const event = useSelector((state) => state.event, shallowEqual)
+  const exhibitors = useSelector((state) => state.exhibitors, shallowEqual)
+  const dispatch = useDispatch()
+
   const exh = find(exhibitors, (e) => e.id === match.params.exhibitor_id)
 
   useEffect(() => {
-    if (event.id && isEmpty(exhibitors)) {
-      const fetchData = async () => {
-        await getExhibitors(event.id)
-      }
-      fetchData()
-    }
-  }, [getExhibitors, exhibitors, event.id])
+    dispatch(getExhibitors(event.id))
+  }, [dispatch, event.id])
 
   if (isUndefined(exh)) {
     return <Redirect to={`/${event.id}/exhibitors`} />
@@ -47,11 +46,4 @@ const Exhibitor = ({ event, getExhibitors, exhibitors, match }) => {
   )
 }
 
-function mapStateToProps(state) {
-  const { event, exhibitors } = state
-  return { event, exhibitors }
-}
-
-const mapDispatchToProps = { getExhibitors }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Exhibitor)
+export default Exhibitor

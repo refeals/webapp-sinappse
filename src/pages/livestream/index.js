@@ -1,18 +1,17 @@
 import React, { useEffect } from "react"
-import { connect } from "react-redux"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { Link } from "react-router-dom"
 
 import { getLivestream } from "../../actions/livestream_actions"
 
-const Livestream = ({ getLivestream, event, lives }) => {
+const Livestream = () => {
+  const event = useSelector((state) => state.event, shallowEqual)
+  const lives = useSelector((state) => state.lives, shallowEqual)
+  const dispatch = useDispatch()
+
   useEffect(() => {
-    if (event.id) {
-      const fetchData = async () => {
-        await getLivestream(event.id)
-      }
-      fetchData()
-    }
-  }, [getLivestream, event.id])
+    dispatch(getLivestream(event.id))
+  }, [dispatch, event.id])
 
   const renderLivestreamList = () => {
     return lives.map((live) => {
@@ -36,11 +35,4 @@ const Livestream = ({ getLivestream, event, lives }) => {
   )
 }
 
-function mapStateToProps(state) {
-  const { event, lives } = state
-  return { event, lives }
-}
-
-const mapDispatchToProps = { getLivestream }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Livestream)
+export default Livestream

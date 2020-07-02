@@ -1,19 +1,17 @@
 import React, { useEffect } from "react"
-import { connect } from "react-redux"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { Link } from "react-router-dom"
-import { isEmpty } from "lodash"
 
 import { getExhibitors } from "../../actions/exhibitor_actions"
 
-const Exhibitors = ({ getExhibitors, event, exhibitors }) => {
+const Exhibitors = () => {
+  const event = useSelector((state) => state.event, shallowEqual)
+  const exhibitors = useSelector((state) => state.exhibitors, shallowEqual)
+  const dispatch = useDispatch()
+
   useEffect(() => {
-    if (event.id && isEmpty(exhibitors)) {
-      const fetchData = async () => {
-        await getExhibitors(event.id)
-      }
-      fetchData()
-    }
-  }, [getExhibitors, exhibitors, event.id])
+    dispatch(getExhibitors(event.id))
+  }, [dispatch, event.id])
 
   const renderExhibitorList = () => {
     return exhibitors.map((exh) => {
@@ -39,11 +37,4 @@ const Exhibitors = ({ getExhibitors, event, exhibitors }) => {
   )
 }
 
-function mapStateToProps(state) {
-  const { event, exhibitors } = state
-  return { event, exhibitors }
-}
-
-const mapDispatchToProps = { getExhibitors }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Exhibitors)
+export default Exhibitors

@@ -188,7 +188,6 @@ body.viewermode {
       top: 0px;
       left: 0px;
       right: 0px;
-      display: none;
       .talk-type {
         font-size: 18px;
       }
@@ -221,7 +220,7 @@ body.viewermode {
           color: #aaa;
           text-align: center;
           padding-bottom: 20px;
-          .eval:hover {
+          .eval.active {
             color: rgb(208, 255, 0);
           }
         }
@@ -467,7 +466,6 @@ body.viewermode {
     }
   }
   #viewer-asker {
-    display: none;
     width: 80%;
     height: 300px;
     margin: 10% auto;

@@ -1,6 +1,11 @@
 // event
 export const GET_EVENT = "GET_EVENT"
 
+// programs
+export const GET_PROGRAMS = "GET_PROGRAMS"
+export const SAVE_TALK_EVAL = "SAVE_TALK_EVAL"
+export const ASK_SEND_QUESTION = "ASK_SEND_QUESTION"
+
 // livestream
 export const GET_LIVESTREAM = "GET_LIVESTREAM"
 

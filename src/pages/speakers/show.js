@@ -1,21 +1,20 @@
 import React, { useEffect } from "react"
-import { connect } from "react-redux"
-import { isEmpty, find, isUndefined } from "lodash"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
+import { find, isUndefined } from "lodash"
 import { Redirect } from "react-router-dom"
 
 import { getSpeakers } from "../../actions/speaker_actions"
 
-const Speaker = ({ event, getSpeakers, speakers, match }) => {
+const Speaker = ({ match }) => {
+  const event = useSelector((state) => state.event, shallowEqual)
+  const speakers = useSelector((state) => state.speakers, shallowEqual)
+  const dispatch = useDispatch()
+
   const spk = find(speakers, (s) => s.speakerid === match.params.speaker_id)
 
   useEffect(() => {
-    if (event.id && isEmpty(speakers)) {
-      const fetchData = async () => {
-        await getSpeakers(event.id)
-      }
-      fetchData()
-    }
-  }, [getSpeakers, speakers, event.id])
+    dispatch(getSpeakers(event.id))
+  }, [dispatch, event.id])
 
   if (isUndefined(spk)) {
     return <Redirect to={`/${event.id}/speakers`} />
@@ -57,11 +56,4 @@ const Speaker = ({ event, getSpeakers, speakers, match }) => {
   )
 }
 
-function mapStateToProps(state) {
-  const { event, speakers } = state
-  return { event, speakers }
-}
-
-const mapDispatchToProps = { getSpeakers }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Speaker)
+export default Speaker

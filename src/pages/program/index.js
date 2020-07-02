@@ -1,92 +1,49 @@
-import React from "react"
+import React, { useEffect } from "react"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
+import { Link } from "react-router-dom"
+import { isEmpty } from "lodash"
+
+import { getPrograms } from "../../actions/programs_actions"
 
 const Program = () => {
-  return (
-    <>
-      <section id="viewer-programacao">
-        <ul className="viewer-program phonescreen">
-          <li>
-            <i className="fa fa-spinner fa-spin"></i>
+  const event = useSelector((state) => state.event, shallowEqual)
+  // const programs = useSelector((state) => state.programs, shallowEqual)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getPrograms(event.id))
+  }, [dispatch, event.id])
+
+  const renderProgramList = () => {
+    if (isEmpty(event["categories-list"])) {
+      return (
+        <li>
+          <i className="fa fa-spinner fa-spin"></i>
+        </li>
+      )
+    }
+
+    return event["categories-list"].map((cat) => {
+      return (
+        <Link
+          to={`/${event.id}/program/${cat.categoryid}`}
+          key={cat.categoryid}
+        >
+          <li
+            className={`category-block size-${cat.size}`}
+            style={{ backgroundImage: `url(${cat.image})` }}
+          >
+            {cat.name}
           </li>
-        </ul>
-      </section>
-      <section id="viewer-talk"></section>
-      <section id="viewer-asker">
-        <div className="question-form">
-          <div className="form-group">
-            <label data-i18n="Seu nome">Seu nome</label>
-            <input
-              type="text"
-              className="form-control"
-              id="asker-name"
-              placeholder="Seu nome"
-              data-i18n="[placeholder]Seu nome"
-            />
-          </div>
-          <div className="form-group">
-            <label data-i18n="Sua pergunta">Sua pergunta</label>
-            <textarea
-              className="form-control"
-              id="asker-question"
-              placeholder="Sua pergunta"
-              data-i18n="[placeholder]Sua pergunta"
-              rows="6"
-            ></textarea>
-          </div>
-          <div className="form-group text-center">
-            <button
-              className="btn btn-viewer btn-primary"
-              id="asker-send"
-              data-i18n="Enviar"
-            >
-              Enviar
-            </button>
-            <button
-              className="asker-cancel btn btn-viewer btn-danger"
-              onClick={() =>
-                console.log(
-                  "document.getElementById('viewer-asker').classList.remove('active')"
-                )
-              }
-              data-i18n="Cancelar"
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
-      </section>
-      <section id="viewer-eval">
-        <div className="question-form">
-          <div className="form-group">
-            <span data-i18n="Deseja enviar a avaliação de">
-              Deseja enviar a avaliação de
-            </span>
-            <span className="eval-count"></span>
-            <span data-i18n="estrela(s)">estrela(s)?</span>
-          </div>
-          <div className="form-group text-center">
-            <button
-              className="btn btn-viewer btn-primary"
-              id="eval-send"
-              data-i18n="Enviar"
-            >
-              Enviar
-            </button>
-            <button
-              className="eval-cancel btn btn-viewer btn-danger"
-              onClick={() =>
-                console.log(
-                  "document.getElementById('viewer-eval').classList.remove('active')"
-                )
-              }
-              data-i18n="Cancelar"
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
-      </section>
-    </>
+        </Link>
+      )
+    })
+  }
+
+  return (
+    <section id="viewer-programacao">
+      <ul className="viewer-program phonescreen">{renderProgramList()}</ul>
+    </section>
   )
 }
 
