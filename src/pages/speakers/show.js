@@ -1,7 +1,9 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
-import { find, isUndefined } from "lodash"
+import { find, isUndefined, isEmpty } from "lodash"
 import { Redirect } from "react-router-dom"
+
+import ViewerLoading from "../../ViewerLoading"
 
 import { getSpeakers } from "../../actions/speaker_actions"
 
@@ -10,14 +12,24 @@ const Speaker = ({ match }) => {
   const speakers = useSelector((state) => state.speakers, shallowEqual)
   const dispatch = useDispatch()
 
+  const [loaded, setLoaded] = useState(false)
+
   const spk = find(speakers, (s) => s.speakerid === match.params.speaker_id)
 
   useEffect(() => {
-    dispatch(getSpeakers(event.id))
-  }, [dispatch, event.id])
+    if (isEmpty(speakers)) {
+      dispatch(getSpeakers(match.params.event_id, () => setLoaded(true)))
+    } else {
+      setLoaded(true)
+    }
+  }, [dispatch, speakers, match.params.event_id])
 
-  if (isUndefined(spk)) {
-    return <Redirect to={`/${event.id}/speakers`} />
+  if (loaded) {
+    if (isEmpty(speakers) || isUndefined(spk)) {
+      return <Redirect to={`/${event.id}`} />
+    }
+  } else {
+    return <ViewerLoading />
   }
 
   const renderTalks = () => {

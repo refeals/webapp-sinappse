@@ -1,6 +1,8 @@
-import React, { useEffect, lazy, Suspense } from "react"
+import React, { useEffect, lazy, Suspense, useState } from "react"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { Route } from "react-router-dom"
+
+import ViewerLoading from "./ViewerLoading"
 
 import { getEvent } from "./actions/event_actions"
 
@@ -26,19 +28,21 @@ const RoutesEvent = ({ match }) => {
   const dispatch = useDispatch()
   const event = useSelector((state) => state.event, shallowEqual)
 
-  useEffect(() => {
-    dispatch(getEvent(match.params.event_id))
-  }, [dispatch, match])
+  const [loaded, setLoaded] = useState(false)
 
-  if (!event.id) {
-    return <div className="viewer-loading"></div>
+  useEffect(() => {
+    dispatch(getEvent(match.params.event_id, () => setLoaded(true)))
+  }, [dispatch, match.params.event_id])
+
+  if (loaded) {
+    if (!event.id) {
+      return <ViewerLoading />
+    }
+  } else {
+    return <ViewerLoading />
   }
 
   setManifest(event)
-
-  // if (isLoading && !event.id) {
-  //   return <Redirect to="/" />
-  // }
 
   const hide = match.path === "/:event_id" && match.isExact ? "hide" : ""
 
@@ -50,7 +54,7 @@ const RoutesEvent = ({ match }) => {
     .map((s) => ({ type: s.type, params: s.params }))
 
   return (
-    <Suspense fallback={<div className="viewer-loading"></div>}>
+    <Suspense fallback={<ViewerLoading />}>
       <ul className="viewer-menu">
         <Route exact path="/:event_id" component={Main} />
       </ul>

@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
-import { isUndefined, map, find, flatten, isNull } from "lodash"
+import { isUndefined, map, find, flatten, isNull, isEmpty } from "lodash"
+import { toast } from "react-toastify"
+import { Redirect } from "react-router-dom"
+
+import ViewerLoading from "../../ViewerLoading"
 
 import { getPrograms, talkVote, askSend } from "../../actions/programs_actions"
-import { toast } from "react-toastify"
 
 const Talk = ({ match }) => {
-  // const event = useSelector((state) => state.event, shallowEqual)
+  const event = useSelector((state) => state.event, shallowEqual)
   const programs = useSelector((state) => state.programs, shallowEqual)
   const dispatch = useDispatch()
 
@@ -17,6 +20,8 @@ const Talk = ({ match }) => {
   const [name, setName] = useState("")
   const [question, setQuestion] = useState("")
 
+  const [loaded, setLoaded] = useState(false)
+
   const catArr = map(programs[match.params.category_id], (val, key) => {
     return map(val, (v) => ({ ...v }))
   })
@@ -24,12 +29,19 @@ const Talk = ({ match }) => {
   const talk = find(catFlatten, ["talkID", match.params.talk_id])
 
   useEffect(() => {
-    dispatch(getPrograms(match.params.event_id))
-  }, [dispatch, match])
+    if (isEmpty(programs)) {
+      dispatch(getPrograms(match.params.event_id, () => setLoaded(true)))
+    } else {
+      setLoaded(true)
+    }
+  }, [dispatch, programs, match.params.event_id])
 
-  if (isUndefined(talk)) {
-    return <div style={{ color: "black" }}>DASDASDSA</div>
-    // return <Redirect to={`/${event.id}/program`} />
+  if (loaded) {
+    if (isEmpty(programs) || isUndefined(talk)) {
+      return <Redirect to={`/${event.id}`} />
+    }
+  } else {
+    return <ViewerLoading />
   }
 
   if (localStorage.getItem(`talk-${talk.talkID}`)) {
