@@ -4,12 +4,19 @@
   word-wrap: break-word;
   margin: 0;
   padding: 0;
-  color: #000;
+  color: rgba(0, 0, 0, 0.7);
 
   .livestream-list-item {
-    border: 1px solid black;
-    margin: 4px;
-    padding: 4px;
+    border-bottom: 1px solid #ccc;
+    padding: 4px 8px;
+  }
+
+  .live-name {
+    margin: 8px 0;
+  }
+
+  .live-icon {
+    float: right;
   }
 }
 
