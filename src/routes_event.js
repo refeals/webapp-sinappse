@@ -8,6 +8,7 @@ import setManifest from "./setManifest"
 
 const Main = lazy(() => import("./pages/main"))
 const Program = lazy(() => import("./pages/program"))
+const Category = lazy(() => import("./pages/program/category"))
 const Speakers = lazy(() => import("./pages/speakers"))
 const Speaker = lazy(() => import("./pages/speakers/show"))
 const Abstracts = lazy(() => import("./pages/abstracts"))
@@ -56,6 +57,11 @@ const RoutesEvent = ({ match }) => {
         {sections.includes("PROGRAM") && (
           <>
             <Route exact path="/:event_id/program" component={Program} />
+            <Route
+              exact
+              path="/:event_id/program/:category_id"
+              component={Category}
+            />
           </>
         )}
         {sections.includes("SPEAKERS") && (
