@@ -1,30 +1,23 @@
 import React, { useState, useEffect } from "react"
-import { connect } from "react-redux"
-import { isEmpty, find, isUndefined, isNull } from "lodash"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
+import { find, isUndefined, isNull } from "lodash"
 import { Redirect } from "react-router-dom"
 
 import { getAbstracts, saveAbstractEval } from "../../actions/abstract_actions"
 
-const Abstract = ({
-  event,
-  getAbstracts,
-  abstracts,
-  match,
-  saveAbstractEval
-}) => {
+const Abstract = ({ match }) => {
+  const event = useSelector((state) => state.event, shallowEqual)
+  const abstracts = useSelector((state) => state.abstracts, shallowEqual)
+  const dispatch = useDispatch()
+
   const [evaluation, setEval] = useState(null)
   const [canVote, setCanVote] = useState(true)
 
   const abs = find(abstracts, (e) => e.abstractid === match.params.abstract_id)
 
   useEffect(() => {
-    if (event.id && isEmpty(abstracts)) {
-      const fetchData = async () => {
-        await getAbstracts(event.id)
-      }
-      fetchData()
-    }
-  }, [getAbstracts, abstracts, event.id])
+    dispatch(getAbstracts(event.id))
+  }, [dispatch, event.id])
 
   if (isUndefined(abs)) {
     return <Redirect to={`/${event.id}/abstracts`} />
@@ -47,16 +40,18 @@ const Abstract = ({
   }
 
   const handleSaveAbstractEval = () => {
-    saveAbstractEval(
-      {
-        abstract: abs.abstractid,
-        user: -1, // FIX AFTER LOGIN
-        score: evaluation
-      },
-      () => {
-        setCanVote(false)
-        localStorage.setItem(`abstract-${abs.abstractid}`, evaluation)
-      }
+    dispatch(
+      saveAbstractEval(
+        {
+          abstract: abs.abstractid,
+          user: -1, // FIX AFTER LOGIN
+          score: evaluation
+        },
+        () => {
+          setCanVote(false)
+          localStorage.setItem(`abstract-${abs.abstractid}`, evaluation)
+        }
+      )
     )
   }
 
@@ -142,11 +137,4 @@ const Abstract = ({
   )
 }
 
-function mapStateToProps(state) {
-  const { event, abstracts } = state
-  return { event, abstracts }
-}
-
-const mapDispatchToProps = { getAbstracts, saveAbstractEval }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Abstract)
+export default Abstract

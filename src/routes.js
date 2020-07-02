@@ -42,7 +42,7 @@ const Routes = () => {
           <Switch>
             <Route path="/" exact render={redirectToSinappse} />
             <Route path="/:event_id" component={RoutesEvent} />
-            <Route path="*" render={() => <Redirect to="/" />} />
+            {/* <Route path="*" render={() => <Redirect to="/" />} /> */}
           </Switch>
         </div>
       </BrowserRouter>

@@ -1,19 +1,17 @@
 import React, { useEffect } from "react"
-import { connect } from "react-redux"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { Link } from "react-router-dom"
-import { isEmpty } from "lodash"
 
 import { getSpeakers } from "../../actions/speaker_actions"
 
-const Speakers = ({ getSpeakers, event, speakers }) => {
+const Speakers = () => {
+  const event = useSelector((state) => state.event, shallowEqual)
+  const speakers = useSelector((state) => state.speakers, shallowEqual)
+  const dispatch = useDispatch()
+
   useEffect(() => {
-    if (event.id && isEmpty(speakers)) {
-      const fetchData = async () => {
-        await getSpeakers(event.id)
-      }
-      fetchData()
-    }
-  }, [getSpeakers, speakers, event.id])
+    dispatch(getSpeakers(event.id))
+  }, [dispatch, event.id])
 
   const renderSpeakerList = () => {
     return speakers.map((spk) => {
@@ -37,11 +35,4 @@ const Speakers = ({ getSpeakers, event, speakers }) => {
   )
 }
 
-function mapStateToProps(state) {
-  const { event, speakers } = state
-  return { event, speakers }
-}
-
-const mapDispatchToProps = { getSpeakers }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Speakers)
+export default Speakers

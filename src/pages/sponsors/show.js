@@ -1,21 +1,20 @@
 import React, { useEffect } from "react"
-import { connect } from "react-redux"
-import { isEmpty, find, isUndefined } from "lodash"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
+import { find, isUndefined } from "lodash"
 import { Redirect } from "react-router-dom"
 
 import { getSponsors } from "../../actions/sponsor_actions"
 
-const Sponsor = ({ event, getSponsors, sponsors, match }) => {
+const Sponsor = ({ match }) => {
+  const event = useSelector((state) => state.event, shallowEqual)
+  const sponsors = useSelector((state) => state.sponsors, shallowEqual)
+  const dispatch = useDispatch()
+
   const spn = find(sponsors, (e) => e.id === match.params.sponsor_id)
 
   useEffect(() => {
-    if (event.id && isEmpty(sponsors)) {
-      const fetchData = async () => {
-        await getSponsors(event.id)
-      }
-      fetchData()
-    }
-  }, [getSponsors, sponsors, event.id])
+    dispatch(getSponsors(event.id))
+  }, [dispatch, event.id])
 
   if (isUndefined(spn)) {
     return <Redirect to={`/${event.id}/sponsors`} />
@@ -45,11 +44,4 @@ const Sponsor = ({ event, getSponsors, sponsors, match }) => {
   )
 }
 
-function mapStateToProps(state) {
-  const { event, sponsors } = state
-  return { event, sponsors }
-}
-
-const mapDispatchToProps = { getSponsors }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Sponsor)
+export default Sponsor

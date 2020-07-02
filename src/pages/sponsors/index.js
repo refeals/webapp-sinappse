@@ -1,19 +1,17 @@
 import React, { useEffect } from "react"
-import { connect } from "react-redux"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { Link } from "react-router-dom"
-import { isEmpty } from "lodash"
 
 import { getSponsors } from "../../actions/sponsor_actions"
 
-const Sponsors = ({ getSponsors, event, sponsors }) => {
+const Sponsors = () => {
+  const event = useSelector((state) => state.event, shallowEqual)
+  const sponsors = useSelector((state) => state.sponsors, shallowEqual)
+  const dispatch = useDispatch()
+
   useEffect(() => {
-    if (event.id && isEmpty(sponsors)) {
-      const fetchData = async () => {
-        await getSponsors(event.id)
-      }
-      fetchData()
-    }
-  }, [getSponsors, sponsors, event.id])
+    dispatch(getSponsors(event.id))
+  }, [dispatch, event.id])
 
   const renderSponsorList = () => {
     return sponsors.map((spn) => {
@@ -39,11 +37,4 @@ const Sponsors = ({ getSponsors, event, sponsors }) => {
   )
 }
 
-function mapStateToProps(state) {
-  const { event, sponsors } = state
-  return { event, sponsors }
-}
-
-const mapDispatchToProps = { getSponsors }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Sponsors)
+export default Sponsors

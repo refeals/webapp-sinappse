@@ -1,6 +1,7 @@
 import { combineReducers } from "redux"
 
 import event_reducer from "./event_reducer"
+import program_reducer from "./program_reducer"
 import speaker_reducer from "./speaker_reducer"
 import exhibitor_reducer from "./exhibitor_reducer"
 import sponsor_reducer from "./sponsor_reducer"
@@ -9,6 +10,7 @@ import livestream_reducer from "./livestream_reducer"
 
 export default combineReducers({
   event: event_reducer,
+  programs: program_reducer,
   speakers: speaker_reducer,
   exhibitors: exhibitor_reducer,
   sponsors: sponsor_reducer,
