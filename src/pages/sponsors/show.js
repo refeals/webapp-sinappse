@@ -1,6 +1,6 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
-import { find, isUndefined } from "lodash"
+import { find, isUndefined, isEmpty } from "lodash"
 import { Redirect } from "react-router-dom"
 
 import { getSponsors } from "../../actions/sponsor_actions"
@@ -10,14 +10,20 @@ const Sponsor = ({ match }) => {
   const sponsors = useSelector((state) => state.sponsors, shallowEqual)
   const dispatch = useDispatch()
 
+  const [loaded, setLoaded] = useState(false)
+
   const spn = find(sponsors, (e) => e.id === match.params.sponsor_id)
 
   useEffect(() => {
-    dispatch(getSponsors(event.id))
+    dispatch(getSponsors(event.id, () => setLoaded(true)))
   }, [dispatch, event.id])
 
-  if (isUndefined(spn)) {
-    return <Redirect to={`/${event.id}/sponsors`} />
+  if (loaded) {
+    if (isEmpty(sponsors) || isUndefined(spn)) {
+      return <Redirect to={`/${event.id}`} />
+    }
+  } else {
+    return <div className="viewer-loading" />
   }
 
   return (

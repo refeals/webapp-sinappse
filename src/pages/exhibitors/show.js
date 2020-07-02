@@ -1,6 +1,6 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
-import { find, isUndefined } from "lodash"
+import { find, isUndefined, isEmpty } from "lodash"
 import { Redirect } from "react-router-dom"
 
 import { getExhibitors } from "../../actions/exhibitor_actions"
@@ -10,14 +10,20 @@ const Exhibitor = ({ match }) => {
   const exhibitors = useSelector((state) => state.exhibitors, shallowEqual)
   const dispatch = useDispatch()
 
+  const [loaded, setLoaded] = useState(false)
+
   const exh = find(exhibitors, (e) => e.id === match.params.exhibitor_id)
 
   useEffect(() => {
-    dispatch(getExhibitors(event.id))
+    dispatch(getExhibitors(event.id, () => setLoaded(true)))
   }, [dispatch, event.id])
 
-  if (isUndefined(exh)) {
-    return <Redirect to={`/${event.id}/exhibitors`} />
+  if (loaded) {
+    if (isEmpty(exhibitors) || isUndefined(exh)) {
+      return <Redirect to={`/${event.id}`} />
+    }
+  } else {
+    return <div className="viewer-loading" />
   }
 
   return (

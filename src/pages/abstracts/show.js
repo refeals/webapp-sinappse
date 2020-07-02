@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
-import { find, isUndefined, isNull } from "lodash"
+import { find, isUndefined, isNull, isEmpty } from "lodash"
 import { Redirect } from "react-router-dom"
 
 import { getAbstracts, saveAbstractEval } from "../../actions/abstract_actions"
@@ -13,14 +13,20 @@ const Abstract = ({ match }) => {
   const [evaluation, setEval] = useState(null)
   const [canVote, setCanVote] = useState(true)
 
+  const [loaded, setLoaded] = useState(false)
+
   const abs = find(abstracts, (e) => e.abstractid === match.params.abstract_id)
 
   useEffect(() => {
-    dispatch(getAbstracts(event.id))
+    dispatch(getAbstracts(event.id, () => setLoaded(true)))
   }, [dispatch, event.id])
 
-  if (isUndefined(abs)) {
-    return <Redirect to={`/${event.id}/abstracts`} />
+  if (loaded) {
+    if (isEmpty(abstracts) || isUndefined(abs)) {
+      return <Redirect to={`/${event.id}`} />
+    }
+  } else {
+    return <div className="viewer-loading" />
   }
 
   if (localStorage.getItem(`abstract-${abs.abstractid}`)) {

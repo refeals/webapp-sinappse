@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
-import { isUndefined, map, sortBy } from "lodash"
+import { isUndefined, map, sortBy, isEmpty } from "lodash"
 import { Redirect, Link } from "react-router-dom"
 
 import { getPrograms } from "../../actions/programs_actions"
@@ -13,6 +13,8 @@ const Category = ({ match }) => {
 
   const [selectedCat, setSelectedCat] = useState(0)
 
+  const [loaded, setLoaded] = useState(false)
+
   const catArr = map(programs[match.params.category_id], (val, key) => {
     return {
       value: map(val, (v) => ({ ...v })),
@@ -22,11 +24,15 @@ const Category = ({ match }) => {
   const cat = sortBy(catArr, ["key"])
 
   useEffect(() => {
-    dispatch(getPrograms(match.params.event_id))
+    dispatch(getPrograms(match.params.event_id, () => setLoaded(true)))
   }, [dispatch, match])
 
-  if (isUndefined(cat)) {
-    return <Redirect to={`/${event.id}/program`} />
+  if (loaded) {
+    if (isEmpty(programs) || isUndefined(cat)) {
+      return <Redirect to={`/${event.id}`} />
+    }
+  } else {
+    return <div className="viewer-loading" />
   }
 
   const renderTalks = (index) => {

@@ -50,7 +50,7 @@ const RoutesEvent = ({ match }) => {
     .map((s) => ({ type: s.type, params: s.params }))
 
   return (
-    <Suspense fallback={<div className="viewer-loading"></div>}>
+    <Suspense fallback={<div className="viewer-loading" />}>
       <ul className="viewer-menu">
         <Route exact path="/:event_id" component={Main} />
       </ul>
