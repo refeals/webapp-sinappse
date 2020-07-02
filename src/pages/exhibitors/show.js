@@ -17,8 +17,12 @@ const Exhibitor = ({ match }) => {
   const exh = find(exhibitors, (e) => e.id === match.params.exhibitor_id)
 
   useEffect(() => {
-    dispatch(getExhibitors(match.params.event_id, () => setLoaded(true)))
-  }, [dispatch, match.params.event_id])
+    if (isEmpty(exhibitors)) {
+      dispatch(getExhibitors(match.params.event_id, () => setLoaded(true)))
+    } else {
+      setLoaded(true)
+    }
+  }, [dispatch, exhibitors, match.params.event_id])
 
   if (loaded) {
     if (isEmpty(exhibitors) || isUndefined(exh)) {

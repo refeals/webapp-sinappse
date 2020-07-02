@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { Link } from "react-router-dom"
+import { isEmpty } from "lodash"
 
 import { getSpeakers } from "../../actions/speaker_actions"
 
@@ -10,8 +11,10 @@ const Speakers = ({ match }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getSpeakers(match.params.event_id))
-  }, [dispatch, match.params.event_id])
+    if (isEmpty(speakers)) {
+      dispatch(getSpeakers(match.params.event_id))
+    }
+  }, [dispatch, speakers, match.params.event_id])
 
   const renderSpeakerList = () => {
     return speakers.map((spk) => {

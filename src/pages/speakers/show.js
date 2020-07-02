@@ -17,8 +17,12 @@ const Speaker = ({ match }) => {
   const spk = find(speakers, (s) => s.speakerid === match.params.speaker_id)
 
   useEffect(() => {
-    dispatch(getSpeakers(match.params.event_id, () => setLoaded(true)))
-  }, [dispatch, match.params.event_id])
+    if (isEmpty(speakers)) {
+      dispatch(getSpeakers(match.params.event_id, () => setLoaded(true)))
+    } else {
+      setLoaded(true)
+    }
+  }, [dispatch, speakers, match.params.event_id])
 
   if (loaded) {
     if (isEmpty(speakers) || isUndefined(spk)) {

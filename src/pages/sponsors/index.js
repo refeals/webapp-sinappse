@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { Link } from "react-router-dom"
+import { isEmpty } from "lodash"
 
 import { getSponsors } from "../../actions/sponsor_actions"
 
@@ -10,8 +11,10 @@ const Sponsors = ({ match }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getSponsors(match.params.event_id))
-  }, [dispatch, match.params.event_id])
+    if (isEmpty(sponsors)) {
+      dispatch(getSponsors(match.params.event_id))
+    }
+  }, [dispatch, sponsors, match.params.event_id])
 
   const renderSponsorList = () => {
     return sponsors.map((spn) => {

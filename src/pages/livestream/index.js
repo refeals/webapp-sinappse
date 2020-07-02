@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { Link } from "react-router-dom"
+import { isEmpty } from "lodash"
 
 import { getLivestream } from "../../actions/livestream_actions"
 
@@ -10,8 +11,10 @@ const Livestream = ({ match }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getLivestream(match.params.event_id))
-  }, [dispatch, match.params.event_id])
+    if (isEmpty(lives)) {
+      dispatch(getLivestream(match.params.event_id))
+    }
+  }, [dispatch, lives, match.params.event_id])
 
   const renderLivestreamList = () => {
     return lives.map((live) => {

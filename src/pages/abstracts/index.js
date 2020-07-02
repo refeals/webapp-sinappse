@@ -1,8 +1,9 @@
 import React, { useEffect } from "react"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
+import { Link } from "react-router-dom"
+import { isEmpty } from "lodash"
 
 import { getAbstracts } from "../../actions/abstract_actions"
-import { Link } from "react-router-dom"
 
 const Abstracts = ({ match }) => {
   const event = useSelector((state) => state.event, shallowEqual)
@@ -10,8 +11,10 @@ const Abstracts = ({ match }) => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(getAbstracts(match.params.event_id))
-  }, [dispatch, match.params.event_id])
+    if (isEmpty(abstracts)) {
+      dispatch(getAbstracts(match.params.event_id))
+    }
+  }, [dispatch, abstracts, match.params.event_id])
 
   const renderAbstracts = () => {
     return abstracts.map((abs) => {

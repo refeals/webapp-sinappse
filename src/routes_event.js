@@ -34,8 +34,6 @@ const RoutesEvent = ({ match }) => {
     dispatch(getEvent(match.params.event_id, () => setLoaded(true)))
   }, [dispatch, match.params.event_id])
 
-  setManifest(event)
-
   if (loaded) {
     if (!event.id) {
       return <ViewerLoading />
@@ -43,6 +41,8 @@ const RoutesEvent = ({ match }) => {
   } else {
     return <ViewerLoading />
   }
+
+  setManifest(event)
 
   const hide = match.path === "/:event_id" && match.isExact ? "hide" : ""
 

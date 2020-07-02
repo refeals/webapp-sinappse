@@ -29,8 +29,12 @@ const Talk = ({ match }) => {
   const talk = find(catFlatten, ["talkID", match.params.talk_id])
 
   useEffect(() => {
-    dispatch(getPrograms(match.params.event_id, () => setLoaded(true)))
-  }, [dispatch, match.params.event_id])
+    if (isEmpty(programs)) {
+      dispatch(getPrograms(match.params.event_id, () => setLoaded(true)))
+    } else {
+      setLoaded(true)
+    }
+  }, [dispatch, programs, match.params.event_id])
 
   if (loaded) {
     if (isEmpty(programs) || isUndefined(talk)) {

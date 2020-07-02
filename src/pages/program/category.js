@@ -26,8 +26,12 @@ const Category = ({ match }) => {
   const cat = sortBy(catArr, ["key"])
 
   useEffect(() => {
-    dispatch(getPrograms(match.params.event_id, () => setLoaded(true)))
-  }, [dispatch, match.params.event_id])
+    if (isEmpty(programs)) {
+      dispatch(getPrograms(match.params.event_id, () => setLoaded(true)))
+    } else {
+      setLoaded(true)
+    }
+  }, [dispatch, programs, match.params.event_id])
 
   if (loaded) {
     if (isEmpty(programs) || isUndefined(cat)) {

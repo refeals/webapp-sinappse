@@ -20,8 +20,12 @@ const Abstract = ({ match }) => {
   const abs = find(abstracts, (e) => e.abstractid === match.params.abstract_id)
 
   useEffect(() => {
-    dispatch(getAbstracts(match.params.event_id, () => setLoaded(true)))
-  }, [dispatch, match.params.event_id])
+    if (isEmpty(abstracts)) {
+      dispatch(getAbstracts(match.params.event_id, () => setLoaded(true)))
+    } else {
+      setLoaded(true)
+    }
+  }, [dispatch, abstracts, match.params.event_id])
 
   if (loaded) {
     if (isEmpty(abstracts) || isUndefined(abs)) {
