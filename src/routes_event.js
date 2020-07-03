@@ -5,7 +5,6 @@ import { Route } from "react-router-dom"
 import ViewerLoading from "./ViewerLoading"
 
 import { getEvent } from "./actions/event_actions"
-import { SHOW_TOP_MENU } from "./actions/action_types"
 
 import setManifest from "./setManifest"
 
@@ -25,20 +24,17 @@ const Map = lazy(() => import("./pages/map"))
 const WebView = lazy(() => import("./pages/webview"))
 const Livestream = lazy(() => import("./pages/livestream"))
 const Watch = lazy(() => import("./pages/livestream/watch"))
+const Login = lazy(() => import("./pages/login"))
 
 const RoutesEvent = ({ match }) => {
-  const dispatch = useDispatch()
   const event = useSelector((state) => state.event, shallowEqual)
+  const dispatch = useDispatch()
 
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
     dispatch(getEvent(match.params.event_id, () => setLoaded(true)))
   }, [dispatch, match.params.event_id])
-
-  useEffect(() => {
-    dispatch({ type: SHOW_TOP_MENU })
-  }, [])
 
   if (loaded) {
     if (!event.id) {
@@ -49,6 +45,14 @@ const RoutesEvent = ({ match }) => {
   }
 
   setManifest(event)
+
+  if (!localStorage.getItem(`@sinappse-user-token-${event.id}`)) {
+    return (
+      <Suspense fallback={<ViewerLoading />}>
+        <Route exact path="/:event_id" component={Login} />
+      </Suspense>
+    )
+  }
 
   const hide = match.path === "/:event_id" && match.isExact ? "hide" : ""
 

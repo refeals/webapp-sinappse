@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom"
 
 import RoutesEvent from "./routes_event"
 import TopMenu from "./pages/main/TopMenu"
-import Login from "./pages/login"
 
 // import { store } from "../index"
 // import { isAuthenticated, isTokenExpired } from "../api/auth"

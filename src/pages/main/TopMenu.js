@@ -16,8 +16,8 @@ const TopMenu = () => {
   }
 
   const style = {
-    backgroundColor: event["event-color"],
-    color: event["text-color"]
+    backgroundColor: event.eventColor,
+    color: event.textColor
   }
 
   if (topMenu.hide) {

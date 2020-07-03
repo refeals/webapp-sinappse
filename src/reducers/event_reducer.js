@@ -10,6 +10,8 @@ const initialState = {
 const setWebviewParams = (event) => {
   const ev = {
     ...event,
+    eventColor: event["event-color"],
+    textColor: event["text-color"],
     sections: event.sections.map((s) => {
       if (s.type !== "WEBVIEW") {
         return s
