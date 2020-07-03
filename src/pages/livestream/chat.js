@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { useSelector, shallowEqual } from "react-redux"
 import { toPairs } from "lodash"
 import moment from "moment"
@@ -7,10 +7,14 @@ import { db } from "../../firebase"
 
 const LivestreamChat = ({ live }) => {
   const event = useSelector((state) => state.event, shallowEqual)
+  const [newMsg, setNewMsg] = useState("")
   const [messages, setMessages] = useState([])
+  const textInput = useRef(null)
 
   const chatRefStr = `event/${event.id}/livestream/${live.id}/chat`
+  const chatRef = db.ref(chatRefStr)
 
+  // get new messages
   useEffect(() => {
     db.ref(chatRefStr)
       .limitToLast(50)
@@ -21,6 +25,37 @@ const LivestreamChat = ({ live }) => {
       })
   }, [chatRefStr])
 
+  // scroll down when new messages arrive
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
+
+  // focus input on first render
+  useEffect(() => {
+    textInput.current.focus()
+  }, [])
+
+  const handleSendMessage = () => {
+    if (newMsg.length > 0) {
+      chatRef.push({
+        timestamp: Date.now(),
+        message: newMsg,
+        speaker: false, // TODO - precisa?
+        name: "WebApp Sem Login Ainda", // TODO - colocar nome do usuário
+        id: 99999 // TODO - colocar id do usuário
+      })
+
+      scrollToBottom()
+      setNewMsg("")
+      textInput.current.focus()
+    }
+  }
+
+  const scrollToBottom = () => {
+    const msgs = document.querySelector(".messages")
+    msgs.scrollTop = msgs.scrollHeight
+  }
+
   const showMessages = () => {
     return messages.map((msg) => {
       return (
@@ -29,8 +64,16 @@ const LivestreamChat = ({ live }) => {
             <small className="date">
               {moment(msg[1].timestamp).format("HH:mm")}
             </small>
-            <strong className="name">{msg[1].name}</strong>
-            <span className="text">{msg[1].message}</span>
+            <span
+              className={`name ${msg[1].speaker ? "speaker" : ""} ${
+                msg[1].id === 93594 ? "logged-user" : "" // TODO - usar id do user logado
+              }`}
+            >
+              {msg[1].name}:
+            </span>
+            <span className={`text ${msg[1].speaker ? "speaker" : ""}`}>
+              {msg[1].message}
+            </span>
           </p>
         </li>
       )
@@ -44,12 +87,20 @@ const LivestreamChat = ({ live }) => {
           <div className="chatArea">
             <ul className="messages">{showMessages()}</ul>
           </div>
-          <form className="sendMessageForm">
-            <input className="inputMessage" />
-            <button className="submitMessage" type="submit">
-              Enviar
+          <div className="sendMessageForm">
+            <input
+              className="inputMessage"
+              value={newMsg}
+              onChange={(e) => setNewMsg(e.target.value)}
+              ref={textInput}
+            />
+            <button className="submitMessage" onClick={handleSendMessage}>
+              <i className="fas fa-paper-plane"></i>
             </button>
-          </form>
+            <button className="toggleModal">
+              <i className="fas fa-chart-pie" />
+            </button>
+          </div>
         </li>
         {/* <li className="survey">
           <p className="title text-center"></p>
