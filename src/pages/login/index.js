@@ -3,6 +3,7 @@ import { useSelector, shallowEqual, useDispatch } from "react-redux"
 import { Link } from "react-router-dom"
 
 import { HIDE_TOP_MENU } from "../../actions/action_types"
+import { doLogin } from "../../actions/auth_actions"
 
 import bg from "../../images/bg_138.jpg"
 
@@ -13,18 +14,18 @@ const Login = () => {
   const [page, setPage] = useState(0)
 
   const [email, setEmail] = useState("")
-  const [passw, setPasswd] = useState("")
+  const [passwd, setPasswd] = useState("")
 
   useEffect(() => {
     dispatch({ type: HIDE_TOP_MENU })
   }, [dispatch])
 
   const handleLogin = () => {
-    console.log("handleLogin")
+    dispatch(doLogin(email, passwd, event.id))
   }
 
-  const handleSignIn = () => {
-    console.log("handleSignIn")
+  const handleSignUp = () => {
+    console.log("handleSignUp")
   }
 
   const renderMainPage = () => {
@@ -86,12 +87,12 @@ const Login = () => {
             <input
               type="password"
               placeholder="Senha"
-              value={passw}
+              value={passwd}
               onChange={(e) => setPasswd(e.target.value)}
             />
           </form>
 
-          <p className="forgot-signin">
+          <p className="forgot-signup">
             <span onClick={() => setPage(3)}>Esqueci minha senha</span>
             <span onClick={() => setPage(2)}>Cadastrar nova conta</span>
           </p>
@@ -105,7 +106,7 @@ const Login = () => {
     )
   }
 
-  const renderSignInPage = () => {
+  const renderSignUpPage = () => {
     return (
       <>
         <div className="back-icon" onClick={() => setPage(0)}>
@@ -113,7 +114,7 @@ const Login = () => {
         </div>
         <footer>
           <div className="buttons">
-            <button onClick={handleSignIn}>Cadastrar</button>
+            <button onClick={handleSignUp}>Cadastrar</button>
           </div>
         </footer>
       </>
@@ -130,7 +131,7 @@ const Login = () => {
     >
       {page === 0 && renderMainPage()}
       {page === 1 && renderLoginPage()}
-      {page === 2 && renderSignInPage()}
+      {page === 2 && renderSignUpPage()}
     </div>
   )
 }

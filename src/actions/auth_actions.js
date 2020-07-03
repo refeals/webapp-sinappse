@@ -1,13 +1,16 @@
 import _ from "lodash"
 import { toast } from "react-toastify"
 
-import { api } from "../api"
+import { oldApi as api } from "../api"
 
-import { LOGIN, LOGOUT, LOGOUT_EXPIRED_TOKEN, SIGNUP } from "./actionTypes"
+import { LOGIN, LOGOUT, LOGOUT_EXPIRED_TOKEN, SIGNUP } from "./action_types"
 
-export const doLogin = (email, password, callback) => (dispatch, getState) => {
+export const doLogin = (email, passwd, event_id, callback) => (
+  dispatch,
+  getState
+) => {
   api
-    .post("/login", {}, { auth: { username: email, password } })
+    .post(`/event/${event_id}/user/login`, { email, passwd })
     .then((response) => {
       if (response.data.success) {
         dispatch({ type: LOGIN, payload: response.data })
