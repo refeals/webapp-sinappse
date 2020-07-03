@@ -1,8 +1,10 @@
 import React from "react"
-import { connect } from "react-redux"
+import { useSelector, shallowEqual } from "react-redux"
 import { useHistory } from "react-router-dom"
 
-const TopMenu = ({ event, hide, title = event["event-name"], goHome }) => {
+const TopMenu = () => {
+  const event = useSelector((state) => state.event, shallowEqual)
+  const topMenu = useSelector((state) => state.topMenu, shallowEqual)
   const history = useHistory()
 
   const redirectToHome = () => {
@@ -18,23 +20,21 @@ const TopMenu = ({ event, hide, title = event["event-name"], goHome }) => {
     color: event["text-color"]
   }
 
-  if (!hide)
-    return (
-      <div className="topmenu" style={style}>
-        <button
-          className="va-home"
-          onClick={goHome ? redirectToHome : redirectToBack}
-        >
-          <i className="fa fa-home"></i>
-        </button>
-        <h1 className="event-name">{title}</h1>
-      </div>
-    )
+  if (topMenu.hide) {
+    return <></>
+  }
+
+  return (
+    <div className="topmenu" style={style}>
+      <button
+        className="va-home"
+        onClick={topMenu.goBack ? redirectToBack : redirectToHome}
+      >
+        <i className="fa fa-home"></i>
+      </button>
+      <h1 className="event-name">{event["event-name"]}</h1>
+    </div>
+  )
 }
 
-function mapStateToProps(state) {
-  const { event } = state
-  return { event }
-}
-
-export default connect(mapStateToProps)(TopMenu)
+export default TopMenu

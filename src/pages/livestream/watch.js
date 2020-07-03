@@ -42,8 +42,9 @@ const Watch = ({ match }) => {
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
           title={live.name}
-          src={`https://www.youtube.com/embed/${live.youtube_url}?autoplay=1&controls=0&disablekb=1&showinfo=0&rel=0&iv_load_policy=3&fs=0`}
+          src={`https://www.youtube.com/embed/${live.youtube_url}?autoplay=1&controls=0&disablekb=1&showinfo=0&rel=0&iv_load_policy=3&fs=0&modestbranding=1`}
         />
+        {/* <div className="overlay" /> */}
       </div>
       <LivestreamChat live={live} />
     </div>
