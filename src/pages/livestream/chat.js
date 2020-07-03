@@ -35,7 +35,9 @@ const LivestreamChat = ({ live }) => {
     textInput.current.focus()
   }, [])
 
-  const handleSendMessage = () => {
+  const handleSendMessage = (e) => {
+    e.preventDefault()
+
     if (newMsg.length > 0) {
       chatRef.push({
         timestamp: Date.now(),
@@ -87,20 +89,20 @@ const LivestreamChat = ({ live }) => {
           <div className="chatArea">
             <ul className="messages">{showMessages()}</ul>
           </div>
-          <div className="sendMessageForm">
+          <form className="sendMessageForm" onSubmit={handleSendMessage}>
             <input
               className="inputMessage"
               value={newMsg}
               onChange={(e) => setNewMsg(e.target.value)}
               ref={textInput}
             />
-            <button className="submitMessage" onClick={handleSendMessage}>
+            <button className="submitMessage" type="submit">
               <i className="fas fa-paper-plane"></i>
             </button>
             <button className="toggleModal">
               <i className="fas fa-chart-pie" />
             </button>
-          </div>
+          </form>
         </li>
         {/* <li className="survey">
           <p className="title text-center"></p>
