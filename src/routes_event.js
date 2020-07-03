@@ -23,6 +23,7 @@ const Sponsor = lazy(() => import("./pages/sponsors/show"))
 const Map = lazy(() => import("./pages/map"))
 const WebView = lazy(() => import("./pages/webview"))
 const Livestream = lazy(() => import("./pages/livestream"))
+const Watch = lazy(() => import("./pages/livestream/watch"))
 
 const RoutesEvent = ({ match }) => {
   const dispatch = useDispatch()
@@ -117,8 +118,11 @@ const RoutesEvent = ({ match }) => {
         {sections.includes("MAP") && (
           <Route exact path="/:event_id/map" component={Map} />
         )}
-        {sections.includes("LIVES") && (
-          <Route exact path="/:event_id/lives" component={Livestream} />
+        {sections.includes("LIVESTREAM") && (
+          <>
+            <Route exact path="/:event_id/lives" component={Livestream} />
+            <Route exact path="/:event_id/lives/:live_id" component={Watch} />
+          </>
         )}
 
         {sections_webview.map((s) => {

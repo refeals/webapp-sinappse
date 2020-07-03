@@ -7,7 +7,7 @@ export const SAVE_TALK_EVAL = "SAVE_TALK_EVAL"
 export const ASK_SEND_QUESTION = "ASK_SEND_QUESTION"
 
 // livestream
-export const GET_LIVESTREAM = "GET_LIVESTREAM"
+export const GET_LIVESTREAM_ROOMS = "GET_LIVESTREAM_ROOMS"
 
 // exhibitor
 export const GET_EXHIBITORS = "GET_EXHIBITORS"

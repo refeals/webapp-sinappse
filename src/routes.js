@@ -28,7 +28,7 @@ import TopMenu from "./pages/main/TopMenu"
 // )
 
 const redirectToSinappse = () => {
-  if (process.env.NODE_ENV === "development") return <Redirect to="/126" />
+  if (process.env.NODE_ENV === "development") return <Redirect to="/138" />
 
   window.location.replace("http://www.sinappse.com.br")
 }
