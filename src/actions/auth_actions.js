@@ -12,10 +12,10 @@ export const doLogin = (email, passwd, event_id, callback) => (
   api
     .post(`/event/${event_id}/user/login`, { email, passwd })
     .then((response) => {
-      if (response.data.success) {
+      if (response.data.success === 1) {
         dispatch({ type: LOGIN, payload: response.data })
       } else {
-        toast(response.data.message)
+        // toast(response.data.message)
         throw Object.assign(new Error("Usuário ou Senha inválidos"), {
           code: 401
         })
