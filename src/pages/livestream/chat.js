@@ -7,6 +7,8 @@ import { db } from "../../firebase"
 
 const LivestreamChat = ({ live }) => {
   const event = useSelector((state) => state.event, shallowEqual)
+  const user = useSelector((state) => state.user, shallowEqual)
+
   const [newMsg, setNewMsg] = useState("")
   const [messages, setMessages] = useState([])
   const textInput = useRef(null)
@@ -43,8 +45,8 @@ const LivestreamChat = ({ live }) => {
         timestamp: Date.now(),
         message: newMsg,
         speaker: false, // TODO - precisa?
-        name: "WebApp Sem Login Ainda", // TODO - colocar nome do usuário
-        id: 99999 // TODO - colocar id do usuário
+        name: user.name,
+        id: user.id
       })
 
       scrollToBottom()
@@ -68,7 +70,7 @@ const LivestreamChat = ({ live }) => {
             </small>
             <span
               className={`name ${msg[1].speaker ? "speaker" : ""} ${
-                msg[1].id === 93594 ? "logged-user" : "" // TODO - usar id do user logado
+                msg[1].id === user.id ? "logged-user" : ""
               }`}
             >
               {msg[1].name}:

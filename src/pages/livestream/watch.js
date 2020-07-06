@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom"
 import { isEmpty, isUndefined } from "lodash"
 
 import LivestreamChat from "./chat"
+import LivestreamAds from "./ads"
 import ViewerLoading from "../../ViewerLoading"
 
 import { getLivestream } from "../../actions/livestream_actions"
@@ -44,6 +45,7 @@ const Watch = ({ match }) => {
           title={live.name}
           src={`https://www.youtube.com/embed/${live.youtube_url}?autoplay=1&controls=0&disablekb=1&showinfo=0&rel=0&iv_load_policy=3&fs=0&modestbranding=1`}
         />
+        <LivestreamAds live={live} />
         {/* <div className="overlay" /> */}
       </div>
       <LivestreamChat live={live} />
