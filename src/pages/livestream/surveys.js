@@ -24,7 +24,7 @@ function SurveyModal({
     if (!isNull(selectedAnswer)) {
       db.ref(
         `${surveyRefStr}/${survey.survey_id}/answers/${selectedAnswer}/user_ids`
-      ).push(user.id)
+      ).push(parseInt(user.id))
     }
   }
 
