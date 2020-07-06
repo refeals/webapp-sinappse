@@ -1,6 +1,7 @@
 import React, { useState } from "react"
-import { isEmpty, map, isNull } from "lodash"
+import { isEmpty, map, isNull, size, sum } from "lodash"
 import { useSelector, shallowEqual } from "react-redux"
+import { PieChart } from "react-minimal-pie-chart"
 
 import { db } from "../../firebase"
 
@@ -26,7 +27,6 @@ function SurveyModal({
       ).push(user.id)
     }
   }
-  console.log(survey)
 
   const renderSurveyPage = () => {
     if (isSurveyVoted()) {
@@ -39,7 +39,7 @@ function SurveyModal({
     return (
       <>
         <div className="survey-title">
-          Survey
+          Enquete
           <i
             className="fas fa-times"
             style={{ color: event.eventColor }}
@@ -68,10 +68,36 @@ function SurveyModal({
   }
 
   const renderSurveyResults = () => {
+    const getRandomColor = () => {
+      const letters = "0123456789ABCDEF"
+      let color = "#"
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)]
+      }
+      return color
+    }
+
+    const totalVotes = sum(map(survey.answers, (val) => size(val.user_ids)))
+
+    const chartData = map(survey.answers, (val, key) => {
+      return {
+        value: size(val.user_ids),
+        title: val.title,
+        color: getRandomColor(),
+        key
+      }
+    })
+
+    const defaultLabelStyle = {
+      fontSize: "4",
+      fontFamily: "sans-serif",
+      fill: "#fff"
+    }
+
     return (
       <>
         <div className="survey-title">
-          Survey
+          Enquete
           <i
             className="fas fa-times"
             style={{ color: event.eventColor }}
@@ -79,7 +105,20 @@ function SurveyModal({
           />
         </div>
         <div className="survey-question">{survey.title}</div>
-        <div className="survey-chart"></div>
+        <div className="survey-chart">
+          <PieChart
+            data={chartData}
+            label={({ dataEntry }) =>
+              `${Math.round((dataEntry.value * 100) / totalVotes)}% - ${
+                dataEntry.title
+              }`
+            }
+            totalValue={totalVotes}
+            labelStyle={{
+              ...defaultLabelStyle
+            }}
+          />
+        </div>
       </>
     )
   }

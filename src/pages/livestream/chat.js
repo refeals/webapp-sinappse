@@ -135,7 +135,7 @@ const LivestreamChat = ({ live }) => {
               <i className="fas fa-paper-plane"></i>
             </button>
             <button
-              className={`toggleModal ${isSurveyVoted(survey) ? "" : "active"}`}
+              className={`toggleModal ${isNull(survey) ? "" : "active"}`}
               onClick={() => setIsOpen(true)}
             >
               <i className="fas fa-chart-pie" />
