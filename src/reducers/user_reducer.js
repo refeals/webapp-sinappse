@@ -16,7 +16,7 @@ export default (state = initialState, action) => {
         `@sinappse-user-token-${action.event}`,
         JSON.stringify(action.payload)
       )
-      return action.payload
+      return parseUserData(action.payload)
 
     case LOGOUT:
       localStorage.removeItem(`@sinappse-user-token-${action.payload.event_id}`)
