@@ -11,3 +11,8 @@ export const api = axios.create({
   baseURL,
   withCredentials: false
 })
+
+export const oldApi = axios.create({
+  baseURL: "https://api.sinappse.com",
+  withCredentials: false
+})

@@ -84,7 +84,7 @@ const Category = ({ match }) => {
             >
               <label
                 className="accordion-title"
-                style={{ backgroundColor: event["event-color"] }}
+                style={{ backgroundColor: event.eventColor }}
               >
                 {cat.key}
               </label>

@@ -1,4 +1,5 @@
 import React from "react"
+import { useSelector, shallowEqual } from "react-redux"
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom"
 
 import RoutesEvent from "./routes_event"
@@ -34,11 +35,16 @@ const redirectToSinappse = () => {
 }
 
 const Routes = () => {
+  const topMenu = useSelector((state) => state.topMenu, shallowEqual)
+
   return (
     <>
       <BrowserRouter>
-        <TopMenu goHome />
-        <div className="mainarea">
+        <TopMenu />
+        <div
+          className="mainarea"
+          style={{ height: topMenu.hide ? "100vh" : "calc(100vh - 46px)" }}
+        >
           <Switch>
             <Route path="/" exact render={redirectToSinappse} />
             <Route path="/:event_id" component={RoutesEvent} />

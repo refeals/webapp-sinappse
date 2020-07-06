@@ -1,18 +1,24 @@
-import _ from "lodash"
 import { toast } from "react-toastify"
 
 import { api } from "../api"
 
-import { LOGIN, LOGOUT, LOGOUT_EXPIRED_TOKEN, SIGNUP } from "./actionTypes"
+import { LOGIN, LOGOUT, LOGOUT_EXPIRED_TOKEN, SIGNUP } from "./action_types"
 
-export const doLogin = (email, password, callback) => (dispatch, getState) => {
+export const doLogin = (email, passwd, event, callback) => (
+  dispatch,
+  getState
+) => {
+  const form = new FormData()
+  form.set("email", email)
+  form.set("passwd", passwd)
+
   api
-    .post("/login", {}, { auth: { username: email, password } })
+    .post(`/act.php?action=v2/login`, form)
     .then((response) => {
       if (response.data.success) {
-        dispatch({ type: LOGIN, payload: response.data })
+        dispatch({ type: LOGIN, payload: response.data.data, event })
       } else {
-        toast(response.data.message)
+        // toast(response.data.message)
         throw Object.assign(new Error("Usuário ou Senha inválidos"), {
           code: 401
         })
@@ -22,8 +28,8 @@ export const doLogin = (email, password, callback) => (dispatch, getState) => {
     .catch((err) => console.log(err))
 }
 
-export const doLogout = () => (dispatch, getState) => {
-  dispatch({ type: LOGOUT })
+export const doLogout = (event_id) => (dispatch, getState) => {
+  dispatch({ type: LOGOUT, payload: { event_id } })
 }
 
 export const doLogoutExpiredToken = () => (dispatch, getState) => {
@@ -55,9 +61,9 @@ export const doSignUp = (user, callback) => (dispatch, getState) => {
     form.set("cnpj", user.cnpj)
   }
 
-  _.each(user.documents, (doc) => {
-    form.append("documents[]", doc, doc.name)
-  })
+  // _.each(user.documents, (doc) => {
+  //   form.append("documents[]", doc, doc.name)
+  // })
 
   api
     .post("/user", form, { headers: { "Content-Type": "multipart/form-data" } })
