@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react"
 import { useSelector, shallowEqual } from "react-redux"
-import { toPairs } from "lodash"
+import { toPairs, isNull, map, flatten, values } from "lodash"
 import moment from "moment"
 
 import { db } from "../../firebase"
+import SurveyModal from "./surveys"
 
 const LivestreamChat = ({ live }) => {
   const event = useSelector((state) => state.event, shallowEqual)
@@ -11,10 +12,14 @@ const LivestreamChat = ({ live }) => {
 
   const [newMsg, setNewMsg] = useState("")
   const [messages, setMessages] = useState([])
+  const [isOpen, setIsOpen] = useState(false)
+  const [survey, setSurvey] = useState(null)
   const textInput = useRef(null)
 
   const chatRefStr = `event/${event.id}/livestream/${live.id}/chat`
   const chatRef = db.ref(chatRefStr)
+
+  const surveyRefStr = `event/${event.id}/livestream/${live.id}/surveys`
 
   // get new messages
   useEffect(() => {
@@ -27,10 +32,38 @@ const LivestreamChat = ({ live }) => {
       })
   }, [chatRefStr])
 
+  // get new survey
+  useEffect(() => {
+    db.ref(surveyRefStr)
+      .orderByChild("enabled")
+      .equalTo(true)
+      .limitToLast(1)
+      .on("value", (snapshot) => {
+        const val = snapshot.val()
+        if (!isNull(val)) {
+          const srvData = toPairs(val)[0]
+          setSurvey({
+            ...srvData[1],
+            survey_id: srvData[0]
+          })
+        }
+      })
+  }, [surveyRefStr])
+
   // scroll down when new messages arrive
   useEffect(() => {
     scrollToBottom()
   }, [messages])
+
+  // check if survey is already voted by user
+  const isSurveyVoted = () => {
+    if (!isNull(survey)) {
+      const userIds = flatten(map(survey.answers, (a) => values(a.user_ids)))
+      return userIds.includes(user.id)
+    } else {
+      return false
+    }
+  }
 
   // focus input on first render
   useEffect(() => {
@@ -101,22 +134,21 @@ const LivestreamChat = ({ live }) => {
             <button className="submitMessage" type="submit">
               <i className="fas fa-paper-plane"></i>
             </button>
-            <button className="toggleModal">
+            <button
+              className={`toggleModal ${isSurveyVoted(survey) ? "" : "active"}`}
+              onClick={() => setIsOpen(true)}
+            >
               <i className="fas fa-chart-pie" />
             </button>
           </form>
         </li>
-        {/* <li className="survey">
-          <p className="title text-center"></p>
-          <div className="buttons">
-            <button className="survey-option answer1">Sim</button>
-            <button className="survey-option answer2">Não</button>
-          </div>
-          <div className="live-result">
-            <div className="live-result-item answer1"></div>
-            <div className="live-result-item answer2"></div>
-          </div>
-        </li> */}
+        <SurveyModal
+          open={isOpen}
+          survey={survey}
+          closeModal={() => setIsOpen(false)}
+          isSurveyVoted={isSurveyVoted}
+          surveyRefStr={surveyRefStr}
+        />
       </ul>
     </div>
   )

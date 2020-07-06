@@ -11,7 +11,6 @@ function LivestreamAds({ live }) {
   const [hideAd, setHideAd] = useState(false)
 
   const adsRefStr = `event/${event.id}/livestream/${live.id}/ads`
-  // const adsRef = db.ref(adsRefStr)
 
   useEffect(() => {
     db.ref(adsRefStr)
@@ -26,8 +25,6 @@ function LivestreamAds({ live }) {
         }
       })
   }, [adsRefStr])
-
-  console.log(ad)
 
   const handleCloseAd = (e) => {
     e.preventDefault()
@@ -47,7 +44,7 @@ function LivestreamAds({ live }) {
       <img src={ad.image_url} alt="Ad" />
       <button className="text" onClick={handleCloseAd}>
         Publicidade
-        <i className="fas fa-times" />
+        <i className="fas fa-times" style={{ color: event.eventColor }} />
       </button>
     </a>
   )
