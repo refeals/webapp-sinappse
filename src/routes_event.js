@@ -1,6 +1,6 @@
 import React, { useEffect, lazy, Suspense, useState } from "react"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
-import { Route } from "react-router-dom"
+import { Route, Redirect } from "react-router-dom"
 
 import ViewerLoading from "./ViewerLoading"
 
@@ -58,6 +58,7 @@ const RoutesEvent = ({ match }) => {
     return (
       <Suspense fallback={<ViewerLoading />}>
         <Route exact path="/:event_id" component={Login} />
+        <Route path="*" render={() => <Redirect to={`/${event.id}`} />} />
       </Suspense>
     )
   }
