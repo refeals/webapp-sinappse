@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
-import { Link } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 
 import { HIDE_TOP_MENU } from "../../actions/action_types"
 import { doLogin } from "../../actions/auth_actions"
@@ -10,6 +10,7 @@ import bg from "../../images/bg_138.jpg"
 const Login = () => {
   const event = useSelector((state) => state.event, shallowEqual)
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const [page, setPage] = useState(0)
 
@@ -21,7 +22,11 @@ const Login = () => {
   }, [dispatch])
 
   const handleLogin = () => {
-    dispatch(doLogin(email, passwd, event.id))
+    dispatch(
+      doLogin(email, passwd, event.id, () => {
+        history.push(`/${event.id}`)
+      })
+    )
   }
 
   const handleSignUp = () => {
@@ -44,7 +49,7 @@ const Login = () => {
           </p>
           <div className="buttons">
             <button onClick={() => setPage(1)}>Acessar</button>
-            <button onClick={() => setPage(2)}>Cadastrar</button>
+            {/* <button onClick={() => setPage(2)}>Cadastrar</button> */}
           </div>
         </footer>
       </>
@@ -60,7 +65,7 @@ const Login = () => {
         <div className="form-content">
           <p className="text">Acesse sua conta</p>
 
-          <div className="social-media-buttons">
+          {/* <div className="social-media-buttons">
             <button onClick={() => console.log("facebook login")}>
               <i className="fab fa-facebook"></i>
             </button>
@@ -69,7 +74,7 @@ const Login = () => {
             </button>
           </div>
 
-          <p>OU</p>
+          <p>OU</p> */}
 
           <form
             className="login-form"

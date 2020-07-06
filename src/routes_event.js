@@ -5,6 +5,7 @@ import { Route } from "react-router-dom"
 import ViewerLoading from "./ViewerLoading"
 
 import { getEvent } from "./actions/event_actions"
+import { SHOW_TOP_MENU } from "./actions/action_types"
 
 import setManifest from "./setManifest"
 
@@ -35,6 +36,12 @@ const RoutesEvent = ({ match }) => {
   useEffect(() => {
     dispatch(getEvent(match.params.event_id, () => setLoaded(true)))
   }, [dispatch, match.params.event_id])
+
+  useEffect(() => {
+    if (localStorage.getItem(`@sinappse-user-token-${event.id}`)) {
+      dispatch({ type: SHOW_TOP_MENU })
+    }
+  }, [dispatch, event.id])
 
   if (loaded) {
     if (!event.id) {

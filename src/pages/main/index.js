@@ -1,8 +1,17 @@
-import React from "react"
-import { connect } from "react-redux"
+import React, { useEffect } from "react"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { Link } from "react-router-dom"
 
-const Main = ({ event }) => {
+import { SHOW_TOP_MENU } from "../../actions/action_types"
+
+const Main = () => {
+  const event = useSelector((state) => state.event, shallowEqual)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch({ type: SHOW_TOP_MENU })
+  }, [dispatch])
+
   const setSectionUrl = ({ type, eventid, params }) => {
     switch (type) {
       case "PROGRAM":
@@ -47,9 +56,4 @@ const Main = ({ event }) => {
   })
 }
 
-function mapStateToProps(state) {
-  const { event } = state
-  return { event }
-}
-
-export default connect(mapStateToProps)(Main)
+export default Main

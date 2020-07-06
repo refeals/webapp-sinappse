@@ -45,6 +45,9 @@ body.viewermode {
         padding: 0px 15px;
         cursor: pointer;
         outline: 0px none;
+        &.va-logout {
+          float: right;
+        }
       }
       h1.event-name {
         display: inline-block;
