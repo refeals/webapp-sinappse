@@ -29,6 +29,7 @@ const Login = lazy(() => import("./pages/login"))
 
 const RoutesEvent = ({ match }) => {
   const event = useSelector((state) => state.event, shallowEqual)
+  const topMenu = useSelector((state) => state.topMenu, shallowEqual)
   const dispatch = useDispatch()
 
   const [loaded, setLoaded] = useState(false)
@@ -43,6 +44,10 @@ const RoutesEvent = ({ match }) => {
       dispatch({ type: GET_USER, event: event.id })
     }
   }, [dispatch, event.id])
+
+  useEffect(() => {
+    document.getElementById("root").className = ""
+  }, [])
 
   if (loaded) {
     if (!event.id) {
@@ -74,85 +79,94 @@ const RoutesEvent = ({ match }) => {
 
   return (
     <Suspense fallback={<ViewerLoading />}>
-      <ul className="viewer-menu">
-        <Route exact path="/:event_id" component={Main} />
-      </ul>
-      <div className={`open-section ${hide}`}>
-        {sections.includes("PROGRAM") && (
-          <>
-            <Route exact path="/:event_id/program" component={Program} />
-            <Route
-              exact
-              path="/:event_id/program/:category_id"
-              component={Category}
-            />
-            <Route
-              exact
-              path="/:event_id/program/:category_id/:talk_id"
-              component={Talk}
-            />
-          </>
-        )}
-        {sections.includes("SPEAKERS") && (
-          <>
-            <Route exact path="/:event_id/speakers" component={Speakers} />
-            <Route
-              exact
-              path="/:event_id/speakers/:speaker_id"
-              component={Speaker}
-            />
-          </>
-        )}
-        {sections.includes("ABSTRACTS") && (
-          <>
-            <Route exact path="/:event_id/abstracts" component={Abstracts} />
-            <Route
-              exact
-              path="/:event_id/abstracts/:abstract_id"
-              component={Abstract}
-            />
-          </>
-        )}
-        {sections.includes("EXHIBITORS") && (
-          <>
-            <Route exact path="/:event_id/exhibitors" component={Exhibitors} />
-            <Route
-              exact
-              path="/:event_id/exhibitors/:exhibitor_id"
-              component={Exhibitor}
-            />
-          </>
-        )}
-        {sections.includes("SPONSORS") && (
-          <>
-            <Route exact path="/:event_id/sponsors" component={Sponsors} />
-            <Route
-              exact
-              path="/:event_id/sponsors/:sponsor_id"
-              component={Sponsor}
-            />
-          </>
-        )}
-        {sections.includes("MAP") && (
-          <Route exact path="/:event_id/map" component={Map} />
-        )}
-        {sections.includes("LIVESTREAM") && (
-          <>
-            <Route exact path="/:event_id/lives" component={Livestream} />
-            <Route exact path="/:event_id/lives/:live_id" component={Watch} />
-          </>
-        )}
+      <div
+        className="mainarea"
+        style={{ height: topMenu.hide ? "100vh" : "calc(100vh - 46px)" }}
+      >
+        <ul className="viewer-menu">
+          <Route exact path="/:event_id" component={Main} />
+        </ul>
+        <div className={`open-section ${hide}`}>
+          {sections.includes("PROGRAM") && (
+            <>
+              <Route exact path="/:event_id/program" component={Program} />
+              <Route
+                exact
+                path="/:event_id/program/:category_id"
+                component={Category}
+              />
+              <Route
+                exact
+                path="/:event_id/program/:category_id/:talk_id"
+                component={Talk}
+              />
+            </>
+          )}
+          {sections.includes("SPEAKERS") && (
+            <>
+              <Route exact path="/:event_id/speakers" component={Speakers} />
+              <Route
+                exact
+                path="/:event_id/speakers/:speaker_id"
+                component={Speaker}
+              />
+            </>
+          )}
+          {sections.includes("ABSTRACTS") && (
+            <>
+              <Route exact path="/:event_id/abstracts" component={Abstracts} />
+              <Route
+                exact
+                path="/:event_id/abstracts/:abstract_id"
+                component={Abstract}
+              />
+            </>
+          )}
+          {sections.includes("EXHIBITORS") && (
+            <>
+              <Route
+                exact
+                path="/:event_id/exhibitors"
+                component={Exhibitors}
+              />
+              <Route
+                exact
+                path="/:event_id/exhibitors/:exhibitor_id"
+                component={Exhibitor}
+              />
+            </>
+          )}
+          {sections.includes("SPONSORS") && (
+            <>
+              <Route exact path="/:event_id/sponsors" component={Sponsors} />
+              <Route
+                exact
+                path="/:event_id/sponsors/:sponsor_id"
+                component={Sponsor}
+              />
+            </>
+          )}
+          {sections.includes("MAP") && (
+            <Route exact path="/:event_id/map" component={Map} />
+          )}
+          {sections.includes("LIVESTREAM") && (
+            <>
+              <Route exact path="/:event_id/lives" component={Livestream} />
+              <Route exact path="/:event_id/lives/:live_id" component={Watch} />
+            </>
+          )}
 
-        {sections_webview.map((s) => {
-          return (
-            <Route
-              exact
-              path={`/:event_id/${s.params.type}`}
-              render={(props) => <WebView {...props} {...s.params} />}
-              key={s.params.type}
-            />
-          )
-        })}
+          {sections_webview.map((s) => {
+            return (
+              <Route
+                exact
+                path={`/:event_id/${s.params.type}`}
+                render={(props) => <WebView {...props} {...s.params} />}
+                key={s.params.type}
+              />
+            )
+          })}
+        </div>
       </div>
     </Suspense>
   )

@@ -30,6 +30,9 @@ body.viewermode {
     max-width: 640px;
     margin: 0px auto;
     background: #fff;
+    &.desktop {
+      max-width: initial;
+    }
   }
   section#viewer {
     min-height: 100vh;
