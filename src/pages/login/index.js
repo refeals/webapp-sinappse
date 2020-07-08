@@ -7,6 +7,8 @@ import { doLogin } from "../../actions/auth_actions"
 
 import bg from "../../images/bg_138.jpg"
 
+import "../../css/login.scss"
+
 const Login = () => {
   const event = useSelector((state) => state.event, shallowEqual)
   const dispatch = useDispatch()

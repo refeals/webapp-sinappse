@@ -9,6 +9,8 @@ import { SHOW_TOP_MENU, GET_USER } from "./actions/action_types"
 
 import setManifest from "./setManifest"
 
+import "./css/load.scss"
+
 const Main = lazy(() => import("./pages/main"))
 const Program = lazy(() => import("./pages/program"))
 const Category = lazy(() => import("./pages/program/category"))

@@ -1,7 +1,6 @@
 import React from "react"
 import { ToastContainer } from "react-toastify"
 
-import "./css/load.scss"
 import "react-toastify/dist/ReactToastify.css"
 
 import Routes from "./routes"
