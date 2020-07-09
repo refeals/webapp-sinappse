@@ -8,6 +8,7 @@ import exhibitor_reducer from "./exhibitor_reducer"
 import sponsor_reducer from "./sponsor_reducer"
 import abstract_reducer from "./abstract_reducer"
 import livestream_reducer from "./livestream_reducer"
+import streamer_reducer from "./streamer_reducer"
 import top_menu_reducer from "./top_menu_reducer"
 
 export default combineReducers({
@@ -19,5 +20,6 @@ export default combineReducers({
   sponsors: sponsor_reducer,
   abstracts: abstract_reducer,
   lives: livestream_reducer,
+  streamer: streamer_reducer,
   topMenu: top_menu_reducer
 })

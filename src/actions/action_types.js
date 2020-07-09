@@ -29,6 +29,9 @@ export const GET_SPEAKERS = "GET_SPEAKERS"
 export const GET_ABSTRACTS = "GET_ABSTRACTS"
 export const SAVE_ABSTRACT_EVAL = "SAVE_ABSTRACT_EVAL"
 
+// streamer
+export const GET_STREAMER = "GET_STREAMER"
+
 //top menu
 export const HIDE_TOP_MENU = "HIDE_TOP_MENU"
 export const SHOW_TOP_MENU = "SHOW_TOP_MENU"
