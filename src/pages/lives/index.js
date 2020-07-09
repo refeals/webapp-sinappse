@@ -1,15 +1,14 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector, shallowEqual } from "react-redux"
+import { isUndefined } from "lodash"
 
 import ViewerLoading from "../../ViewerLoading"
+import Chat from "./chat"
 
 import { getEvent } from "../../actions/event_actions"
 import { getLivestream } from "../../actions/livestream_actions"
 
 import logo from "../../images/logo-white.png"
-
-import "../../css/speaker_livestream.scss"
-import { isUndefined } from "lodash"
 
 function Lives() {
   const event = useSelector((state) => state.event, shallowEqual)
@@ -36,8 +35,10 @@ function Lives() {
     return <ViewerLoading />
   }
 
+  const fbRefStr = `event/${event.id}/livestream/${live.id}`
+
   return (
-    <div className="live-container">
+    <div className="talk-live-container">
       <header className="live-header">
         <div className="img-container">
           <img src={logo} alt="Sinappse Logo" />
@@ -47,11 +48,26 @@ function Lives() {
         <i className="fas fa-broadcast-tower"></i>
       </header>
 
-      <div className="live-video">
-        <div className="video-container"></div>
-      </div>
+      <div className="live-content">
+        <div className="content-left">
+          <div className="live-video">
+            <iframe
+              className="video"
+              frameBorder="0"
+              allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+              // allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title={live.name}
+              src={`https://www.youtube.com/embed/${live.youtube_url}?autoplay=1&controls=0&disablekb=1&showinfo=0&rel=0&iv_load_policy=3&fs=0&modestbranding=1`}
+            />
+          </div>
+          <div className="live-surveys">asd</div>
+        </div>
 
-      <div className="live-manage"></div>
+        <div className="live-manage">
+          <Chat fbRefStr={fbRefStr} />
+        </div>
+      </div>
     </div>
   )
 }

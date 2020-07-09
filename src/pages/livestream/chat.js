@@ -77,7 +77,6 @@ const LivestreamChat = ({ live }) => {
       chatRef.push({
         timestamp: Date.now(),
         message: newMsg,
-        speaker: false, // TODO - precisa?
         name: user.name,
         id: user.id
       })
@@ -132,7 +131,7 @@ const LivestreamChat = ({ live }) => {
               ref={textInput}
             />
             <button className="submitMessage" type="submit">
-              <i className="fas fa-paper-plane"></i>
+              <i className="fas fa-paper-plane" />
             </button>
             <button
               className={`toggleModal ${isNull(survey) ? "" : "active"}`}
