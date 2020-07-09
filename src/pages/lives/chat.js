@@ -8,9 +8,9 @@ function Chat({ fbRefStr }) {
   const [tab, setTab] = useState(0)
   const [messages, setMessages] = useState([])
   const [newMsg, setNewMsg] = useState("")
-  const user = {
-    name: "Palestrante",
-    id: 0
+  const streamer = {
+    name: "Palestrante 01",
+    id: -1
   }
 
   const setChat = () => {
@@ -51,8 +51,8 @@ function Chat({ fbRefStr }) {
         timestamp: Date.now(),
         message: newMsg,
         speaker: true,
-        name: user.name,
-        id: user.id
+        name: streamer.name,
+        id: streamer.id
       })
 
       setNewMsg("")
@@ -60,15 +60,25 @@ function Chat({ fbRefStr }) {
     }
   }
 
+  const selectChatTab = (tab) => {
+    setMessages([])
+    setTab(tab)
+  }
+
   const showMessages = () => {
     return messages.map((msg) => {
+      const isSpeaker = msg[1].speaker
+      const isLogged = msg[1].id === streamer.id
+
+      const whichTab = () => (tab === 0 ? isSpeaker : isLogged)
+
       return (
-        <li className="message" key={msg[0]}>
-          <p className={`content ${msg[1].speaker ? "speaker" : ""}`}>
+        <li className={`message ${whichTab() ? "speaker" : ""}`} key={msg[0]}>
+          <p className="content">
             <span className="name">{msg[1].name}: </span>
             <span className="text">{msg[1].message}</span>
           </p>
-          <p className={`date-content ${msg[1].speaker ? "speaker" : ""}`}>
+          <p className="date-content">
             <small className="date">
               {moment(msg[1].timestamp).format("HH:mm")}
             </small>
@@ -85,6 +95,21 @@ function Chat({ fbRefStr }) {
 
   return (
     <div className="spk-chat-container">
+      <div className="tab-buttons">
+        <button
+          onClick={() => selectChatTab(0)}
+          className={tab === 0 ? "active" : ""}
+        >
+          Chat Normal
+        </button>
+        <button
+          onClick={() => selectChatTab(1)}
+          className={tab === 1 ? "active" : ""}
+        >
+          Chat Admins
+        </button>
+      </div>
+
       <ul className="messages">{showMessages()}</ul>
       <form className="sendMessageForm" onSubmit={handleSendMessage}>
         <input
@@ -92,7 +117,7 @@ function Chat({ fbRefStr }) {
           value={newMsg}
           onChange={(e) => setNewMsg(e.target.value)}
         />
-        <button className="submitMessage" type="submit">
+        <button className="send-message" type="submit">
           <i className="fas fa-paper-plane" />
         </button>
       </form>
