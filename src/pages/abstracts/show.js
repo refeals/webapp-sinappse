@@ -9,6 +9,7 @@ import { getAbstracts, saveAbstractEval } from "../../actions/abstract_actions"
 
 const Abstract = ({ match }) => {
   const event = useSelector((state) => state.event, shallowEqual)
+  const user = useSelector((state) => state.user, shallowEqual)
   const abstracts = useSelector((state) => state.abstracts, shallowEqual)
   const dispatch = useDispatch()
 
@@ -56,7 +57,7 @@ const Abstract = ({ match }) => {
       saveAbstractEval(
         {
           abstract: abs.abstractid,
-          user: -1, // FIX AFTER LOGIN
+          user: user.id,
           score: evaluation
         },
         () => {

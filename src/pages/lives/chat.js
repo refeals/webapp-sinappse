@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from "react"
+import { useSelector, shallowEqual } from "react-redux"
 import { toPairs } from "lodash"
 import moment from "moment"
 
 import { db } from "../../firebase"
 
 function Chat({ fbRefStr }) {
+  const streamer = useSelector((state) => state.streamer, shallowEqual)
   const [tab, setTab] = useState(0)
   const [messages, setMessages] = useState([])
   const [adminMessages, setAdminMessages] = useState([])
 
   const [newMsg, setNewMsg] = useState("")
-
-  const streamer = {
-    name: "Palestrante 01",
-    id: -1
-  }
 
   const setChat = () => {
     switch (tab) {

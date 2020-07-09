@@ -63,7 +63,7 @@ function Lives() {
             />
           </div>
           <div className="live-surveys">
-            <Surveys />
+            <Surveys fbRefStr={fbRefStr} />
           </div>
         </div>
 

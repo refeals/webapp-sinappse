@@ -72,8 +72,8 @@ const LivestreamChat = ({ live }) => {
         }
         return setIsOpen(false)
       }
-    }
-  }, [survey])
+    } // eslint-disable-next-line
+  }, [survey, isOpen])
 
   // check if survey is already voted by user
   const isSurveyVoted = () => {
@@ -157,7 +157,6 @@ const LivestreamChat = ({ live }) => {
     }
   }
 
-  console.log(survey)
   return (
     <div className="chat-container">
       <ul className="pages">
