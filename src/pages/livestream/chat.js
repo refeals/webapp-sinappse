@@ -35,7 +35,7 @@ const LivestreamChat = ({ live }) => {
   // get new survey
   useEffect(() => {
     db.ref(surveyRefStr)
-      .orderByChild("enabled")
+      .orderByChild("active")
       .equalTo(true)
       .limitToLast(1)
       .on("value", (snapshot) => {
@@ -54,6 +54,26 @@ const LivestreamChat = ({ live }) => {
   useEffect(() => {
     scrollToBottom()
   }, [messages])
+
+  // scroll down when new messages arrive
+  useEffect(() => {
+    if (!isNull(survey) && isOpen) {
+      if (survey.enabled) {
+        if (isSurveyVoted()) {
+          if (survey.show_results) {
+            return setIsOpen(true)
+          }
+          return setIsOpen(false)
+        }
+        return setIsOpen(true)
+      } else {
+        if (survey.show_results) {
+          return setIsOpen(true)
+        }
+        return setIsOpen(false)
+      }
+    }
+  }, [survey])
 
   // check if survey is already voted by user
   const isSurveyVoted = () => {
@@ -116,6 +136,28 @@ const LivestreamChat = ({ live }) => {
     })
   }
 
+  const showSurveyButton = () => {
+    if (isNull(survey)) {
+      return false
+    }
+
+    if (survey.enabled) {
+      if (isSurveyVoted()) {
+        if (survey.show_results) {
+          return true
+        }
+        return false
+      }
+      return true
+    } else {
+      if (survey.show_results) {
+        return true
+      }
+      return false
+    }
+  }
+
+  console.log(survey)
   return (
     <div className="chat-container">
       <ul className="pages">
@@ -134,7 +176,7 @@ const LivestreamChat = ({ live }) => {
               <i className="fas fa-paper-plane" />
             </button>
             <button
-              className={`toggleModal ${isNull(survey) ? "" : "active"}`}
+              className={`toggleModal ${showSurveyButton() ? "active" : ""}`}
               onClick={() => setIsOpen(true)}
             >
               <i className="fas fa-chart-pie" />

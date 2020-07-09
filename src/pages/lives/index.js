@@ -4,6 +4,7 @@ import { isUndefined } from "lodash"
 
 import ViewerLoading from "../../ViewerLoading"
 import Chat from "./chat"
+import Surveys from "./surveys"
 
 import { getEvent } from "../../actions/event_actions"
 import { getLivestream } from "../../actions/livestream_actions"
@@ -61,7 +62,9 @@ function Lives() {
               src={`https://www.youtube.com/embed/${live.youtube_url}?autoplay=1&controls=0&disablekb=1&showinfo=0&rel=0&iv_load_policy=3&fs=0&modestbranding=1`}
             />
           </div>
-          <div className="live-surveys">asd</div>
+          <div className="live-surveys">
+            <Surveys />
+          </div>
         </div>
 
         <div className="live-manage">

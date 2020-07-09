@@ -7,7 +7,10 @@ import { db } from "../../firebase"
 function Chat({ fbRefStr }) {
   const [tab, setTab] = useState(0)
   const [messages, setMessages] = useState([])
+  const [adminMessages, setAdminMessages] = useState([])
+
   const [newMsg, setNewMsg] = useState("")
+
   const streamer = {
     name: "Palestrante 01",
     id: -1
@@ -27,15 +30,24 @@ function Chat({ fbRefStr }) {
 
   // get new messages
   useEffect(() => {
-    if ([0, 1].includes(tab)) {
-      db.ref(`${fbRefStr}/${setChat()}`)
-        .limitToLast(50)
-        .on("value", (snapshot) => {
-          const val = snapshot.val()
-          const valArr = toPairs(val)
-          setMessages(valArr)
-        })
-    } // eslint-disable-next-line
+    db.ref(`${fbRefStr}/chat`)
+      .limitToLast(50)
+      .on("value", (snapshot) => {
+        const val = snapshot.val()
+        const valArr = toPairs(val)
+        setMessages(valArr)
+      })
+  }, [fbRefStr, tab])
+
+  // get new admin messages
+  useEffect(() => {
+    db.ref(`${fbRefStr}/chat_admin`)
+      .limitToLast(50)
+      .on("value", (snapshot) => {
+        const val = snapshot.val()
+        const valArr = toPairs(val)
+        setAdminMessages(valArr)
+      })
   }, [fbRefStr, tab])
 
   // scroll down when new messages arrive
@@ -61,12 +73,13 @@ function Chat({ fbRefStr }) {
   }
 
   const selectChatTab = (tab) => {
-    setMessages([])
     setTab(tab)
   }
 
   const showMessages = () => {
-    return messages.map((msg) => {
+    const msgs = tab === 0 ? messages : adminMessages
+
+    return msgs.map((msg) => {
       const isSpeaker = msg[1].speaker
       const isLogged = msg[1].id === streamer.id
 
@@ -101,12 +114,14 @@ function Chat({ fbRefStr }) {
           className={tab === 0 ? "active" : ""}
         >
           Chat Normal
+          {/* <i className="fas fa-comment-alt" /> */}
         </button>
         <button
           onClick={() => selectChatTab(1)}
           className={tab === 1 ? "active" : ""}
         >
           Chat Admins
+          {/* <i className="fas fa-comment-alt" /> */}
         </button>
       </div>
 
