@@ -45,7 +45,19 @@ function Chat({ fbRefStr }) {
         const valArr = toPairs(val)
         setAdminMessages(valArr)
       })
-  }, [fbRefStr, tab])
+  }, [fbRefStr])
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") {
+      db.ref(`${fbRefStr}/chat_admin`).push({
+        timestamp: Date.now(),
+        message: `${streamer.name} acabou de entrar`,
+        server_message: true,
+        name: streamer.name,
+        id: streamer.id
+      })
+    }
+  }, [fbRefStr, streamer.id, streamer.name])
 
   // scroll down when new messages arrive
   useEffect(() => {
@@ -77,6 +89,21 @@ function Chat({ fbRefStr }) {
     const msgs = tab === 0 ? messages : adminMessages
 
     return msgs.map((msg) => {
+      if (msg[1].server_message) {
+        return (
+          <li className="message server_message" key={msg[0]}>
+            <p className="content">
+              <span className="text">{msg[1].message}</span>
+            </p>
+            <p className="date-content">
+              <small className="date">
+                {moment(msg[1].timestamp).format("HH:mm")}
+              </small>
+            </p>
+          </li>
+        )
+      }
+
       const isSpeaker = msg[1].speaker
       const isLogged = msg[1].id === streamer.id
 
