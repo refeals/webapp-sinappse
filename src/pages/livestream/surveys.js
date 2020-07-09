@@ -25,14 +25,28 @@ function SurveyModal({
       db.ref(
         `${surveyRefStr}/${survey.survey_id}/answers/${selectedAnswer}/user_ids`
       ).push(parseInt(user.id))
+
+      if (!survey.show_results) {
+        closeModal()
+      }
     }
   }
 
   const renderSurveyPage = () => {
-    if (isSurveyVoted()) {
-      return renderSurveyResults()
+    if (survey.enabled) {
+      if (isSurveyVoted()) {
+        if (survey.show_results) {
+          return renderSurveyResults()
+        }
+        return <></>
+      }
+      return renderSurveyQuestions()
+    } else {
+      if (survey.show_results) {
+        return renderSurveyResults()
+      }
+      return <></>
     }
-    return renderSurveyQuestions()
   }
 
   const renderSurveyQuestions = () => {

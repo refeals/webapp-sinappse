@@ -10,6 +10,7 @@ import { getPrograms, talkVote, askSend } from "../../actions/programs_actions"
 
 const Talk = ({ match }) => {
   const event = useSelector((state) => state.event, shallowEqual)
+  const user = useSelector((state) => state.user, shallowEqual)
   const programs = useSelector((state) => state.programs, shallowEqual)
   const dispatch = useDispatch()
 
@@ -54,7 +55,7 @@ const Talk = ({ match }) => {
       talkVote(
         {
           talk: talk.talkID,
-          user: -1, // FIX AFTER LOGIN
+          user: user.id,
           score: evaluation
         },
         () => {
