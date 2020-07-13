@@ -77,6 +77,73 @@
 
       .live-surveys {
         flex: 3;
+
+        .survey {
+          color: rgba(0, 0, 0, 0.8);
+          background-color: rgba(0, 0, 0, 0.1);
+          margin: 8px;
+          padding: 8px;
+          display: flex;
+
+          .s-icon {
+            display: flex;
+            justify-content: center;
+
+            i {
+              align-self: flex-start;
+              background-color: $color--main;
+              color: #fff;
+              font-size: 40px;
+              padding: 12px;
+              border-radius: 50%;
+            }
+          }
+
+          .s-content {
+            flex: 1;
+
+            .s-ans-container {
+              .s-ans-item {
+                margin: 0;
+              }
+            }
+          }
+        }
+
+        .s-buttons {
+          display: flex;
+          flex-direction: column;
+
+          .s-button {
+            margin-bottom: 8px;
+            padding: 10px 18px;
+            border: 0;
+            border-radius: 24px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+
+            &:active,
+            &:focus {
+              outline: none;
+            }
+
+            &:last-child {
+              margin-bottom: 0;
+            }
+
+            &.finalize {
+              background-color: darken(darkorange, 8);
+            }
+            &.show-results {
+              background-color: steelblue;
+            }
+            &.start {
+              background-color: $color--main;
+            }
+          }
+        }
       }
     }
 

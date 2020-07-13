@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useSelector, shallowEqual } from "react-redux"
-import { toPairs } from "lodash"
+import { toPairs, size, round } from "lodash"
 
 import { db } from "../../firebase"
 
@@ -26,13 +26,43 @@ function Surveys({ fbRefStr }) {
     })
   }, [fbRefStr, streamer.id])
 
-  return surveys.map((s) => <Survey survey={s} key={s.id} />)
+  return surveys.map((s) => (
+    <Survey survey={s} key={s.id} fbRefStr={fbRefStr} />
+  ))
 }
 
-function Survey({ survey }) {
-  console.log(survey)
+function Survey({ survey, fbRefStr }) {
+  const answers = toPairs(survey.answers)
+  const totalVotes = answers.reduce((acc, el) => acc + size(el[1].user_ids), 0)
 
-  return <div>{survey.title}</div>
+  const renderAnswers = () =>
+    answers.map(([key, ans]) => {
+      return (
+        <p className="s-ans-item" key={key}>
+          <span className="s-percentage">
+            {totalVotes ? round((size(ans.user_ids) * 100) / totalVotes) : 0}%
+          </span>
+          <span className="s-answer-title">{ans.title}</span>
+        </p>
+      )
+    })
+
+  return (
+    <div className="survey">
+      <div className="s-icon">
+        <i className="fas fa-chart-pie" />
+      </div>
+      <div className="s-content">
+        <p className="s-title">{survey.title}</p>
+        <div className="s-ans-container">{renderAnswers()}</div>
+      </div>
+      <div className="s-buttons">
+        <button className="s-button finalize">Finalizar Enquete</button>
+        <button className="s-button show-results">Exibir Resultados</button>
+        <button className="s-button start">Iniciar Enquete</button>
+      </div>
+    </div>
+  )
 }
 
 export default Surveys
