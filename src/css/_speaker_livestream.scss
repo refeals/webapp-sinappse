@@ -77,6 +77,7 @@
 
       .live-surveys {
         flex: 3;
+        overflow-y: auto;
 
         .survey {
           color: rgba(0, 0, 0, 0.8);
@@ -101,10 +102,39 @@
 
           .s-content {
             flex: 1;
+            padding: 0 8px;
+
+            .s-title {
+              font-weight: 700;
+              margin-bottom: 16px;
+              text-align: center;
+            }
 
             .s-ans-container {
+              display: flex;
+              flex-wrap: wrap;
+              align-content: center;
+              margin: 0;
+              align-items: center;
+
               .s-ans-item {
-                margin: 0;
+                flex-shrink: 1;
+                min-width: 50%;
+                margin: 0 0 12px;
+                padding: 0 8px;
+                display: flex;
+
+                .s-percentage {
+                  font-size: 24px;
+                  font-weight: 700;
+                  min-width: 65px;
+                  align-self: center;
+                  text-align: right;
+                }
+                .s-answer-title {
+                  align-self: center;
+                  margin-left: 8px;
+                }
               }
             }
           }
