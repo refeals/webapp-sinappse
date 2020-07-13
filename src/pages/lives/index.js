@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import { isUndefined } from "lodash"
 
@@ -15,6 +15,8 @@ function Lives() {
   const event = useSelector((state) => state.event, shallowEqual)
   const lives = useSelector((state) => state.lives, shallowEqual)
   const dispatch = useDispatch()
+
+  const [iframeSize, setIframeSize] = useState("x1")
 
   const live = lives[0]
 
@@ -53,7 +55,7 @@ function Lives() {
         <div className="content-left">
           <div className="live-video">
             <iframe
-              className="video"
+              className={`video ${iframeSize}`}
               frameBorder="0"
               allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
               // allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
@@ -61,6 +63,26 @@ function Lives() {
               title={live.name}
               src={`https://www.youtube.com/embed/${live.youtube_url}?autoplay=1&controls=0&disablekb=1&showinfo=0&rel=0&iv_load_policy=3&fs=0&modestbranding=1`}
             />
+            <div className="iframe-size-buttons">
+              <button
+                className={iframeSize === "x1" ? "active" : ""}
+                onClick={() => setIframeSize("x1")}
+              >
+                1x
+              </button>
+              <button
+                className={iframeSize === "x2" ? "active" : ""}
+                onClick={() => setIframeSize("x2")}
+              >
+                2x
+              </button>
+              <button
+                className={iframeSize === "x3" ? "active" : ""}
+                onClick={() => setIframeSize("x3")}
+              >
+                3x
+              </button>
+            </div>
           </div>
           <div className="live-surveys">
             <Surveys fbRefStr={fbRefStr} />

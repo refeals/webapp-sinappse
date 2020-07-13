@@ -54,41 +54,73 @@
 
     .content-left {
       flex: 3;
-      $iframe-width: 400px;
       display: flex;
       flex-direction: column;
       background-color: rgba(0, 0, 0, 0.1);
+      max-height: calc(100vh - 54px);
 
       .live-video {
-        flex: 1;
-        position: relative;
+        margin: 0 auto;
 
         .video {
-          position: absolute;
-          top: 0;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 100%;
-          max-width: $iframe-width;
-          height: 100%;
           z-index: 999;
+          max-width: 100%;
+          transition: width 0.2s ease, height 0.2s ease;
+
+          &.x1 {
+            $iframe-width: 600px;
+            width: $iframe-width;
+            height: calc(#{$iframe-width} / 2);
+          }
+
+          &.x2 {
+            $iframe-width: 800px;
+            width: $iframe-width;
+            height: calc(#{$iframe-width} / 2);
+          }
+
+          &.x3 {
+            $iframe-width: 1000px;
+            width: $iframe-width;
+            height: calc(#{$iframe-width} / 2);
+          }
+        }
+
+        .iframe-size-buttons {
+          text-align: center;
+
+          button {
+            margin-right: 8px;
+            color: black;
+
+            &.active {
+              background-color: $color--main-active;
+            }
+          }
         }
       }
 
       .live-surveys {
-        flex: 3;
         overflow-y: auto;
 
         .survey {
           color: rgba(0, 0, 0, 0.8);
-          background-color: rgba(0, 0, 0, 0.1);
+          background-color: rgba(0, 0, 0, 0.2);
           margin: 8px;
           padding: 8px;
           display: flex;
 
+          &.active {
+            background-color: rgba(0, 0, 0, 0.1);
+            border: 1px solid $color--main;
+          }
+
           .s-icon {
             display: flex;
+            flex-direction: column;
             justify-content: center;
+            width: 70px;
+            text-align: center;
 
             i {
               align-self: flex-start;
@@ -97,6 +129,32 @@
               font-size: 40px;
               padding: 12px;
               border-radius: 50%;
+              margin-bottom: 8px;
+            }
+
+            .status {
+              margin: 4px 0;
+              font-size: 11px;
+              font-weight: 700;
+
+              &.active {
+                color: darken($color--main, 5);
+              }
+              &.inactive {
+                color: darkred;
+              }
+              &.enabled {
+                color: darken($color--main, 5);
+              }
+              &.disabled {
+                color: darkred;
+              }
+              &.show-results {
+                color: darken($color--main, 5);
+              }
+              &.hide-results {
+                color: darkred;
+              }
             }
           }
 
@@ -121,7 +179,7 @@
                 flex-shrink: 1;
                 min-width: 50%;
                 margin: 0 0 12px;
-                padding: 0 8px;
+                padding-right: 8px;
                 display: flex;
 
                 .s-percentage {
@@ -143,6 +201,7 @@
         .s-buttons {
           display: flex;
           flex-direction: column;
+          min-width: 180px;
 
           .s-button {
             margin-bottom: 8px;
