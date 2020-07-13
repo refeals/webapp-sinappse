@@ -7,6 +7,7 @@ import Chat from "./chat"
 import Surveys from "./surveys"
 
 import { getEvent } from "../../actions/event_actions"
+import { getStreamers } from "../../actions/streamer_actions"
 import { getLivestream } from "../../actions/livestream_actions"
 
 import logo from "../../images/logo-white.png"
@@ -14,25 +15,27 @@ import logo from "../../images/logo-white.png"
 function Lives() {
   const event = useSelector((state) => state.event, shallowEqual)
   const lives = useSelector((state) => state.lives, shallowEqual)
+  const streamer = useSelector((state) => state.streamer, shallowEqual)
   const dispatch = useDispatch()
 
   const [iframeSize, setIframeSize] = useState("x1")
-
-  const live = lives[0]
 
   useEffect(() => {
     document.getElementById("root").className = "desktop"
   }, [])
 
   useEffect(() => {
-    dispatch(getEvent(138))
+    dispatch(getStreamers("code"))
   }, [dispatch])
 
   useEffect(() => {
-    if (event.id) {
-      dispatch(getLivestream(event.id))
+    if (streamer.event_id) {
+      dispatch(getEvent(streamer.event_id))
+      dispatch(getLivestream(streamer.event_id))
     }
-  }, [dispatch, event.id])
+  }, [dispatch, streamer.event_id])
+
+  const live = lives.find((l) => l.id === streamer.live_id)
 
   if (isUndefined(live)) {
     return <ViewerLoading />
