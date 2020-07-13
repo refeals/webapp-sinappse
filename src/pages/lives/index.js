@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import { isUndefined } from "lodash"
 
@@ -7,6 +7,7 @@ import Chat from "./chat"
 import Surveys from "./surveys"
 
 import { getEvent } from "../../actions/event_actions"
+import { getStreamers } from "../../actions/streamer_actions"
 import { getLivestream } from "../../actions/livestream_actions"
 
 import logo from "../../images/logo-white.png"
@@ -14,23 +15,27 @@ import logo from "../../images/logo-white.png"
 function Lives() {
   const event = useSelector((state) => state.event, shallowEqual)
   const lives = useSelector((state) => state.lives, shallowEqual)
+  const streamer = useSelector((state) => state.streamer, shallowEqual)
   const dispatch = useDispatch()
 
-  const live = lives[0]
+  const [iframeSize, setIframeSize] = useState("x1")
 
   useEffect(() => {
     document.getElementById("root").className = "desktop"
   }, [])
 
   useEffect(() => {
-    dispatch(getEvent(138))
+    dispatch(getStreamers("code"))
   }, [dispatch])
 
   useEffect(() => {
-    if (event.id) {
-      dispatch(getLivestream(event.id))
+    if (streamer.event_id) {
+      dispatch(getEvent(streamer.event_id))
+      dispatch(getLivestream(streamer.event_id))
     }
-  }, [dispatch, event.id])
+  }, [dispatch, streamer.event_id])
+
+  const live = lives.find((l) => l.id === streamer.live_id)
 
   if (isUndefined(live)) {
     return <ViewerLoading />
@@ -53,7 +58,7 @@ function Lives() {
         <div className="content-left">
           <div className="live-video">
             <iframe
-              className="video"
+              className={`video ${iframeSize}`}
               frameBorder="0"
               allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
               // allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
@@ -61,6 +66,26 @@ function Lives() {
               title={live.name}
               src={`https://www.youtube.com/embed/${live.youtube_url}?autoplay=1&controls=0&disablekb=1&showinfo=0&rel=0&iv_load_policy=3&fs=0&modestbranding=1`}
             />
+            <div className="iframe-size-buttons">
+              <button
+                className={iframeSize === "x1" ? "active" : ""}
+                onClick={() => setIframeSize("x1")}
+              >
+                1x
+              </button>
+              <button
+                className={iframeSize === "x2" ? "active" : ""}
+                onClick={() => setIframeSize("x2")}
+              >
+                2x
+              </button>
+              <button
+                className={iframeSize === "x3" ? "active" : ""}
+                onClick={() => setIframeSize("x3")}
+              >
+                3x
+              </button>
+            </div>
           </div>
           <div className="live-surveys">
             <Surveys fbRefStr={fbRefStr} />

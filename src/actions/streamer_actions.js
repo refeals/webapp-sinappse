@@ -3,9 +3,10 @@ import { GET_STREAMER } from "../actions/action_types"
 
 import { getToken } from "../api/auth"
 
-export const getSpeakers = (event_id, callback) => (dispatch, getState) => {
+export const getStreamers = (code, callback) => (dispatch, getState) => {
   api
-    .get(`/act.php?action=v2/streamer&event=${event_id}`, {
+    .get(`/act.php?`, {
+      params: { action: "v2/streamer", code },
       headers: { Authorization: `Bearer ${getToken()}` }
     })
     .then((response) => {
