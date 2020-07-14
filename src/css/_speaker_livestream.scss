@@ -103,133 +103,177 @@
       .live-surveys {
         overflow-y: auto;
 
-        .survey {
-          color: rgba(0, 0, 0, 0.8);
-          background-color: rgba(0, 0, 0, 0.2);
-          margin: 8px;
-          padding: 8px;
-          display: flex;
+        .survey-manager {
+          margin: 0 8px;
 
-          &.active {
-            background-color: rgba(0, 0, 0, 0.1);
-            border: 1px solid $color--main;
-          }
-
-          .s-icon {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            width: 70px;
-            text-align: center;
+          button {
+            border: 0;
+            border-radius: 12px;
+            padding: 4px 10px;
+            margin-right: 4px;
 
             i {
-              align-self: flex-start;
-              background-color: $color--main;
-              color: #fff;
-              font-size: 40px;
-              padding: 12px;
-              border-radius: 50%;
-              margin-bottom: 8px;
+              margin-right: 6px;
             }
-
-            .status {
-              margin: 4px 0;
-              font-size: 11px;
-              font-weight: 700;
-
-              &.active {
-                color: darken($color--main, 5);
-              }
-              &.inactive {
-                color: darkred;
-              }
-              &.enabled {
-                color: darken($color--main, 5);
-              }
-              &.disabled {
-                color: darkred;
-              }
-              &.show-results {
-                color: darken($color--main, 5);
-              }
-              &.hide-results {
-                color: darkred;
-              }
-            }
-          }
-
-          .s-content {
-            flex: 1;
-            padding: 0 8px;
-
-            .s-title {
-              font-weight: 700;
-              margin-bottom: 16px;
-              text-align: center;
-            }
-
-            .s-ans-container {
-              display: flex;
-              flex-wrap: wrap;
-              align-content: center;
-              margin: 0;
-              align-items: center;
-
-              .s-ans-item {
-                flex-shrink: 1;
-                min-width: 50%;
-                margin: 0 0 12px;
-                padding-right: 8px;
-                display: flex;
-
-                .s-percentage {
-                  font-size: 24px;
-                  font-weight: 700;
-                  min-width: 65px;
-                  align-self: center;
-                  text-align: right;
-                }
-                .s-answer-title {
-                  align-self: center;
-                  margin-left: 8px;
-                }
-              }
-            }
-          }
-        }
-
-        .s-buttons {
-          display: flex;
-          flex-direction: column;
-          min-width: 180px;
-
-          .s-button {
-            margin-bottom: 8px;
-            padding: 10px 18px;
-            border: 0;
-            border-radius: 24px;
-            font-size: 12px;
-            font-weight: 700;
-            color: #fff;
-            text-transform: uppercase;
 
             &:active,
             &:focus {
               outline: none;
             }
 
-            &:last-child {
-              margin-bottom: 0;
+            &.add-survey {
+              background-color: $color--main;
+            }
+            &.show-surveys {
+              background-color: $color--main-active;
+            }
+          }
+        }
+
+        .show-survey-list {
+          $transitionTime: 0.2s;
+          opacity: 0;
+          height: 0;
+          transition: opacity $transitionTime ease,
+            height $transitionTime ease $transitionTime;
+
+          &.active {
+            opacity: 1;
+            height: 100%;
+            transition: opacity $transitionTime ease $transitionTime;
+          }
+
+          .survey {
+            color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.2);
+            margin: 8px;
+            padding: 8px;
+            display: flex;
+
+            &.active {
+              background-color: rgba(0, 0, 0, 0.1);
+              border: 1px solid $color--main;
             }
 
-            &.finalize {
-              background-color: darken(darkorange, 8);
+            .s-icon {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              width: 70px;
+              text-align: center;
+
+              i {
+                align-self: flex-start;
+                background-color: $color--main;
+                color: #fff;
+                font-size: 40px;
+                padding: 12px;
+                border-radius: 50%;
+                margin-bottom: 8px;
+              }
+
+              .status {
+                margin: 4px 0;
+                font-size: 11px;
+                font-weight: 700;
+
+                &.active {
+                  color: darken($color--main, 5);
+                }
+                &.inactive {
+                  color: darkred;
+                }
+                &.enabled {
+                  color: darken($color--main, 5);
+                }
+                &.disabled {
+                  color: darkred;
+                }
+                &.show-results {
+                  color: darken($color--main, 5);
+                }
+                &.hide-results {
+                  color: darkred;
+                }
+              }
             }
-            &.show-results {
-              background-color: steelblue;
+
+            .s-content {
+              flex: 1;
+              padding: 0 8px;
+
+              .s-title {
+                font-weight: 700;
+                margin-bottom: 16px;
+                text-align: center;
+              }
+
+              .s-ans-container {
+                display: flex;
+                flex-wrap: wrap;
+                align-content: center;
+                margin: 0;
+                align-items: center;
+
+                .s-ans-item {
+                  flex-shrink: 1;
+                  min-width: 50%;
+                  margin: 0 0 12px;
+                  padding-right: 8px;
+                  display: flex;
+
+                  .s-percentage {
+                    font-size: 24px;
+                    font-weight: 700;
+                    min-width: 65px;
+                    align-self: center;
+                    text-align: right;
+                  }
+                  .s-answer-title {
+                    align-self: center;
+                    margin-left: 8px;
+                  }
+                }
+              }
             }
-            &.start {
-              background-color: $color--main;
+
+            .s-buttons {
+              display: flex;
+              flex-direction: column;
+              min-width: 180px;
+
+              .s-button {
+                margin-bottom: 8px;
+                padding: 10px 18px;
+                border: 0;
+                border-radius: 24px;
+                font-size: 12px;
+                font-weight: 700;
+                color: #fff;
+                text-transform: uppercase;
+
+                &:active,
+                &:focus {
+                  outline: none;
+                }
+
+                &:last-child {
+                  margin-bottom: 0;
+                }
+
+                &.red {
+                  background-color: red;
+                }
+                &.finalize {
+                  background-color: darken(darkorange, 8);
+                }
+                &.show-results {
+                  background-color: steelblue;
+                }
+                &.start {
+                  background-color: $color--main;
+                }
+              }
             }
           }
         }
@@ -390,4 +434,10 @@
       }
     }
   }
+}
+
+/* React Modal */
+
+.add-survey-form {
+  color: rgba(0, 0, 0, 0.8);
 }

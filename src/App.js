@@ -1,9 +1,12 @@
 import React from "react"
 import { ToastContainer } from "react-toastify"
+import Modal from "react-modal"
 
 import "react-toastify/dist/ReactToastify.css"
 
 import Routes from "./routes"
+
+Modal.setAppElement("#root")
 
 const App = () => {
   return (

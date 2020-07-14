@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react"
 import { useSelector, shallowEqual } from "react-redux"
-import { toPairs, size, round, fromPairs, omit, isUndefined } from "lodash"
+import { toPairs, fromPairs, omit, isUndefined } from "lodash"
 import { toast } from "react-toastify"
+import Modal from "react-modal"
+
+import Survey from "./survey"
+import AddSurvey from "./add-survey"
 
 import { db } from "../../firebase"
 
 function Surveys({ fbRefStr }) {
   const streamer = useSelector((state) => state.streamer, shallowEqual)
   const [surveys, setSurveys] = useState([])
+  const [isModalOpen, setModalOpen] = useState(false)
+  const [showSurveys, setShowSurveys] = useState(false)
 
   // get surveys
   useEffect(() => {
@@ -43,6 +49,19 @@ function Surveys({ fbRefStr }) {
       .then(() => toast("Enquete ativada"))
   }
 
+  const deactivateSurvey = (survey_id) => {
+    const survey = surveys.find((sur) => sur.id === survey_id)
+
+    db.ref(`${fbRefStr}/surveys/${survey_id}`)
+      .set({
+        ...omit(survey, "id"),
+        active: false,
+        enabled: false,
+        show_results: false
+      })
+      .then(() => toast("Enquete desativada"))
+  }
+
   const updateSurvey = (survey_id, attr, value) => {
     if (isUndefined(survey_id) || isUndefined(attr) || isUndefined(value)) {
       return
@@ -66,157 +85,43 @@ function Surveys({ fbRefStr }) {
       })
   }
 
-  return surveys.map((s) => (
-    <Survey
-      survey={s}
-      key={s.id}
-      activateSurvey={activateSurvey}
-      updateSurvey={updateSurvey}
-    />
-  ))
-}
-
-function Survey({ survey, activateSurvey, updateSurvey }) {
-  const answers = toPairs(survey.answers)
-  const totalVotes = answers.reduce((acc, el) => acc + size(el[1].user_ids), 0)
-
-  const renderAnswers = () =>
-    answers.map(([key, ans]) => (
-      <div className="s-ans-item" key={key}>
-        <div className="s-percentage">
-          {totalVotes ? round((size(ans.user_ids) * 100) / totalVotes) : 0}%
-        </div>
-        <div className="s-answer-title">{ans.title}</div>
-      </div>
-    ))
-
-  const renderButtons = () => {
-    if (!survey.active) {
-      return (
-        <button
-          className="s-button start"
-          onClick={() => activateSurvey(survey.id)}
-        >
-          Iniciar Enquete
-        </button>
-      )
-    }
-
-    let buttons = []
-
-    if (survey.enabled) {
-      buttons = [
-        ...buttons,
-        <button
-          className="s-button finalize"
-          onClick={() => updateSurvey(survey.id, "enabled", false)}
-          title="Clique para não permitir que os usuários respondam"
-          key="finalize"
-        >
-          Finalizar Enquete
-        </button>
-      ]
-    } else {
-      buttons = [
-        ...buttons,
-        <button
-          className="s-button finalize"
-          onClick={() => updateSurvey(survey.id, "enabled", true)}
-          title="Clique para permitir que os usuários respondam"
-          key="finalize"
-        >
-          Abrir Enquete
-        </button>
-      ]
-    }
-
-    if (survey.show_results) {
-      buttons = [
-        ...buttons,
-        <button
-          className="s-button show-results"
-          onClick={() => updateSurvey(survey.id, "show_results", false)}
-          title="Clique para não permitir que os usuários vejam o resultado da enquete"
-          key="show-results"
-        >
-          Ocultar Resultados
-        </button>
-      ]
-    } else {
-      buttons = [
-        ...buttons,
-        <button
-          className="s-button show-results"
-          onClick={() => updateSurvey(survey.id, "show_results", true)}
-          title="Clique para permitir que os usuários vejam o resultado da enquete"
-          key="show-results"
-        >
-          Exibir Resultados
-        </button>
-      ]
-    }
-
-    return buttons
-  }
-
-  const renderSurveyStatus = () => {
-    if (!survey.active) {
-      return <div className="status inactive">Inativa</div>
-    }
-
-    let msgs = [
-      <div className="status active" key="active">
-        Ativa
-      </div>
-    ]
-
-    if (survey.enabled) {
-      msgs = [
-        ...msgs,
-        <div className="status enabled" key="enabled">
-          Aberta
-        </div>
-      ]
-    } else {
-      msgs = [
-        ...msgs,
-        <div className="status disabled" key="disabled">
-          Fechada
-        </div>
-      ]
-    }
-
-    if (survey.show_results) {
-      msgs = [
-        ...msgs,
-        <div className="status show-results" key="show-results">
-          Resultados disponíveis
-        </div>
-      ]
-    } else {
-      msgs = [
-        ...msgs,
-        <div className="status hide-results" key="hide-results">
-          Resultados ocultos
-        </div>
-      ]
-    }
-
-    return msgs
-  }
+  const closeModal = () => setModalOpen(false)
 
   return (
-    <div className={`survey ${survey.active ? "active" : ""}`}>
-      <div className="s-icon">
-        <i className="fas fa-chart-pie" />
-        {renderSurveyStatus()}
+    <>
+      <div className="survey-manager">
+        <button
+          className="add-survey"
+          onClick={() => setModalOpen(true)}
+          type="text"
+        >
+          <i className="fas fa-plus"></i>
+          <span>Adicionar Enquete</span>
+        </button>
+        <button
+          className="show-surveys"
+          onClick={() => setShowSurveys(!showSurveys)}
+          type="text"
+        >
+          <i className="fas fa-chart-pie"></i>
+          <span>{showSurveys ? "Ocultar" : "Mostrar"} Enquetes</span>
+        </button>
       </div>
-      <div className="s-content">
-        <p className="s-title">{survey.title}</p>
-        <div className="s-ans-container">{renderAnswers()}</div>
+      <div className={`show-survey-list ${showSurveys ? "active" : ""}`}>
+        {surveys.map((s) => (
+          <Survey
+            survey={s}
+            key={s.id}
+            activateSurvey={activateSurvey}
+            deactivateSurvey={deactivateSurvey}
+            updateSurvey={updateSurvey}
+          />
+        ))}
       </div>
-      <div className="s-buttons">{renderButtons()}</div>
-    </div>
+      <Modal isOpen={isModalOpen} onRequestClose={closeModal}>
+        <AddSurvey fbRefStr={fbRefStr} closeModal={closeModal} />
+      </Modal>
+    </>
   )
 }
 

@@ -16,7 +16,7 @@ const Watch = ({ match }) => {
 
   const [loaded, setLoaded] = useState(false)
 
-  const live = lives.find((l) => l.id === match.params.live_id)
+  const live = lives.find((l) => l.id === parseInt(match.params.live_id))
 
   useEffect(() => {
     if (isEmpty(lives)) {
