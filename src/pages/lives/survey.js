@@ -33,7 +33,7 @@ function Survey({ survey, activateSurvey, deactivateSurvey, updateSurvey }) {
         onClick={() => deactivateSurvey(survey.id)}
         key="start"
       >
-        Desativar Enquete
+        Finalizar Enquete
       </button>
     ]
 
@@ -46,7 +46,7 @@ function Survey({ survey, activateSurvey, deactivateSurvey, updateSurvey }) {
           title="Clique para não permitir que os usuários respondam"
           key="finalize"
         >
-          Finalizar Enquete
+          Proibir respostas
         </button>
       ]
     } else {
@@ -58,7 +58,7 @@ function Survey({ survey, activateSurvey, deactivateSurvey, updateSurvey }) {
           title="Clique para permitir que os usuários respondam"
           key="finalize"
         >
-          Abrir Enquete
+          Permitir respostas
         </button>
       ]
     }
