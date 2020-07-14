@@ -71,16 +71,16 @@ function Surveys({ fbRefStr }) {
       .set(value)
       .then(() => {
         if (attr === "enabled" && value === true) {
-          return toast("Enquete aberta")
+          return toast("Os usuário podem responder esta enquete")
         }
         if (attr === "enabled" && value === false) {
-          return toast("Enquete finalizada")
+          return toast("Os usuário não podem responder esta enquete")
         }
         if (attr === "show_results" && value === true) {
-          return toast("Resultados de enquete disponíveis")
+          return toast("Resultados de enquete disponíveis para os usuários")
         }
         if (attr === "show_results" && value === false) {
-          return toast("Resultados de enquete ocultados")
+          return toast("Resultados de enquete ocultados dos usuários")
         }
       })
   }
