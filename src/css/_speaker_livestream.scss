@@ -134,13 +134,11 @@
           $transitionTime: 0.2s;
           opacity: 0;
           height: 0;
-          transition: opacity $transitionTime ease,
-            height $transitionTime ease $transitionTime;
+          transition: opacity $transitionTime ease;
 
           &.active {
             opacity: 1;
             height: 100%;
-            transition: opacity $transitionTime ease $transitionTime;
           }
 
           .survey {
@@ -337,8 +335,12 @@
 
               .name {
                 margin-right: 6px;
+                max-width: 100%;
+                overflow-wrap: break-word;
               }
               .text {
+                max-width: 100%;
+                overflow-wrap: break-word;
               }
             }
             .date-content {
