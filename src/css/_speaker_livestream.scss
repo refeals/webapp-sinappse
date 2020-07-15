@@ -68,18 +68,24 @@
           transition: width 0.2s ease, height 0.2s ease;
 
           &.x1 {
-            $iframe-width: 600px;
+            $iframe-width: 400px;
             width: $iframe-width;
             height: calc(#{$iframe-width} / 2);
           }
 
           &.x2 {
-            $iframe-width: 800px;
+            $iframe-width: 600px;
             width: $iframe-width;
             height: calc(#{$iframe-width} / 2);
           }
 
           &.x3 {
+            $iframe-width: 800px;
+            width: $iframe-width;
+            height: calc(#{$iframe-width} / 2);
+          }
+
+          &.x4 {
             $iframe-width: 1000px;
             width: $iframe-width;
             height: calc(#{$iframe-width} / 2);
@@ -139,14 +145,15 @@
 
           &.active {
             opacity: 1;
-            display: contents;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
           }
 
           .survey {
             color: rgba(0, 0, 0, 0.8);
             background-color: rgba(0, 0, 0, 0.2);
             margin: 8px;
-            padding: 8px;
+            padding: 12px;
             display: flex;
 
             &.active {
@@ -239,11 +246,11 @@
             .s-buttons {
               display: flex;
               flex-direction: column;
-              min-width: 180px;
+              min-width: 120px;
 
               .s-button {
                 margin-bottom: 8px;
-                padding: 10px 18px;
+                padding: 8px 12px;
                 border: 0;
                 border-radius: 24px;
                 font-size: 12px;
