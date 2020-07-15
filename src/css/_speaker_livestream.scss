@@ -101,6 +101,7 @@
       }
 
       .live-surveys {
+        flex: 1;
         overflow-y: auto;
 
         .survey-manager {
@@ -133,12 +134,12 @@
         .show-survey-list {
           $transitionTime: 0.2s;
           opacity: 0;
-          height: 0;
           transition: opacity $transitionTime ease;
+          display: none;
 
           &.active {
             opacity: 1;
-            height: 100%;
+            display: contents;
           }
 
           .survey {
@@ -442,4 +443,50 @@
 
 .add-survey-form {
   color: rgba(0, 0, 0, 0.8);
+
+  button i {
+    margin-right: 6px;
+  }
+
+  p.text {
+    text-align: center;
+    margin-bottom: 2px;
+    font-weight: 700;
+  }
+
+  .add-question {
+    margin: 8px 0;
+  }
+
+  .s-add-question {
+    display: flex;
+    margin-top: 4px;
+
+    button {
+      margin-left: 4px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 0;
+      background-color: darken(red, 5);
+      color: #fff;
+
+      &:active,
+      &:focus {
+        outline: none;
+      }
+
+      i {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .s-add-buttons {
+    text-align: center;
+
+    button {
+      margin-right: 8px;
+    }
+  }
 }

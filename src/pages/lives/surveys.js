@@ -118,7 +118,16 @@ function Surveys({ fbRefStr }) {
           />
         ))}
       </div>
-      <Modal isOpen={isModalOpen} onRequestClose={closeModal}>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        style={{
+          content: {
+            left: "50%",
+            transform: "translateX(-50%)"
+          }
+        }}
+      >
         <AddSurvey fbRefStr={fbRefStr} closeModal={closeModal} />
       </Modal>
     </>

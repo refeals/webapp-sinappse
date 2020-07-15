@@ -52,6 +52,7 @@ function AddSurvey({ fbRefStr, closeModal }) {
           className="form-control s-add-title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          placeholder="Título"
         />
       </div>
 
@@ -60,7 +61,7 @@ function AddSurvey({ fbRefStr, closeModal }) {
         <p className="text">Respostas em branco não serão consideradas!</p>
 
         <button
-          className="add-question"
+          className="add-question btn btn-block btn-primary"
           onClick={() => setAnswers([...answersRaw, ""])}
           type="button"
         >
@@ -69,28 +70,43 @@ function AddSurvey({ fbRefStr, closeModal }) {
         </button>
 
         <div className="form-group">
-          <label className="survey-label">Perguntas</label>
+          <label className="survey-label">Respostas</label>
           {answersRaw.map((ans, index) => (
-            <input
-              type="text"
-              className="form-control s-add-question"
-              key={index}
-              value={ans}
-              onChange={(e) => setAnswer(e, index)}
-              placeholder={`Resposta ${index + 1} ${index < 2 ? "*" : ""}`}
-            />
+            <div className="s-add-question" key={index}>
+              <input
+                type="text"
+                className="form-control"
+                value={ans}
+                onChange={(e) => setAnswer(e, index)}
+                placeholder={`Resposta ${index + 1} ${index < 2 ? "*" : ""}`}
+              />
+              <button
+                type="button"
+                onClick={() =>
+                  setAnswers(
+                    answersRaw.filter((ans, ind) => {
+                      return ind !== index
+                    })
+                  )
+                }
+              >
+                <i className="fas fa-times" />
+              </button>
+            </div>
           ))}
         </div>
 
         <div className="form-group">
-          <button className="submit-survey" type="submit">
-            <i className="fas fa-chart-pie" />
-            <span>Criar Enquete</span>
-          </button>
-          <button className="close-modal" type="submit">
-            <i className="fas fa-times" />
-            <span>Cancelar</span>
-          </button>
+          <div className="s-add-buttons">
+            <button className="submit-survey btn btn-success" type="submit">
+              <i className="fas fa-chart-pie" />
+              <span>Criar Enquete</span>
+            </button>
+            <button className="close-modal btn btn-danger" onClick={closeModal}>
+              <i className="fas fa-times" />
+              <span>Cancelar</span>
+            </button>
+          </div>
         </div>
       </div>
     </form>
