@@ -85,6 +85,12 @@ function Lives() {
               >
                 3x
               </button>
+              <button
+                className={iframeSize === "x4" ? "active" : ""}
+                onClick={() => setIframeSize("x4")}
+              >
+                4x
+              </button>
             </div>
           </div>
           <div className="live-surveys">

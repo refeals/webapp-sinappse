@@ -92,14 +92,14 @@ function Chat({ fbRefStr }) {
       if (msg[1].server_message) {
         return (
           <li className="message server_message" key={msg[0]}>
-            <p className="content">
-              <span className="text">{msg[1].message}</span>
-            </p>
-            <p className="date-content">
+            <div className="content">
+              <div className="text">{msg[1].message}</div>
+            </div>
+            <div className="date-content">
               <small className="date">
                 {moment(msg[1].timestamp).format("HH:mm")}
               </small>
-            </p>
+            </div>
           </li>
         )
       }
@@ -111,15 +111,15 @@ function Chat({ fbRefStr }) {
 
       return (
         <li className={`message ${whichTab() ? "speaker" : ""}`} key={msg[0]}>
-          <p className="content">
-            <span className="name">{msg[1].name}: </span>
-            <span className="text">{msg[1].message}</span>
-          </p>
-          <p className="date-content">
+          <div className="content">
+            <div className="name">{msg[1].name}: </div>
+            <div className="text">{msg[1].message}</div>
+          </div>
+          <div className="date-content">
             <small className="date">
               {moment(msg[1].timestamp).format("HH:mm")}
             </small>
-          </p>
+          </div>
         </li>
       )
     })
