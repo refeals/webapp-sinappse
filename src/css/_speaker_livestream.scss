@@ -102,6 +102,10 @@
             &.active {
               background-color: $color--main-active;
             }
+
+            &:last-child {
+              margin-right: 0;
+            }
           }
         }
       }

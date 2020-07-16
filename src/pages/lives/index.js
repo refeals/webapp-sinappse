@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import { isUndefined } from "lodash"
+import ReactPlayer from "react-player"
 
 import ViewerLoading from "../../ViewerLoading"
 import Chat from "./chat"
@@ -57,7 +58,27 @@ function Lives() {
       <div className="live-content">
         <div className="content-left">
           <div className="live-video">
-            <iframe
+            <ReactPlayer
+              url={`https://www.youtube.com/embed/${live.youtube_url}`}
+              playing={true}
+              controls={false}
+              onPlay={() => console.log("sadasdas")}
+              config={{
+                youtube: {
+                  playerVars: {
+                    autoplay: 1,
+                    controls: 0,
+                    disablekb: 1,
+                    showinfo: 0,
+                    rel: 0,
+                    iv_load_policy: 3,
+                    fs: 0,
+                    modestbranding: 1
+                  }
+                }
+              }}
+            />
+            {/* <iframe
               className={`video ${iframeSize}`}
               frameBorder="0"
               allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
@@ -65,7 +86,7 @@ function Lives() {
               allowFullScreen
               title={live.name}
               src={`https://www.youtube.com/embed/${live.youtube_url}?autoplay=1&controls=0&disablekb=1&showinfo=0&rel=0&iv_load_policy=3&fs=0&modestbranding=1`}
-            />
+            /> */}
             <div className="iframe-size-buttons">
               <button
                 className={iframeSize === "x1" ? "active" : ""}
