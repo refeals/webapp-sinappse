@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { isEmpty, map, isNull, size, sum } from "lodash"
+import { isEmpty, map, isNull, size, sum, sortBy, toPairs } from "lodash"
 import { useSelector, shallowEqual } from "react-redux"
 import { PieChart } from "react-minimal-pie-chart"
 
@@ -61,24 +61,27 @@ function SurveyModal({
           />
         </div>
         <div className="survey-question">{survey.title}</div>
-        <div className="survey-answers">
-          {map(survey.answers, (val, key) => {
-            return (
-              <div
-                className={`answer ${selectedAnswer === key ? "selected" : ""}`}
-                key={key}
-                onClick={() => setSelectedAnswer(key)}
-              >
-                {val.title}
-              </div>
-            )
-          })}
-        </div>
+        <div className="survey-answers">{renderAnswers()}</div>
         <button className="send-answer" onClick={handleSendAnswer}>
           Answer
         </button>
       </>
     )
+  }
+
+  const renderAnswers = () => {
+    const sortedAnswers = sortBy(toPairs(survey.answers), ([key]) => key)
+    return map(sortedAnswers, ([key, val]) => {
+      return (
+        <div
+          className={`answer ${selectedAnswer === key ? "selected" : ""}`}
+          key={key}
+          onClick={() => setSelectedAnswer(key)}
+        >
+          {val.title}
+        </div>
+      )
+    })
   }
 
   const renderSurveyResults = () => {
