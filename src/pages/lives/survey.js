@@ -1,12 +1,13 @@
 import React from "react"
-import { toPairs, size, round } from "lodash"
+import { toPairs, size, round, sortBy } from "lodash"
 
 function Survey({ survey, activateSurvey, deactivateSurvey, updateSurvey }) {
   const answers = toPairs(survey.answers)
   const totalVotes = answers.reduce((acc, el) => acc + size(el[1].user_ids), 0)
 
-  const renderAnswers = () =>
-    answers.map(([key, ans]) => (
+  const renderAnswers = () => {
+    const sortedAnswers = sortBy(answers, ([key]) => key)
+    return sortedAnswers.map(([key, ans]) => (
       <div className="s-ans-item" key={key}>
         <div className="s-percentage">
           {totalVotes ? round((size(ans.user_ids) * 100) / totalVotes) : 0}%
@@ -14,6 +15,7 @@ function Survey({ survey, activateSurvey, deactivateSurvey, updateSurvey }) {
         <div className="s-answer-title">{ans.title}</div>
       </div>
     ))
+  }
 
   const renderButtons = () => {
     if (!survey.active) {

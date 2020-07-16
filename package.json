@@ -1,6 +1,6 @@
 {
-  "name": "pwa-no-typescript",
-  "version": "0.1.0",
+  "name": "sinappse-webapp",
+  "version": "0.0.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -15,6 +15,7 @@
     "react-dom": "^16.13.1",
     "react-minimal-pie-chart": "^8.0.1",
     "react-modal": "^3.11.2",
+    "react-player": "^2.5.0",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
