@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import { isUndefined } from "lodash"
-import ReactPlayer from "react-player"
+// import ReactPlayer from "react-player"
 
 import ViewerLoading from "../../ViewerLoading"
 import Chat from "./chat"
@@ -19,7 +19,9 @@ function Lives() {
   const streamer = useSelector((state) => state.streamer, shallowEqual)
   const dispatch = useDispatch()
 
-  const [iframeSize, setIframeSize] = useState("x1")
+  const [iframeSize, setIframeSize] = useState("800px")
+  // const [playing, setPlaying] = useState(true)
+  // const [volume, setVolume] = useState(1)
 
   useEffect(() => {
     document.getElementById("root").className = "desktop"
@@ -38,11 +40,64 @@ function Lives() {
 
   const live = lives.find((l) => l.id === streamer.live_id)
 
+  function startConference() {
+    try {
+      const domain = "meet.jit.si"
+      const options = {
+        roomName: `sinappse_ev${event.id}_r${live.id}`,
+        width: "100%",
+        height: "100%",
+        parentNode: document.getElementById("live-video-container"),
+        interfaceConfigOverwrite: {
+          filmStripOnly: false,
+          SHOW_JITSI_WATERMARK: false
+        },
+        configOverwrite: {
+          disableSimulcast: false
+        }
+      }
+      const api = new window.JitsiMeetExternalAPI(domain, options)
+
+      api.addEventListener("videoConferenceJoined", () => {
+        console.log("Local User Joined")
+        // setLoading(false);
+        // api.executeCommand('displayName', 'MyName');
+      })
+    } catch (error) {
+      console.error("Failed to load Jitsi API", error)
+    }
+  }
+
+  useEffect(() => {
+    if (
+      !isUndefined(live) &&
+      !isUndefined(live.id) &&
+      !isUndefined(event) &&
+      !isUndefined(event.id) &&
+      window.JitsiMeetExternalAPI
+    ) {
+      console.log("=========================================================")
+      startConference()
+    } // eslint-disable-next-line
+  }, [live, event])
+
   if (isUndefined(live)) {
     return <ViewerLoading />
   }
 
   const fbRefStr = `event/${event.id}/livestream/${live.id}`
+
+  // const togglePlaying = () => setPlaying(!playing)
+  // const toggleVolume = () => setVolume(volume === 0 ? 1 : 0)
+
+  const renderIframeButton = (px, text) => (
+    <button
+      className={iframeSize === px ? "active" : ""}
+      onClick={() => setIframeSize(px)}
+    >
+      {text}
+    </button>
+  )
 
   return (
     <div className="talk-live-container">
@@ -51,33 +106,58 @@ function Lives() {
           <img src={logo} alt="Sinappse Logo" />
         </div>
         <h1>Painel do Palestrante</h1>
-        <h2 className="talk-name">{live.name}</h2>
+        <h2 className="talk-name">
+          {live.name} ({live.advanced ? "Avançado" : "Básico"})
+        </h2>
         <i className="fas fa-broadcast-tower"></i>
       </header>
 
       <div className="live-content">
         <div className="content-left">
           <div className="live-video">
-            <ReactPlayer
-              url={`https://www.youtube.com/embed/${live.youtube_url}`}
-              playing={true}
-              controls={false}
-              onPlay={() => console.log("sadasdas")}
-              config={{
-                youtube: {
-                  playerVars: {
-                    autoplay: 1,
-                    controls: 0,
-                    disablekb: 1,
-                    showinfo: 0,
-                    rel: 0,
-                    iv_load_policy: 3,
-                    fs: 0,
-                    modestbranding: 1
+            <div
+              id="live-video-container"
+              style={{ width: iframeSize, height: parseInt(iframeSize) / 2 }}
+            >
+              {/* <ReactPlayer
+                url={`https://www.youtube.com/embed/${live.youtube_url}`}
+                playing={playing}
+                volume={volume}
+                controls={false}
+                config={{
+                  youtube: {
+                    playerVars: {
+                      autoplay: 1,
+                      controls: 0,
+                      disablekb: 1,
+                      showinfo: 0,
+                      rel: 0,
+                      iv_load_policy: 3,
+                      fs: 0,
+                      modestbranding: 1
+                    }
                   }
-                }
-              }}
-            />
+                }}
+                style={{
+                  zIndex: 999,
+                  maxWidth: "100%",
+                  transition: "width 0.2s ease, height 0.2s ease",
+                  margin: "0 auto 8px"
+                }}
+                width={iframeSize}
+                height={parseInt(iframeSize) / 2}
+              /> */}
+              {/* <div
+                className="iframe-overlay"
+                onClick={togglePlaying}
+                style={{
+                  width: iframeSize,
+                  height: parseInt(iframeSize) / 2
+                }}
+              >
+                <i className={`fas fa-${playing ? "play" : "pause"}`} />
+              </div> */}
+            </div>
             {/* <iframe
               className={`video ${iframeSize}`}
               frameBorder="0"
@@ -88,30 +168,16 @@ function Lives() {
               src={`https://www.youtube.com/embed/${live.youtube_url}?autoplay=1&controls=0&disablekb=1&showinfo=0&rel=0&iv_load_policy=3&fs=0&modestbranding=1`}
             /> */}
             <div className="iframe-size-buttons">
-              <button
-                className={iframeSize === "x1" ? "active" : ""}
-                onClick={() => setIframeSize("x1")}
-              >
-                1x
+              {renderIframeButton("400px", "1x")}
+              {renderIframeButton("600px", "2x")}
+              {renderIframeButton("800px", "3x")}
+              {renderIframeButton("1000px", "4x")}
+              {/* <button onClick={togglePlaying}>
+                <i className={`fas fa-${playing ? "play" : "pause"}`} />
               </button>
-              <button
-                className={iframeSize === "x2" ? "active" : ""}
-                onClick={() => setIframeSize("x2")}
-              >
-                2x
-              </button>
-              <button
-                className={iframeSize === "x3" ? "active" : ""}
-                onClick={() => setIframeSize("x3")}
-              >
-                3x
-              </button>
-              <button
-                className={iframeSize === "x4" ? "active" : ""}
-                onClick={() => setIframeSize("x4")}
-              >
-                4x
-              </button>
+              <button onClick={toggleVolume}>
+                <i className={`fas fa-volume-${volume ? "up" : "mute"}`} />
+              </button> */}
             </div>
           </div>
           <div className="live-surveys">

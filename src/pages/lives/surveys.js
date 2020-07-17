@@ -122,6 +122,9 @@ function Surveys({ fbRefStr }) {
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         style={{
+          overlay: {
+            zIndex: 1000
+          },
           content: {
             left: "50%",
             transform: "translateX(-50%)"

@@ -47,7 +47,6 @@ const Watch = ({ match }) => {
           url={`https://www.youtube.com/embed/${live.youtube_url}?autoplay=1&controls=0&disablekb=1&showinfo=0&rel=0&iv_load_policy=3&fs=0&modestbranding=1`}
           playing={playing}
           controls={false}
-          // onPlay={() => console.log("sadasdas")}
           width="100%"
           height="100%"
           config={{
