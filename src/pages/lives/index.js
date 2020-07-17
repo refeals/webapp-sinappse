@@ -20,8 +20,8 @@ function Lives() {
   const dispatch = useDispatch()
 
   const [iframeSize, setIframeSize] = useState("800px")
-  const [playing, setPlaying] = useState(true)
-  const [volume, setVolume] = useState(1)
+  // const [playing, setPlaying] = useState(true)
+  // const [volume, setVolume] = useState(1)
 
   useEffect(() => {
     document.getElementById("root").className = "desktop"
@@ -38,7 +38,7 @@ function Lives() {
     }
   }, [dispatch, streamer.event_id])
 
-  const live = lives.find((l) => l.id === 5)
+  const live = lives.find((l) => l.id === streamer.live_id)
 
   function startConference() {
     try {
@@ -87,8 +87,8 @@ function Lives() {
 
   const fbRefStr = `event/${event.id}/livestream/${live.id}`
 
-  const togglePlaying = () => setPlaying(!playing)
-  const toggleVolume = () => setVolume(volume === 0 ? 1 : 0)
+  // const togglePlaying = () => setPlaying(!playing)
+  // const toggleVolume = () => setVolume(volume === 0 ? 1 : 0)
 
   const renderIframeButton = (px, text) => (
     <button
