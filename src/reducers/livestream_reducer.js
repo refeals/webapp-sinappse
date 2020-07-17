@@ -7,6 +7,7 @@ const parseData = (lives) =>
     return {
       ...live,
       id: parseInt(live.id),
+      advanced: !!parseInt(live.advanced),
       active: !!live.active
     }
   })
