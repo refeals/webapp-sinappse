@@ -46,6 +46,8 @@ const LivestreamChat = ({ live }) => {
             ...srvData[1],
             survey_id: srvData[0]
           })
+        } else {
+          setSurvey(null)
         }
       })
   }, [surveyRefStr])
