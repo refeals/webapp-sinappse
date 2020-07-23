@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import { isUndefined } from "lodash"
-// import ReactPlayer from "react-player"
+import ReactPlayer from "react-player"
 
 import ViewerLoading from "../../ViewerLoading"
 import Chat from "./chat"
@@ -20,8 +20,8 @@ function Lives() {
   const dispatch = useDispatch()
 
   const [iframeSize, setIframeSize] = useState("800px")
-  // const [playing, setPlaying] = useState(true)
-  // const [volume, setVolume] = useState(1)
+  const [playing, setPlaying] = useState(true)
+  const [volume, setVolume] = useState(1)
 
   useEffect(() => {
     document.getElementById("root").className = "desktop"
@@ -68,28 +68,27 @@ function Lives() {
     }
   }
 
-  useEffect(() => {
-    if (
-      !isUndefined(live) &&
-      !isUndefined(live.id) &&
-      !isUndefined(event) &&
-      !isUndefined(event.id) &&
-      window.JitsiMeetExternalAPI
-    ) {
-      console.log("=========================================================")
-      startConference()
-    } // eslint-disable-next-line
-  }, [live, event])
+  // useEffect(() => {
+  //   if (
+  //     !isUndefined(live) &&
+  //     !isUndefined(live.id) &&
+  //     !isUndefined(event) &&
+  //     !isUndefined(event.id) &&
+  //     window.JitsiMeetExternalAPI
+  //   ) {
+  //     console.log("=========================================================")
+  //     startConference()
+  //   } // eslint-disable-next-line
+  // }, [live, event])
 
   if (isUndefined(live)) {
     return <ViewerLoading />
   }
 
-  const fbRefStr = `event/126/livestream/${live.id}`
-  // const fbRefStr = `event/${event.id}/livestream/${live.id}`
+  const fbRefStr = `event/${event.id}/livestream/${live.id}`
 
-  // const togglePlaying = () => setPlaying(!playing)
-  // const toggleVolume = () => setVolume(volume === 0 ? 1 : 0)
+  const togglePlaying = () => setPlaying(!playing)
+  const toggleVolume = () => setVolume(volume === 0 ? 1 : 0)
 
   const renderIframeButton = (px, text) => (
     <button
@@ -120,7 +119,7 @@ function Lives() {
               id="live-video-container"
               style={{ width: iframeSize, height: parseInt(iframeSize) / 2 }}
             >
-              {/* <ReactPlayer
+              <ReactPlayer
                 url={`https://www.youtube.com/embed/${live.youtube_url}`}
                 playing={playing}
                 volume={volume}
@@ -147,8 +146,8 @@ function Lives() {
                 }}
                 width={iframeSize}
                 height={parseInt(iframeSize) / 2}
-              /> */}
-              {/* <div
+              />
+              <div
                 className="iframe-overlay"
                 onClick={togglePlaying}
                 style={{
@@ -156,8 +155,8 @@ function Lives() {
                   height: parseInt(iframeSize) / 2
                 }}
               >
-                <i className={`fas fa-${playing ? "play" : "pause"}`} />
-              </div> */}
+                {/* <i className={`fas fa-${playing ? "play" : "pause"}`} /> */}
+              </div>
             </div>
             {/* <iframe
               className={`video ${iframeSize}`}
