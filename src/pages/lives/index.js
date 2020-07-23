@@ -40,33 +40,33 @@ function Lives() {
 
   const live = lives.find((l) => l.id === streamer.live_id)
 
-  function startConference() {
-    try {
-      const domain = "meet.jit.si"
-      const options = {
-        roomName: `sinappse_ev${event.id}_r${live.id}`,
-        width: "100%",
-        height: "100%",
-        parentNode: document.getElementById("live-video-container"),
-        interfaceConfigOverwrite: {
-          filmStripOnly: false,
-          SHOW_JITSI_WATERMARK: false
-        },
-        configOverwrite: {
-          disableSimulcast: false
-        }
-      }
-      const api = new window.JitsiMeetExternalAPI(domain, options)
+  // function startConference() {
+  //   try {
+  //     const domain = "meet.jit.si"
+  //     const options = {
+  //       roomName: `sinappse_ev${event.id}_r${live.id}`,
+  //       width: "100%",
+  //       height: "100%",
+  //       parentNode: document.getElementById("live-video-container"),
+  //       interfaceConfigOverwrite: {
+  //         filmStripOnly: false,
+  //         SHOW_JITSI_WATERMARK: false
+  //       },
+  //       configOverwrite: {
+  //         disableSimulcast: false
+  //       }
+  //     }
+  //     const api = new window.JitsiMeetExternalAPI(domain, options)
 
-      api.addEventListener("videoConferenceJoined", () => {
-        console.log("Local User Joined")
-        // setLoading(false);
-        // api.executeCommand('displayName', 'MyName');
-      })
-    } catch (error) {
-      console.error("Failed to load Jitsi API", error)
-    }
-  }
+  //     api.addEventListener("videoConferenceJoined", () => {
+  //       console.log("Local User Joined")
+  //       // setLoading(false);
+  //       // api.executeCommand('displayName', 'MyName');
+  //     })
+  //   } catch (error) {
+  //     console.error("Failed to load Jitsi API", error)
+  //   }
+  // }
 
   // useEffect(() => {
   //   if (
@@ -88,7 +88,7 @@ function Lives() {
   const fbRefStr = `event/${event.id}/livestream/${live.id}`
 
   const togglePlaying = () => setPlaying(!playing)
-  const toggleVolume = () => setVolume(volume === 0 ? 1 : 0)
+  // const toggleVolume = () => setVolume(volume === 0 ? 1 : 0)
 
   const renderIframeButton = (px, text) => (
     <button
