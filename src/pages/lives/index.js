@@ -21,7 +21,7 @@ function Lives() {
 
   const [iframeSize, setIframeSize] = useState("800px")
   const [playing, setPlaying] = useState(true)
-  const [volume, setVolume] = useState(1)
+  // const [volume, setVolume] = useState(1)
 
   useEffect(() => {
     document.getElementById("root").className = "desktop"
@@ -122,7 +122,7 @@ function Lives() {
               <ReactPlayer
                 url={`https://www.youtube.com/embed/${live.youtube_url}`}
                 playing={playing}
-                volume={volume}
+                // volume={volume}
                 controls={false}
                 config={{
                   youtube: {
