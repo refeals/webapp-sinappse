@@ -85,7 +85,8 @@ function Lives() {
     return <ViewerLoading />
   }
 
-  const fbRefStr = `event/${event.id}/livestream/${live.id}`
+  const fbRefStr = `event/126/livestream/${live.id}`
+  // const fbRefStr = `event/${event.id}/livestream/${live.id}`
 
   // const togglePlaying = () => setPlaying(!playing)
   // const toggleVolume = () => setVolume(volume === 0 ? 1 : 0)
