@@ -21,7 +21,7 @@ function Lives() {
 
   const [iframeSize, setIframeSize] = useState("800px")
   const [playing, setPlaying] = useState(true)
-  // const [volume, setVolume] = useState(1)
+  const [volume, setVolume] = useState(1)
 
   useEffect(() => {
     document.getElementById("root").className = "desktop"
@@ -88,7 +88,7 @@ function Lives() {
   const fbRefStr = `event/${event.id}/livestream/${live.id}`
 
   const togglePlaying = () => setPlaying(!playing)
-  // const toggleVolume = () => setVolume(volume === 0 ? 1 : 0)
+  const toggleVolume = () => setVolume(volume === 0 ? 1 : 0)
 
   const renderIframeButton = (px, text) => (
     <button
@@ -122,7 +122,7 @@ function Lives() {
               <ReactPlayer
                 url={`https://www.youtube.com/embed/${live.youtube_url}`}
                 playing={playing}
-                // volume={volume}
+                volume={volume}
                 controls={false}
                 config={{
                   youtube: {
@@ -174,10 +174,10 @@ function Lives() {
               {renderIframeButton("1000px", "4x")}
               {/* <button onClick={togglePlaying}>
                 <i className={`fas fa-${playing ? "play" : "pause"}`} />
-              </button>
+              </button> */}
               <button onClick={toggleVolume}>
                 <i className={`fas fa-volume-${volume ? "up" : "mute"}`} />
-              </button> */}
+              </button>
             </div>
           </div>
           <div className="live-surveys">
