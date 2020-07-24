@@ -115,22 +115,22 @@ const LivestreamChat = ({ live }) => {
   }
 
   const showMessages = () => {
-    return messages.map((msg) => {
+    return messages.map(([key, msg]) => {
       return (
-        <li className="message" key={msg[0]}>
+        <li className="message" key={key}>
           <p>
-            <small className="date">
-              {moment(msg[1].timestamp).format("HH:mm")}
-            </small>
+            <span className="date">
+              {moment(msg.timestamp).format("HH:mm")}
+            </span>
             <span
-              className={`name ${msg[1].speaker ? "speaker" : ""} ${
-                msg[1].id === user.id ? "logged-user" : ""
+              className={`name ${msg.speaker ? "speaker" : ""} ${
+                msg.id === user.id ? "logged-user" : ""
               }`}
             >
-              {msg[1].name}:
+              {msg.name}:
             </span>
-            <span className={`text ${msg[1].speaker ? "speaker" : ""}`}>
-              {msg[1].message}
+            <span className={`text ${msg.speaker ? "speaker" : ""}`}>
+              {msg.message}
             </span>
           </p>
         </li>
