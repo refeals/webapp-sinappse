@@ -1,39 +1,25 @@
-import React, { useEffect, useState } from "react"
-import { useSelector, useDispatch, shallowEqual } from "react-redux"
-import { Redirect } from "react-router-dom"
 import { isEmpty, isUndefined } from "lodash"
+import React, { useState } from "react"
 import ReactPlayer from "react-player"
-
-import LivestreamChat from "./chat"
+import { shallowEqual, useSelector } from "react-redux"
+import { Redirect } from "react-router-dom"
 import LivestreamAds from "./ads"
-import ViewerLoading from "../../ViewerLoading"
-
-import { getLivestream } from "../../actions/livestream_actions"
+import LivestreamChat from "./chat"
 
 const Watch = ({ match }) => {
   const event = useSelector((state) => state.event, shallowEqual)
   const lives = useSelector((state) => state.lives, shallowEqual)
-  const dispatch = useDispatch()
 
-  const [loaded, setLoaded] = useState(false)
-  const [playing, setPlaying] = useState(true)
+  const [playing, setPlaying] = useState(process.env.NODE_ENV === "production")
 
   const live = lives.find((l) => l.id === parseInt(match.params.live_id))
 
-  useEffect(() => {
+  if (isUndefined(live)) {
     if (isEmpty(lives)) {
-      dispatch(getLivestream(match.params.event_id, () => setLoaded(true)))
-    } else {
-      setLoaded(true)
-    }
-  }, [dispatch, lives, match.params.event_id])
-
-  if (loaded) {
-    if (isEmpty(lives) || isUndefined(live)) {
       return <Redirect to={`/${event.id}`} />
+    } else {
+      return <Redirect to={`/${event.id}/lives`} />
     }
-  } else {
-    return <ViewerLoading />
   }
 
   const togglePlayPause = () => {

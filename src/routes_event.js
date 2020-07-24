@@ -53,7 +53,6 @@ const RoutesEvent = ({ match }) => {
         dispatch(getExhibitors(event.id)),
         dispatch(getSponsors(event.id))
       ]).then((res) => {
-        console.log(res.map((r) => r.payload.data))
         setLoaded(true)
       })
     }
