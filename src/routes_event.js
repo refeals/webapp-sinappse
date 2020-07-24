@@ -1,15 +1,17 @@
-import React, { useEffect, lazy, Suspense, useState } from "react"
-import { useSelector, useDispatch, shallowEqual } from "react-redux"
-import { Route, Redirect } from "react-router-dom"
-
-import ViewerLoading from "./ViewerLoading"
-
+import React, { lazy, Suspense, useEffect, useState } from "react"
+import { shallowEqual, useDispatch, useSelector } from "react-redux"
+import { Redirect, Route } from "react-router-dom"
+import { getAbstracts } from "./actions/abstract_actions"
+import { GET_USER, SHOW_TOP_MENU } from "./actions/action_types"
 import { getEvent } from "./actions/event_actions"
-import { SHOW_TOP_MENU, GET_USER } from "./actions/action_types"
-
-import setManifest from "./setManifest"
-
+import { getExhibitors } from "./actions/exhibitor_actions"
+import { getLivestream } from "./actions/livestream_actions"
+import { getPrograms } from "./actions/programs_actions"
+import { getSpeakers } from "./actions/speaker_actions"
+import { getSponsors } from "./actions/sponsor_actions"
 import "./css/load.scss"
+import setManifest from "./setManifest"
+import ViewerLoading from "./ViewerLoading"
 
 const Main = lazy(() => import("./pages/main"))
 const Program = lazy(() => import("./pages/program"))
@@ -31,14 +33,31 @@ const Login = lazy(() => import("./pages/login"))
 
 const RoutesEvent = ({ match }) => {
   const event = useSelector((state) => state.event, shallowEqual)
+  // const state = useSelector((state) => state, shallowEqual)
   const topMenu = useSelector((state) => state.topMenu, shallowEqual)
   const dispatch = useDispatch()
 
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    dispatch(getEvent(match.params.event_id, () => setLoaded(true)))
+    dispatch(getEvent(match.params.event_id))
   }, [dispatch, match.params.event_id])
+
+  useEffect(() => {
+    if (event.id) {
+      Promise.all([
+        dispatch(getLivestream(event.id)),
+        dispatch(getPrograms(event.id)),
+        dispatch(getSpeakers(event.id)),
+        dispatch(getAbstracts(event.id)),
+        dispatch(getExhibitors(event.id)),
+        dispatch(getSponsors(event.id))
+      ]).then((res) => {
+        console.log(res.map((r) => r.payload.data))
+        setLoaded(true)
+      })
+    }
+  }, [dispatch, event.id])
 
   useEffect(() => {
     if (localStorage.getItem(`@sinappse-user-token-${event.id}`)) {
@@ -51,11 +70,7 @@ const RoutesEvent = ({ match }) => {
     document.getElementById("root").className = ""
   }, [])
 
-  if (loaded) {
-    if (!event.id) {
-      return <ViewerLoading />
-    }
-  } else {
+  if (!loaded) {
     return <ViewerLoading />
   }
 

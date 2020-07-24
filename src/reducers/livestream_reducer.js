@@ -1,4 +1,4 @@
-import { GET_LIVESTREAM_ROOMS } from "../actions/action_types"
+import { GET_LIVESTREAM_ROOMS_SUCCESS } from "../actions/action_types"
 
 const initialState = []
 
@@ -14,8 +14,8 @@ const parseData = (lives) =>
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case GET_LIVESTREAM_ROOMS:
-      return parseData(action.payload)
+    case GET_LIVESTREAM_ROOMS_SUCCESS:
+      return parseData(action.payload.data.data)
 
     default:
       return state

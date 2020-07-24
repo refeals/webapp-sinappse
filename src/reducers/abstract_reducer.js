@@ -1,10 +1,13 @@
-import { GET_ABSTRACTS, SAVE_ABSTRACT_EVAL } from "../actions/action_types"
+import {
+  GET_ABSTRACTS_SUCCESS,
+  SAVE_ABSTRACT_EVAL
+} from "../actions/action_types"
 
 const initialState = []
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case GET_ABSTRACTS:
+    case GET_ABSTRACTS_SUCCESS:
       return action.payload
     case SAVE_ABSTRACT_EVAL:
       return action.payload

@@ -1,5 +1,4 @@
-import { GET_PROGRAMS } from "../actions/action_types"
-
+import { GET_PROGRAMS_SUCCESS } from "../actions/action_types"
 const initialState = {}
 
 const setProgram = (payload) => {
@@ -26,8 +25,8 @@ const setProgram = (payload) => {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case GET_PROGRAMS:
-      return setProgram(action.payload)
+    case GET_PROGRAMS_SUCCESS:
+      return setProgram(action.payload.data.eventPlaces)
 
     default:
       return state
