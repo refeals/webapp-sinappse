@@ -1,20 +1,10 @@
-import React, { useEffect } from "react"
-import { useSelector, useDispatch, shallowEqual } from "react-redux"
-import { Link } from "react-router-dom"
 import { isEmpty } from "lodash"
+import React from "react"
+import { shallowEqual, useSelector } from "react-redux"
+import { Link } from "react-router-dom"
 
-import { getPrograms } from "../../actions/programs_actions"
-
-const Program = ({ match }) => {
+const Program = () => {
   const event = useSelector((state) => state.event, shallowEqual)
-  const programs = useSelector((state) => state.programs, shallowEqual)
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (isEmpty(programs)) {
-      dispatch(getPrograms(match.params.event_id))
-    }
-  }, [dispatch, programs, match.params.event_id])
 
   const renderProgramList = () => {
     if (isEmpty(event["categories-list"])) {
