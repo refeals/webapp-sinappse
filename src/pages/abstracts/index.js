@@ -1,20 +1,10 @@
-import React, { useEffect } from "react"
-import { useSelector, useDispatch, shallowEqual } from "react-redux"
+import React from "react"
+import { shallowEqual, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import { isEmpty } from "lodash"
 
-import { getAbstracts } from "../../actions/abstract_actions"
-
-const Abstracts = ({ match }) => {
+const Abstracts = () => {
   const event = useSelector((state) => state.event, shallowEqual)
   const abstracts = useSelector((state) => state.abstracts, shallowEqual)
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (isEmpty(abstracts)) {
-      dispatch(getAbstracts(match.params.event_id))
-    }
-  }, [dispatch, abstracts, match.params.event_id])
 
   const renderAbstracts = () => {
     return abstracts.map((abs) => {

@@ -1,17 +1,10 @@
-import React, { useEffect } from "react"
-import { useSelector, useDispatch, shallowEqual } from "react-redux"
+import React from "react"
+import { shallowEqual, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 
-import { getLivestream } from "../../actions/livestream_actions"
-
-const Livestream = ({ match }) => {
+const Livestream = () => {
   const event = useSelector((state) => state.event, shallowEqual)
   const lives = useSelector((state) => state.lives, shallowEqual)
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(getLivestream(match.params.event_id))
-  }, [dispatch, match.params.event_id])
 
   const renderLivestreamList = () => {
     return lives.map((live) => {
@@ -32,11 +25,7 @@ const Livestream = ({ match }) => {
     })
   }
 
-  return (
-    <>
-      <ul className="livestream-list">{renderLivestreamList()}</ul>
-    </>
-  )
+  return <ul className="livestream-list">{renderLivestreamList()}</ul>
 }
 
 export default Livestream

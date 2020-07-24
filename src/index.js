@@ -1,20 +1,19 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { Provider } from "react-redux"
-import { createStore, applyMiddleware, compose } from "redux"
+import { applyMiddleware, compose, createStore } from "redux"
+import axiosMiddleware from "redux-axios-middleware"
 import thunk from "redux-thunk"
-
-import "./index.css"
-
+import { api } from "./api"
 import App from "./App"
+import "./index.css"
 import reducers from "./reducers"
-
 import * as serviceWorker from "./serviceWorker"
 
 const store = createStore(
   reducers,
   compose(
-    applyMiddleware(thunk),
+    applyMiddleware(thunk, axiosMiddleware(api)),
     process.env.NODE_ENV === "development" &&
       window.__REDUX_DEVTOOLS_EXTENSION__
       ? window.__REDUX_DEVTOOLS_EXTENSION__()

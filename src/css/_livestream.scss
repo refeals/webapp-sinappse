@@ -215,36 +215,35 @@
     padding: 0 10px;
 
     .message {
-      p {
-        margin: 10px 0;
-        // line-height: 1;
-        color: rgba(0, 0, 0, 0.7);
+      margin: 10px 0;
+      // line-height: 1;
+      color: rgba(0, 0, 0, 0.7);
+      font-size: 14px;
+
+      .date {
+        font-size: 11px;
+        margin-right: 4px;
+      }
+      .name {
+        margin-left: 4px;
+        margin-right: 6px;
+        word-break: break-all;
+
+        &.logged-user {
+          color: $color--main;
+        }
+
+        &.speaker {
+          font-weight: bold;
+          color: $color--main;
+        }
+      }
+      .text {
         font-size: 14px;
 
-        .date {
-          font-size: 11px;
-          margin-right: 4px;
-        }
-        .name {
-          margin-left: 4px;
-          margin-right: 6px;
-
-          &.logged-user {
-            color: $color--main;
-          }
-
-          &.speaker {
-            font-weight: bold;
-            color: $color--main;
-          }
-        }
-        .text {
-          font-size: 14px;
-
-          &.speaker {
-            font-weight: bold;
-            color: $color--main;
-          }
+        &.speaker {
+          font-weight: bold;
+          color: $color--main;
         }
       }
     }

@@ -39,13 +39,17 @@ body.viewermode {
     .topmenu {
       height: 46px;
       padding: 10px 0px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
       button {
         display: inline-block;
         background: transparent;
         border: 0px none;
         color: #fff;
         font-size: 1.2em;
-        padding: 0px 15px;
+        padding: 0px 12px;
         cursor: pointer;
         outline: 0px none;
         &.va-logout {
@@ -53,9 +57,10 @@ body.viewermode {
         }
       }
       h1.event-name {
+        flex: 1;
         display: inline-block;
         margin: 0px;
-        padding: 0px 10px;
+        padding: 0px 2px;
         font-size: 18px;
         font-weight: 700;
         color: #fff;
