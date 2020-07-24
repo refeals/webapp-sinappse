@@ -22,6 +22,8 @@ function LivestreamAds({ live }) {
         if (!isNull(val)) {
           setAd(toPairs(val)[0][1])
           setHideAd(false)
+        } else {
+          setHideAd(null)
         }
       })
   }, [adsRefStr])

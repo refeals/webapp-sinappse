@@ -6,6 +6,7 @@ import moment from "moment"
 import { db } from "../../firebase"
 
 function Chat({ fbRefStr }) {
+  const event = useSelector((state) => state.event, shallowEqual)
   const streamer = useSelector((state) => state.streamer, shallowEqual)
   const [tab, setTab] = useState(0)
   const [messages, setMessages] = useState([])
@@ -49,15 +50,17 @@ function Chat({ fbRefStr }) {
 
   useEffect(() => {
     if (process.env.NODE_ENV === "production") {
-      db.ref(`${fbRefStr}/chat_admin`).push({
-        timestamp: Date.now(),
-        message: `${streamer.name} acabou de entrar`,
-        server_message: true,
-        name: streamer.name,
-        id: streamer.id
-      })
+      if (event.id) {
+        db.ref(`${fbRefStr}/chat_admin`).push({
+          timestamp: Date.now(),
+          message: `${streamer.name} acabou de entrar`,
+          server_message: true,
+          name: streamer.name,
+          id: streamer.id
+        })
+      }
     }
-  }, [fbRefStr, streamer.id, streamer.name])
+  }, [fbRefStr, event.id, streamer.id, streamer.name])
 
   // scroll down when new messages arrive
   useEffect(() => {
