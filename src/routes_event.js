@@ -52,7 +52,7 @@ const RoutesEvent = ({ match }) => {
         dispatch(getAbstracts(event.id)),
         dispatch(getExhibitors(event.id)),
         dispatch(getSponsors(event.id))
-      ]).then((res) => {
+      ]).then(() => {
         setLoaded(true)
       })
     }
