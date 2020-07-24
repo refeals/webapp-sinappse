@@ -8,7 +8,7 @@ const initialState = []
 export default (state = initialState, action) => {
   switch (action.type) {
     case GET_EXHIBITORS_SUCCESS:
-      return action.payload
+      return action.payload.data.msg
     case GET_EXHIBITORS_FAILURE:
       return initialState
 
