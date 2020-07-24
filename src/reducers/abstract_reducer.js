@@ -9,7 +9,7 @@ const initialState = []
 export default (state = initialState, action) => {
   switch (action.type) {
     case GET_ABSTRACTS_SUCCESS:
-      return action.payload
+      return action.payload.data.msg
     case GET_ABSTRACTS_FAILURE:
       return initialState
 

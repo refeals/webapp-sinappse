@@ -2,7 +2,7 @@ import React from "react"
 import { shallowEqual, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 
-const Exhibitors = ({ match }) => {
+const Exhibitors = () => {
   const event = useSelector((state) => state.event, shallowEqual)
   const exhibitors = useSelector((state) => state.exhibitors, shallowEqual)
 

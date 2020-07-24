@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from "react"
-import { useSelector, useDispatch, shallowEqual } from "react-redux"
-import { find, isUndefined, isNull, isEmpty } from "lodash"
+import { find, isEmpty, isNull, isUndefined } from "lodash"
+import React, { useState } from "react"
+import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Redirect } from "react-router-dom"
-
-import ViewerLoading from "../../ViewerLoading"
-
-import { getAbstracts, saveAbstractEval } from "../../actions/abstract_actions"
+import { saveAbstractEval } from "../../actions/abstract_actions"
 
 const Abstract = ({ match }) => {
   const event = useSelector((state) => state.event, shallowEqual)
@@ -16,26 +13,15 @@ const Abstract = ({ match }) => {
   const [evaluation, setEval] = useState(null)
   const [canVote, setCanVote] = useState(true)
 
-  const [loaded, setLoaded] = useState(false)
-
   const abs = find(abstracts, (e) => e.abstractid === match.params.abstract_id)
 
-  useEffect(() => {
+  if (isUndefined(abs)) {
     if (isEmpty(abstracts)) {
-      dispatch(getAbstracts(match.params.event_id, () => setLoaded(true)))
-    } else {
-      setLoaded(true)
-    }
-  }, [dispatch, abstracts, match.params.event_id])
-
-  if (loaded) {
-    if (isEmpty(abstracts) || isUndefined(abs)) {
       return <Redirect to={`/${event.id}`} />
+    } else {
+      return <Redirect to={`/${event.id}/abstracts`} />
     }
-  } else {
-    return <ViewerLoading />
   }
-
   if (localStorage.getItem(`abstract-${abs.abstractid}`)) {
     setEval(localStorage.getItem(`abstract-${abs.abstractid}`))
     setCanVote(false)
