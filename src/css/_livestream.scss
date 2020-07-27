@@ -359,7 +359,7 @@
   }
 }
 
-@media all and (orientation: landscape) {
+@media all and (orientation: landscape) and (max-width: 400px) {
   .video-container {
     position: fixed;
     top: 0;
