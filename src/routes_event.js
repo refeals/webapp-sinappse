@@ -1,3 +1,4 @@
+import { compact, isEmpty } from "lodash"
 import React, { lazy, Suspense, useEffect, useState } from "react"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Redirect, Route } from "react-router-dom"
@@ -32,31 +33,48 @@ const Watch = lazy(() => import("./pages/livestream/watch"))
 const Login = lazy(() => import("./pages/login"))
 
 const RoutesEvent = ({ match }) => {
-  const event = useSelector((state) => state.event, shallowEqual)
-  // const state = useSelector((state) => state, shallowEqual)
+  const state = useSelector((state) => state, shallowEqual)
+  const { event } = state
   const topMenu = useSelector((state) => state.topMenu, shallowEqual)
   const dispatch = useDispatch()
 
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    dispatch(getEvent(match.params.event_id))
-  }, [dispatch, match.params.event_id])
+    if (!event.id) {
+      dispatch(getEvent(match.params.event_id))
+    }
+  }, [dispatch, match.params.event_id, event.id])
 
   useEffect(() => {
     if (event.id) {
-      Promise.all([
-        dispatch(getLivestream(event.id)),
-        dispatch(getPrograms(event.id)),
-        dispatch(getSpeakers(event.id)),
-        dispatch(getAbstracts(event.id)),
-        dispatch(getExhibitors(event.id)),
-        dispatch(getSponsors(event.id))
-      ]).then(() => {
-        setLoaded(true)
-      })
+      const {
+        lives,
+        programs,
+        speakers,
+        abstracts,
+        exhibitors,
+        sponsors
+      } = state
+
+      const dispatchArray = compact([
+        isEmpty(lives) ? dispatch(getLivestream(event.id)) : null,
+        isEmpty(programs) ? dispatch(getPrograms(event.id)) : null,
+        isEmpty(speakers) ? dispatch(getSpeakers(event.id)) : null,
+        isEmpty(abstracts) ? dispatch(getAbstracts(event.id)) : null,
+        isEmpty(exhibitors) ? dispatch(getExhibitors(event.id)) : null,
+        isEmpty(sponsors) ? dispatch(getSponsors(event.id)) : null
+      ])
+
+      Promise.all(dispatchArray)
+        .then((res) => {
+          setLoaded(true)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
-  }, [dispatch, event.id])
+  }, [dispatch, event.id, state])
 
   useEffect(() => {
     if (localStorage.getItem(`@sinappse-user-token-${event.id}`)) {
@@ -73,7 +91,9 @@ const RoutesEvent = ({ match }) => {
     return <ViewerLoading />
   }
 
-  setManifest(event)
+  if (event.id) {
+    setManifest(event)
+  }
 
   if (!localStorage.getItem(`@sinappse-user-token-${event.id}`)) {
     return (
