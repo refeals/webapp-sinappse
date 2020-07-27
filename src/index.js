@@ -1,17 +1,57 @@
+import { isArray, isObject } from "lodash"
 import React from "react"
 import ReactDOM from "react-dom"
 import { Provider } from "react-redux"
 import { applyMiddleware, compose, createStore } from "redux"
 import axiosMiddleware from "redux-axios-middleware"
+import { createTransform, persistReducer, persistStore } from "redux-persist"
+import { PersistGate } from "redux-persist/integration/react"
+import storage from "redux-persist/lib/storage"
 import thunk from "redux-thunk"
 import { api } from "./api"
 import App from "./App"
 import "./index.css"
 import reducers from "./reducers"
 import * as serviceWorker from "./serviceWorker"
+import ViewerLoading from "./ViewerLoading"
+
+const persistConfig = {
+  key: "root",
+  storage,
+  blacklist: ["topMenu", "streamer"],
+  // debug: process.env.NODE_ENV === "development",
+  transforms: [
+    createTransform(
+      // transform state on its way to being serialized and persisted.
+      (inboundState, key, state) => {
+        if (state.event.id) {
+          return { [state.event.id]: inboundState }
+        } else {
+          return { ...inboundState }
+        }
+      },
+      // transform state being rehydrated
+      (outboundState, key, state) => {
+        const keys = Object.keys(JSON.parse(state.event))
+        const finalState = outboundState[keys[0]]
+
+        if (isArray(finalState)) {
+          return [...finalState]
+        }
+        if (isObject(finalState)) {
+          return { ...finalState }
+        }
+        return finalState
+      },
+      { blacklist: "user" }
+    )
+  ]
+}
+
+const persistedReducer = persistReducer(persistConfig, reducers)
 
 const store = createStore(
-  reducers,
+  persistedReducer,
   compose(
     applyMiddleware(thunk, axiosMiddleware(api)),
     process.env.NODE_ENV === "development" &&
@@ -20,11 +60,14 @@ const store = createStore(
       : (f) => f
   )
 )
+const persistor = persistStore(store)
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <PersistGate loading={<ViewerLoading />} persistor={persistor}>
+        <App />
+      </PersistGate>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")
