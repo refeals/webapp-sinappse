@@ -1,4 +1,3 @@
-import { compact, isEmpty } from "lodash"
 import React, { lazy, Suspense, useEffect, useState } from "react"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Redirect, Route } from "react-router-dom"
@@ -39,42 +38,35 @@ const RoutesEvent = ({ match }) => {
   const dispatch = useDispatch()
 
   const [loaded, setLoaded] = useState(false)
+  const [shouldGetDataFromApi, setShouldGetDataFromApi] = useState(false)
 
   useEffect(() => {
-    if (!event.id) {
+    if (event.id !== match.params.event_id) {
       dispatch(getEvent(match.params.event_id))
+      setShouldGetDataFromApi(true)
     }
   }, [dispatch, match.params.event_id, event.id])
 
   useEffect(() => {
-    if (event.id) {
-      const {
-        lives,
-        programs,
-        speakers,
-        abstracts,
-        exhibitors,
-        sponsors
-      } = state
-
-      const dispatchArray = compact([
-        isEmpty(lives) ? dispatch(getLivestream(event.id)) : null,
-        isEmpty(programs) ? dispatch(getPrograms(event.id)) : null,
-        isEmpty(speakers) ? dispatch(getSpeakers(event.id)) : null,
-        isEmpty(abstracts) ? dispatch(getAbstracts(event.id)) : null,
-        isEmpty(exhibitors) ? dispatch(getExhibitors(event.id)) : null,
-        isEmpty(sponsors) ? dispatch(getSponsors(event.id)) : null
+    if (shouldGetDataFromApi && event.id) {
+      Promise.all([
+        dispatch(getLivestream(event.id)),
+        dispatch(getPrograms(event.id)),
+        dispatch(getSpeakers(event.id)),
+        dispatch(getAbstracts(event.id)),
+        dispatch(getExhibitors(event.id)),
+        dispatch(getSponsors(event.id))
       ])
-
-      Promise.all(dispatchArray)
         .then((res) => {
           setLoaded(true)
         })
         .catch((err) => {
           console.log(err)
         })
-    }
-  }, [dispatch, event.id, state])
+    } else {
+      setLoaded(true)
+    } // eslint-disable-next-line
+  }, [dispatch, event.id, setShouldGetDataFromApi])
 
   useEffect(() => {
     if (localStorage.getItem(`@sinappse-user-token-${event.id}`)) {

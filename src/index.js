@@ -1,10 +1,9 @@
-import { isArray, isObject } from "lodash"
 import React from "react"
 import ReactDOM from "react-dom"
 import { Provider } from "react-redux"
 import { applyMiddleware, compose, createStore } from "redux"
 import axiosMiddleware from "redux-axios-middleware"
-import { createTransform, persistReducer, persistStore } from "redux-persist"
+import { persistReducer, persistStore } from "redux-persist"
 import { PersistGate } from "redux-persist/integration/react"
 import storage from "redux-persist/lib/storage"
 import thunk from "redux-thunk"
@@ -18,34 +17,39 @@ import ViewerLoading from "./ViewerLoading"
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ["topMenu", "streamer"],
+  blacklist: ["topMenu", "streamer"]
   // debug: process.env.NODE_ENV === "development",
-  transforms: [
-    createTransform(
-      // transform state on its way to being serialized and persisted.
-      (inboundState, key, state) => {
-        if (state.event.id) {
-          return { [state.event.id]: inboundState }
-        } else {
-          return { ...inboundState }
-        }
-      },
-      // transform state being rehydrated
-      (outboundState, key, state) => {
-        const keys = Object.keys(JSON.parse(state.event))
-        const finalState = outboundState[keys[0]]
+  // transforms: [
+  //   createTransform(
+  //     // transform state on its way to being serialized and persisted.
+  //     (inboundState, key, state) => {
+  //       if (state.event.id) {
+  //         return { ...state, [state.event.id]: inboundState }
+  //       } else {
+  //         return { ...state, ...inboundState }
+  //       }
+  //     },
+  //     // transform state being rehydrated
+  //     (outboundState, key, state) => {
+  //       // return { ...outboundState }
+  //       const finalState =
+  //         outboundState[localStorage.getItem(`@sinappse-current-event`)]
 
-        if (isArray(finalState)) {
-          return [...finalState]
-        }
-        if (isObject(finalState)) {
-          return { ...finalState }
-        }
-        return finalState
-      },
-      { blacklist: "user" }
-    )
-  ]
+  //       if (!!finalState) {
+  //         return {}
+  //       }
+
+  //       if (isArray(finalState)) {
+  //         return [...finalState]
+  //       }
+  //       if (isObject(finalState)) {
+  //         return { ...finalState }
+  //       }
+  //       return finalState
+  //     },
+  //     { blacklist: "user" }
+  //   )
+  // ]
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers)
