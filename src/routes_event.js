@@ -1,6 +1,6 @@
 import React, { lazy, Suspense, useEffect, useState } from "react"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
-import { Redirect, Route } from "react-router-dom"
+import { Route } from "react-router-dom"
 import { getAbstracts } from "./actions/abstract_actions"
 import { GET_USER, SHOW_TOP_MENU } from "./actions/action_types"
 import { getEvent } from "./actions/event_actions"
@@ -91,7 +91,6 @@ const RoutesEvent = ({ match }) => {
     return (
       <Suspense fallback={<ViewerLoading />}>
         <Route exact path="/:event_id" component={Login} />
-        <Route path="*" render={() => <Redirect to={`/${event.id}`} />} />
       </Suspense>
     )
   }
