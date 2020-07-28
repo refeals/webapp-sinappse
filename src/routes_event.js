@@ -1,14 +1,10 @@
-import React, { lazy, Suspense, useEffect, useState } from "react"
+import { isUndefined } from "lodash"
+import React, { lazy, Suspense, useEffect } from "react"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
-import { Route } from "react-router-dom"
-import { getAbstracts } from "./actions/abstract_actions"
+import { Route, useHistory } from "react-router-dom"
 import { GET_USER, SHOW_TOP_MENU } from "./actions/action_types"
+import { doLogout } from "./actions/auth_actions"
 import { getEvent } from "./actions/event_actions"
-import { getExhibitors } from "./actions/exhibitor_actions"
-import { getLivestream } from "./actions/livestream_actions"
-import { getPrograms } from "./actions/programs_actions"
-import { getSpeakers } from "./actions/speaker_actions"
-import { getSponsors } from "./actions/sponsor_actions"
 import "./css/load.scss"
 import setManifest from "./setManifest"
 import ViewerLoading from "./ViewerLoading"
@@ -32,62 +28,39 @@ const Watch = lazy(() => import("./pages/livestream/watch"))
 const Login = lazy(() => import("./pages/login"))
 
 const RoutesEvent = ({ match }) => {
-  const state = useSelector((state) => state, shallowEqual)
-  const { event } = state
-  const topMenu = useSelector((state) => state.topMenu, shallowEqual)
+  const { event, user, topMenu } = useSelector((state) => state, shallowEqual)
   const dispatch = useDispatch()
-
-  const [loaded, setLoaded] = useState(false)
-  const [shouldGetDataFromApi, setShouldGetDataFromApi] = useState(false)
+  const history = useHistory()
 
   useEffect(() => {
-    if (event.id !== match.params.event_id) {
+    if (isUndefined(event.id) || event.id !== match.params.event_id) {
       dispatch(getEvent(match.params.event_id))
-      setShouldGetDataFromApi(true)
     }
   }, [dispatch, match.params.event_id, event.id])
 
   useEffect(() => {
-    if (shouldGetDataFromApi && event.id) {
-      Promise.all([
-        dispatch(getLivestream(event.id)),
-        dispatch(getPrograms(event.id)),
-        dispatch(getSpeakers(event.id)),
-        dispatch(getAbstracts(event.id)),
-        dispatch(getExhibitors(event.id)),
-        dispatch(getSponsors(event.id))
-      ])
-        .then((res) => {
-          setLoaded(true)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-    } else {
-      setLoaded(true)
-    } // eslint-disable-next-line
-  }, [dispatch, event.id, setShouldGetDataFromApi])
-
-  useEffect(() => {
-    if (localStorage.getItem(`@sinappse-user-token-${event.id}`)) {
+    if (localStorage.getItem(`@sinappse-user-token`)) {
       dispatch({ type: SHOW_TOP_MENU })
       dispatch({ type: GET_USER, event: event.id })
     }
   }, [dispatch, event.id])
 
   useEffect(() => {
+    if (user.event && user.event !== match.params.event_id) {
+      dispatch(doLogout())
+      history.push(`/${match.params.event_id}`)
+    }
+  }, [user.event, match.params.event_id, dispatch, history])
+
+  useEffect(() => {
     document.getElementById("root").className = ""
   }, [])
-
-  if (!loaded) {
-    return <ViewerLoading />
-  }
 
   if (event.id) {
     setManifest(event)
   }
 
-  if (!localStorage.getItem(`@sinappse-user-token-${event.id}`)) {
+  if (!localStorage.getItem(`@sinappse-user-token`)) {
     return (
       <Suspense fallback={<ViewerLoading />}>
         <Route exact path="/:event_id" component={Login} />

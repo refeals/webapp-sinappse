@@ -10,7 +10,7 @@ import reducers from "./reducers"
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ["topMenu", "streamer"]
+  blacklist: ["topMenu", "streamer", "user", "event"]
   // debug: process.env.NODE_ENV === "development",
   // transforms: [
   //   createTransform(
