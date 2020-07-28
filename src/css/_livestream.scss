@@ -109,6 +109,7 @@
   height: -webkit-fill-available; /* Mozilla-based browsers will ignore this. */
   height: fill-available;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 
   ul {
     list-style: none;
@@ -345,6 +346,7 @@
       text-align: start;
       max-height: 50vh;
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
 
       .answer {
         padding: 16px 12px;
