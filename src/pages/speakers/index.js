@@ -11,7 +11,13 @@ const Speakers = () => {
       return (
         <Link to={`/${event.id}/speakers/${spk.speakerid}`} key={spk.speakerid}>
           <li className="speaker-block">
-            <img className="speaker-img" src={spk.image_url} alt={spk.name} />
+            <div
+              className="speaker-img"
+              style={{
+                background: `url(${spk.image_url}) no-repeat center center`
+              }}
+              alt={spk.name}
+            />
             <div className="speaker-name">{spk.name}</div>
           </li>
         </Link>
