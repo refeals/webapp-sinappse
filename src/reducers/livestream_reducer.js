@@ -1,6 +1,7 @@
 import {
   GET_LIVESTREAM_ROOMS_FAILURE,
-  GET_LIVESTREAM_ROOMS_SUCCESS
+  GET_LIVESTREAM_ROOMS_SUCCESS,
+  SET_INITIAL
 } from "../actions/action_types"
 
 const initialState = []
@@ -22,6 +23,8 @@ export default (state = initialState, action) => {
     case GET_LIVESTREAM_ROOMS_FAILURE:
       return initialState
 
+    case SET_INITIAL:
+      return initialState
     default:
       return state
   }

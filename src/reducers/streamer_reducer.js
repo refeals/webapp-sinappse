@@ -1,4 +1,4 @@
-import { GET_STREAMER } from "../actions/action_types"
+import { GET_STREAMER, SET_INITIAL } from "../actions/action_types"
 
 const initialState = {}
 
@@ -7,6 +7,8 @@ export default (state = initialState, action) => {
     case GET_STREAMER:
       return action.payload
 
+    case SET_INITIAL:
+      return initialState
     default:
       return state
   }

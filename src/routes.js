@@ -1,9 +1,8 @@
 import React from "react"
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom"
-
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom"
+import Lives from "./pages/lives"
 import TopMenu from "./pages/main/TopMenu"
 import RoutesEvent from "./routes_event"
-import Lives from "./pages/lives"
 
 // import { store } from "../index"
 // import { isAuthenticated, isTokenExpired } from "../api/auth"

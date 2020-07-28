@@ -1,7 +1,8 @@
 import {
   GET_ABSTRACTS_FAILURE,
   GET_ABSTRACTS_SUCCESS,
-  SAVE_ABSTRACT_EVAL
+  SAVE_ABSTRACT_EVAL,
+  SET_INITIAL
 } from "../actions/action_types"
 
 const initialState = []
@@ -16,6 +17,8 @@ export default (state = initialState, action) => {
     case SAVE_ABSTRACT_EVAL:
       return action.payload
 
+    case SET_INITIAL:
+      return initialState
     default:
       return state
   }

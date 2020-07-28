@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from "react"
-import { useSelector, shallowEqual, useDispatch } from "react-redux"
+import React, { useEffect, useState } from "react"
+import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Link, useHistory } from "react-router-dom"
-
-import { HIDE_TOP_MENU } from "../../actions/action_types"
+import { getAbstracts } from "../../actions/abstract_actions"
+import { SET_INITIAL } from "../../actions/action_types"
 import { doLogin } from "../../actions/auth_actions"
-
+import { getExhibitors } from "../../actions/exhibitor_actions"
+import { getLivestream } from "../../actions/livestream_actions"
+import { getPrograms } from "../../actions/programs_actions"
+import { getSpeakers } from "../../actions/speaker_actions"
+import { getSponsors } from "../../actions/sponsor_actions"
 import bg from "../../images/bg_138.jpg"
+import { persistor } from "../../store"
 
 const Login = () => {
-  const event = useSelector((state) => state.event, shallowEqual)
+  const state = useSelector((state) => state, shallowEqual)
+  const { event } = state
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -18,19 +24,43 @@ const Login = () => {
   const [passwd, setPasswd] = useState("")
 
   useEffect(() => {
-    dispatch({ type: HIDE_TOP_MENU })
+    dispatch({ type: SET_INITIAL })
+    persistor.purge()
   }, [dispatch])
 
   const handleLogin = () => {
     dispatch(
       doLogin(email, passwd, event.id, () => {
-        history.push(`/${event.id}`)
+        getEventInformation()
       })
     )
   }
 
   const handleSignUp = () => {
     console.log("handleSignUp")
+  }
+
+  const getEventInformation = () => {
+    if (event.id) {
+      Promise.all([
+        dispatch(getLivestream(event.id)),
+        dispatch(getPrograms(event.id)),
+        dispatch(getSpeakers(event.id)),
+        dispatch(getAbstracts(event.id)),
+        dispatch(getExhibitors(event.id)),
+        dispatch(getSponsors(event.id))
+      ])
+        .then((res) => {
+          // console.log(res)
+          history.push(`/${event.id}`)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    } else {
+      // setLoaded(true)
+      console.log("no event.id")
+    }
   }
 
   const renderMainPage = () => {

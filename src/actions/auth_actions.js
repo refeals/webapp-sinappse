@@ -1,7 +1,5 @@
 import { toast } from "react-toastify"
-
 import { api } from "../api"
-
 import { LOGIN, LOGOUT, LOGOUT_EXPIRED_TOKEN, SIGNUP } from "./action_types"
 
 export const doLogin = (email, passwd, event, callback) => (
