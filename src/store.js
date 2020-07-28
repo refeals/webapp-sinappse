@@ -1,16 +1,24 @@
 import { applyMiddleware, compose, createStore } from "redux"
 import axiosMiddleware from "redux-axios-middleware"
-import { persistReducer, persistStore } from "redux-persist"
+import { createMigrate, persistReducer, persistStore } from "redux-persist"
 import storage from "redux-persist/lib/storage"
 import thunk from "redux-thunk"
 import { api } from "./api"
 import "./index.css"
 import reducers from "./reducers"
 
+const migrations = {
+  0: (state) => {
+    return { ...state }
+  }
+}
+
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ["topMenu", "streamer", "user", "event"]
+  blacklist: ["topMenu", "streamer", "user", "event"],
+  migrate: createMigrate(migrations, { debug: false }),
+  version: 0
   // debug: process.env.NODE_ENV === "development",
   // transforms: [
   //   createTransform(
