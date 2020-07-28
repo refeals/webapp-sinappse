@@ -1,16 +1,14 @@
-import React, { useEffect } from "react"
-import { useSelector, useDispatch, shallowEqual } from "react-redux"
+import React from "react"
+import { shallowEqual, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-
-import { SHOW_TOP_MENU } from "../../actions/action_types"
 
 const Main = () => {
   const event = useSelector((state) => state.event, shallowEqual)
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
-  useEffect(() => {
-    dispatch({ type: SHOW_TOP_MENU })
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch({ type: SHOW_TOP_MENU })
+  // }, [dispatch])
 
   const setSectionUrl = ({ type, eventid, params }) => {
     switch (type) {
