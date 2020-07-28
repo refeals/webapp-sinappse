@@ -27,6 +27,8 @@ const Watch = ({ match }) => {
     setPlaying(!playing)
   }
 
+  console.log("10:57")
+
   return (
     <div className="live-container">
       <div className={`video-container ${iframeReady ? "iframeReady" : ""}`}>
