@@ -1,10 +1,10 @@
 import React from "react"
-import { shallowEqual, useDispatch, useSelector } from "react-redux"
+import { shallowEqual, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 
 const Main = () => {
   const event = useSelector((state) => state.event, shallowEqual)
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
   // useEffect(() => {
   //   dispatch({ type: SHOW_TOP_MENU })
