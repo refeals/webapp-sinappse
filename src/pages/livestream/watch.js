@@ -27,7 +27,7 @@ const Watch = ({ match }) => {
     setPlaying(!playing)
   }
 
-  console.log("10:57")
+  console.log("11:22")
 
   return (
     <div className="live-container">
