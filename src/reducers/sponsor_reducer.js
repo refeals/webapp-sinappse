@@ -1,6 +1,7 @@
 import {
   GET_SPONSORS_FAILURE,
-  GET_SPONSORS_SUCCESS
+  GET_SPONSORS_SUCCESS,
+  SET_INITIAL
 } from "../actions/action_types"
 
 const initialState = []
@@ -12,6 +13,8 @@ export default (state = initialState, action) => {
     case GET_SPONSORS_FAILURE:
       return initialState
 
+    case SET_INITIAL:
+      return initialState
     default:
       return state
   }

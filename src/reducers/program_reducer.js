@@ -1,6 +1,7 @@
 import {
   GET_PROGRAMS_FAILURE,
-  GET_PROGRAMS_SUCCESS
+  GET_PROGRAMS_SUCCESS,
+  SET_INITIAL
 } from "../actions/action_types"
 const initialState = {}
 
@@ -33,6 +34,8 @@ export default (state = initialState, action) => {
     case GET_PROGRAMS_FAILURE:
       return initialState
 
+    case SET_INITIAL:
+      return initialState
     default:
       return state
   }

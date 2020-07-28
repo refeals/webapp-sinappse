@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT, GET_USER } from "../actions/action_types"
+import { GET_USER, LOGIN, LOGOUT, SET_INITIAL } from "../actions/action_types"
 
 const initialState = {}
 
@@ -30,6 +30,8 @@ export default (state = initialState, action) => {
         return {}
       }
 
+    case SET_INITIAL:
+      return initialState
     default:
       return state
   }
