@@ -69,6 +69,7 @@ body.viewermode {
     .mainarea {
       position: relative;
       overflow: auto;
+      -webkit-overflow-scrolling: touch;
       ul.viewer-blocklist {
         padding: 0px;
         margin: 0px;
@@ -514,6 +515,7 @@ body.viewermode {
   #viewer-map {
     height: calc(100vh - 46px);
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
     #vmap {
       height: 100%;
       background-size: contain;

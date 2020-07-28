@@ -1,26 +1,26 @@
 /* CATEGORY BLOCKS */
 
-.category-add{
+.category-add {
   position: absolute;
   right: 35px;
   top: 20px;
 }
-.category-togglefull{
+.category-togglefull {
   position: absolute;
   left: 35px;
   top: 20px;
 }
-.phonescreen{
+.phonescreen {
   width: 100%;
   min-height: 100%;
   list-style: none;
   padding: 0px;
 }
-.phonescreen .category-block{
+.phonescreen .category-block {
   float: left;
   text-align: center;
   height: 200px;
-  color: #FFF;
+  color: #fff;
   font-size: 1.4em;
   text-transform: uppercase;
   /*background-size: contain;*/
@@ -28,33 +28,35 @@
   text-align: center;
 }
 
-.phonescreen .category-block .fader{
-  background: rgba(0,0,0,0.7);
+.phonescreen .category-block .fader {
+  background: rgba(0, 0, 0, 0.7);
 }
 
-.phonescreen .category-block.size-1{width: 50%;}
-.phonescreen .category-block.size-2{width: 100%;}
-
+.phonescreen .category-block.size-1 {
+  width: 50%;
+}
+.phonescreen .category-block.size-2 {
+  width: 100%;
+}
 
 /* PHONE FRAME */
 
-
-@keyframes pisca{
+@keyframes pisca {
   0% {
     background-color: #333;
     box-shadow: 0px 0px 0px 0px #333;
   }
-  50%{
-    background-color: #AAA;
+  50% {
+    background-color: #aaa;
     box-shadow: 0px 0px 5px 0px #fff;
   }
-  100%{
+  100% {
     background-color: #333;
     box-shadow: 0px 0px 0px 0px #333;
   }
 }
 
-.smartphone .notification.on .badge{
+.smartphone .notification.on .badge {
   height: 8px;
   width: 8px;
   display: table;
@@ -68,7 +70,7 @@
   animation: pisca 3s infinite;
 }
 
-.smartphone .screen{
+.smartphone .screen {
   height: 568px;
   width: 320px;
   background-color: #222;
@@ -76,11 +78,12 @@
   margin-top: 20px;
   margin-bottom: 20px;
 }
-.smartphone .screen.overflow-y{
+.smartphone .screen.overflow-y {
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
-.smartphone{
+.smartphone {
   display: table;
   margin: 0 auto;
   padding: 10px;
@@ -93,7 +96,7 @@
   border: solid 1px #222;
 }
 
-.smartphone .btn-up-down{
+.smartphone .btn-up-down {
   height: 100px;
   float: left;
   position: absolute;
@@ -102,14 +105,14 @@
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
 }
-.smartphone .btnsm{
+.smartphone .btnsm {
   display: table;
   display: none;
   width: 8px;
   background-color: #333;
 }
 
-.smartphone .cam{
+.smartphone .cam {
   border-radius: 15px;
   height: 15px;
   width: 15px;
@@ -118,12 +121,11 @@
   border: solid 1px #222;
   margin: 0 auto;
   margin-top: 15px;
-  
 }
 
-.smartphone .controls,.smartphone .header{
+.smartphone .controls,
+.smartphone .header {
   height: 30px;
   display: table;
   width: 100%;
-  
 }
