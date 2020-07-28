@@ -31,6 +31,7 @@ const Watch = ({ match }) => {
       <div className="video-container">
         <ReactPlayer
           url={`https://www.youtube.com/embed/${live.youtube_url}?autoplay=1&controls=0&disablekb=1&showinfo=0&rel=0&iv_load_policy=3&fs=0&modestbranding=1`}
+          className="react-player"
           playing={playing}
           controls={false}
           width="100%"
