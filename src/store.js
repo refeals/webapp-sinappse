@@ -1,7 +1,7 @@
 import { applyMiddleware, compose, createStore } from "redux"
 import axiosMiddleware from "redux-axios-middleware"
 import { createMigrate, persistReducer, persistStore } from "redux-persist"
-import storage from "redux-persist/lib/storage"
+import storage from "redux-persist-indexeddb-storage"
 import thunk from "redux-thunk"
 import { api } from "./api"
 import "./index.css"
@@ -15,7 +15,7 @@ const migrations = {
 
 const persistConfig = {
   key: "root",
-  storage,
+  storage: storage("sinappse"),
   blacklist: ["topMenu", "streamer", "user", "event"],
   migrate: createMigrate(migrations, { debug: false }),
   version: 0
