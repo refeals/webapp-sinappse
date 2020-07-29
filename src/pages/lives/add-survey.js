@@ -23,13 +23,15 @@ function AddSurvey({ fbRefStr, closeModal }) {
     const survey = {
       title,
       answers: fromPairs(
-        answers.map((ans) => [uniqueId("answer_"), { title: ans }])
+        answers.map((ans) => [
+          uniqueId("answer_"),
+          { title: ans, color: generateRandomColor() }
+        ])
       ),
       active: false,
       enabled: false,
       show_results: false,
-      streamer_id: streamer.id,
-      color: generateRandomColor()
+      streamer_id: streamer.id
     }
     db.ref(`${fbRefStr}/surveys`).push(survey)
 
