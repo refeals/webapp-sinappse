@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Link, useHistory } from "react-router-dom"
 import { getAbstracts } from "../../actions/abstract_actions"
-import { SET_INITIAL } from "../../actions/action_types"
+import { SET_INITIAL, SHOW_TOP_MENU } from "../../actions/action_types"
 import { doLogin } from "../../actions/auth_actions"
 import { getExhibitors } from "../../actions/exhibitor_actions"
 import { getLivestream } from "../../actions/livestream_actions"
@@ -52,6 +52,7 @@ const Login = () => {
       ])
         .then((res) => {
           // console.log(res)
+          dispatch({ type: SHOW_TOP_MENU })
           history.push(`/${event.id}`)
         })
         .catch((err) => {

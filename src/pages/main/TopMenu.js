@@ -1,7 +1,7 @@
 import React from "react"
-import { useSelector, shallowEqual, useDispatch } from "react-redux"
+import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { useHistory } from "react-router-dom"
-
+import { HIDE_TOP_MENU } from "../../actions/action_types"
 import { doLogout } from "../../actions/auth_actions"
 
 const TopMenu = () => {
@@ -19,6 +19,7 @@ const TopMenu = () => {
   }
 
   const handleLogout = () => {
+    dispatch({ type: HIDE_TOP_MENU })
     dispatch(doLogout(event.id))
     history.push(`/${event.id}`)
   }
