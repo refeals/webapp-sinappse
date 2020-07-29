@@ -23,7 +23,7 @@ const encryptor = createEncryptor({
 const persistConfig = {
   key: "root",
   storage: storage("sinappse"),
-  blacklist: ["topMenu", "streamer", "user", "event"],
+  blacklist: ["topMenu", "user", "event"],
   migrate: createMigrate(migrations, { debug: false }),
   transforms: [encryptor],
   version: 0
