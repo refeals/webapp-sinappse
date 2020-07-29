@@ -1,8 +1,7 @@
+import { isEmpty, isNull, map, size, sortBy, sum, toPairs } from "lodash"
 import React, { useState } from "react"
-import { isEmpty, map, isNull, size, sum, sortBy, toPairs } from "lodash"
-import { useSelector, shallowEqual } from "react-redux"
 import { PieChart } from "react-minimal-pie-chart"
-
+import { shallowEqual, useSelector } from "react-redux"
 import { db } from "../../firebase"
 
 function SurveyModal({
@@ -100,7 +99,7 @@ function SurveyModal({
       return {
         value: size(val.user_ids),
         title: val.title,
-        color: getRandomColor(),
+        color: val.color ?? getRandomColor(),
         key
       }
     })
