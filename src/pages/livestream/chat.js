@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useRef } from "react"
-import { useSelector, shallowEqual } from "react-redux"
-import { toPairs, isNull, map, flatten, values } from "lodash"
+import { flatten, isNull, map, toPairs, values } from "lodash"
 import moment from "moment"
-
+import React, { useEffect, useRef, useState } from "react"
+import { shallowEqual, useSelector } from "react-redux"
 import { db } from "../../firebase"
 import SurveyModal from "./surveys"
 
-const LivestreamChat = ({ live }) => {
+const LivestreamChat = ({ live, iframeReady }) => {
   const event = useSelector((state) => state.event, shallowEqual)
   const user = useSelector((state) => state.user, shallowEqual)
 
@@ -57,7 +56,12 @@ const LivestreamChat = ({ live }) => {
     scrollToBottom()
   }, [messages])
 
-  // scroll down when new messages arrive
+  // scroll down when iframe is ready
+  useEffect(() => {
+    scrollToBottom()
+  }, [iframeReady])
+
+  // set show or hide surveys button
   useEffect(() => {
     if (!isNull(survey) && isOpen) {
       if (survey.enabled) {

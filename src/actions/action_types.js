@@ -41,9 +41,6 @@ export const GET_ABSTRACTS_SUCCESS = "GET_ABSTRACTS_SUCCESS"
 export const GET_ABSTRACTS_FAILURE = "GET_ABSTRACTS_FAILURE"
 export const SAVE_ABSTRACT_EVAL = "SAVE_ABSTRACT_EVAL"
 
-// streamer
-export const GET_STREAMER = "GET_STREAMER"
-
 // top menu
 export const HIDE_TOP_MENU = "HIDE_TOP_MENU"
 export const SHOW_TOP_MENU = "SHOW_TOP_MENU"

@@ -5,7 +5,6 @@ import storage from "redux-persist-indexeddb-storage"
 import createEncryptor from "redux-persist-transform-encrypt"
 import thunk from "redux-thunk"
 import { api } from "./api"
-import "./index.css"
 import reducers from "./reducers"
 
 const migrations = {
@@ -24,7 +23,7 @@ const encryptor = createEncryptor({
 const persistConfig = {
   key: "root",
   storage: storage("sinappse"),
-  blacklist: ["topMenu", "streamer", "user", "event"],
+  blacklist: ["topMenu", "user", "event"],
   migrate: createMigrate(migrations, { debug: false }),
   transforms: [encryptor],
   version: 0
