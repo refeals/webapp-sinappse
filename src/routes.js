@@ -1,6 +1,5 @@
 import React from "react"
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom"
-import Lives from "./pages/lives"
 import TopMenu from "./pages/main/TopMenu"
 import RoutesEvent from "./routes_event"
 
@@ -40,7 +39,6 @@ const Routes = () => {
         <TopMenu />
         <Switch>
           <Route path="/" exact render={redirectToSinappse} />
-          <Route path="/lives" exact component={Lives} />
           <Route path="/:event_id" component={RoutesEvent} />
           {/* <Route path="*" render={() => <Redirect to="/" />} /> */}
         </Switch>
