@@ -233,6 +233,10 @@
       color: rgba(0, 0, 0, 0.7);
       font-size: 14px;
 
+      &:last-child {
+        padding-right: 46px;
+      }
+
       .date {
         font-size: 11px;
         margin-right: 4px;
