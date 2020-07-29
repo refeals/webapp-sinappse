@@ -4,7 +4,7 @@
   background-color: $color--inactive;
   background-size: cover;
   text-align: center;
-  min-height: 100vh;
+  height: 100vh;
   position: relative;
 
   /* MAIN */
@@ -15,7 +15,7 @@
   }
 
   footer {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
 
