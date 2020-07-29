@@ -1,8 +1,7 @@
+import { compact, fromPairs, isEmpty, uniqueId } from "lodash"
 import React, { useState } from "react"
-import { useSelector, shallowEqual } from "react-redux"
-import { compact, isEmpty, uniqueId, fromPairs } from "lodash"
+import { shallowEqual, useSelector } from "react-redux"
 import { toast } from "react-toastify"
-
 import { db } from "../../firebase"
 
 function AddSurvey({ fbRefStr, closeModal }) {
@@ -29,7 +28,8 @@ function AddSurvey({ fbRefStr, closeModal }) {
       active: false,
       enabled: false,
       show_results: false,
-      streamer_id: streamer.id
+      streamer_id: streamer.id,
+      color: generateRandomColor()
     }
     db.ref(`${fbRefStr}/surveys`).push(survey)
 
@@ -42,6 +42,9 @@ function AddSurvey({ fbRefStr, closeModal }) {
     )
     setAnswers(newAnswers)
   }
+
+  const generateRandomColor = () =>
+    `#${("00000" + ((Math.random() * (1 << 24)) | 0).toString(16)).slice(-6)}`
 
   return (
     <form className="add-survey-form" onSubmit={createSurvey}>
