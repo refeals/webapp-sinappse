@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react"
-import { useSelector, shallowEqual } from "react-redux"
 import { isNull, toPairs } from "lodash"
-
+import React, { useEffect, useState } from "react"
+import { shallowEqual, useSelector } from "react-redux"
 import { db } from "../../firebase"
 
 function LivestreamAds({ live }) {
@@ -23,7 +22,8 @@ function LivestreamAds({ live }) {
           setAd(toPairs(val)[0][1])
           setHideAd(false)
         } else {
-          setHideAd(null)
+          setAd(null)
+          setHideAd(true)
         }
       })
   }, [adsRefStr])
