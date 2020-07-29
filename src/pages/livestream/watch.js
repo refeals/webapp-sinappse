@@ -27,8 +27,6 @@ const Watch = ({ match }) => {
     setPlaying(!playing)
   }
 
-  console.log("11:22")
-
   return (
     <div className="live-container">
       <div className={`video-container ${iframeReady ? "iframeReady" : ""}`}>
@@ -66,7 +64,7 @@ const Watch = ({ match }) => {
         <LivestreamAds live={live} />
         <div className="overlay" onClick={togglePlayPause} />
       </div>
-      <LivestreamChat live={live} />
+      <LivestreamChat live={live} iframeReady={iframeReady} />
     </div>
   )
 }
