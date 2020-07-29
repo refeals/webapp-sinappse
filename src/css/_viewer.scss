@@ -27,7 +27,7 @@ body.viewermode {
   font-family: "Open Sans", sans-serif;
   background: #222;
   #root {
-    max-width: 640px;
+    max-width: $viewer-max-size;
     margin: 0px auto;
     background: #fff;
     &.desktop {
