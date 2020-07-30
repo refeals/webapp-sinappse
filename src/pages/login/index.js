@@ -121,6 +121,8 @@ const Login = () => {
               //   </button>
               // )}
               // onFailure={() => toast("Não foi possível logar com seu Facebook")}
+              disableMobileRedirect
+              isMobile
               callback={responseFacebook}
               icon={<i className="fab fa-facebook" />}
               textButton=""
