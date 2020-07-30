@@ -1,7 +1,9 @@
 import { isUndefined } from "lodash"
 import React, { useEffect, useState } from "react"
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Link, useHistory } from "react-router-dom"
+import { toast } from "react-toastify"
 import { getAbstracts } from "../../actions/abstract_actions"
 import { SET_INITIAL, SHOW_TOP_MENU } from "../../actions/action_types"
 import { doLogin } from "../../actions/auth_actions"
@@ -38,6 +40,10 @@ const Login = () => {
 
   const handleSignUp = () => {
     console.log("handleSignUp")
+  }
+
+  const facebookCallback = (response) => {
+    console.log(response)
   }
 
   const getEventInformation = () => {
@@ -101,16 +107,24 @@ const Login = () => {
         <div className="form-content">
           <p className="text">Acesse sua conta</p>
 
-          {/* <div className="social-media-buttons">
-            <button onClick={() => console.log("facebook login")}>
-              <i className="fab fa-facebook"></i>
-            </button>
+          <div className="social-media-buttons">
+            <FacebookLogin
+              appId={process.env.REACT_APP_FACEBOOK_APP_ID}
+              autoLoad
+              fields="name,email,picture"
+              render={({ onClick }) => (
+                <button onClick={() => onClick(facebookCallback)}>
+                  <i className="fab fa-facebook" />
+                </button>
+              )}
+              onFailure={() => toast("Não foi possível logar com seu Facebook")}
+            />
             <button onClick={() => console.log("linkedin login")}>
               <i className="fab fa-linkedin"></i>
             </button>
           </div>
 
-          <p>OU</p> */}
+          <p>OU</p>
 
           <form
             className="login-form"
