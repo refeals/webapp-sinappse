@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { useSelector, shallowEqual } from "react-redux"
+import { shallowEqual, useSelector } from "react-redux"
 
 const Map = () => {
   const event = useSelector((state) => state.event, shallowEqual)
@@ -18,7 +18,7 @@ const Map = () => {
     <section id="viewer-map">
       <div id="vmap">
         <img
-          src={event.map.file}
+          src={event.map}
           alt="Mapa"
           onClick={() => toggleZoom()}
           style={mapStyle}
