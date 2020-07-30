@@ -81,6 +81,7 @@
 
       button,
       .button {
+        position: relative;
         border-top: 1px solid #fff;
         border-bottom: 1px solid #fff;
         border-left: 1px solid #fff;
@@ -106,7 +107,11 @@
         }
 
         i {
-          padding: 8px;
+          padding: 0;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
         }
       }
     }
