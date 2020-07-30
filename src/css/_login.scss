@@ -79,7 +79,8 @@
     .social-media-buttons {
       margin: 8px 0 20px;
 
-      button {
+      button,
+      .button {
         border-top: 1px solid #fff;
         border-bottom: 1px solid #fff;
         border-left: 1px solid #fff;
@@ -97,6 +98,11 @@
           border-right: 1px solid #fff;
           border-bottom-right-radius: 12px;
           border-top-right-radius: 12px;
+        }
+
+        &:active,
+        &:focus {
+          outline: none;
         }
 
         i {
