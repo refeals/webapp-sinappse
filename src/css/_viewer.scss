@@ -267,6 +267,8 @@ body.viewermode {
               height: calc(85vw / 2);
               border-radius: 50%;
               margin: 0 auto;
+              background: no-repeat center center;
+              background-size: contain;
             }
             .speaker-name {
               color: #222;
