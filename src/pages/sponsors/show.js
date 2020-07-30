@@ -11,9 +11,9 @@ const Sponsor = ({ match }) => {
 
   if (isUndefined(spn)) {
     if (isEmpty(sponsors)) {
-      return <Redirect to={`/${event.id}`} />
+      return <Redirect to={`/${event.slug}`} />
     } else {
-      return <Redirect to={`/${event.id}/sponsors`} />
+      return <Redirect to={`/${event.slug}/sponsors`} />
     }
   }
 

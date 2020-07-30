@@ -11,9 +11,9 @@ const Speaker = ({ match }) => {
 
   if (isUndefined(spk)) {
     if (isEmpty(speakers)) {
-      return <Redirect to={`/${event.id}`} />
+      return <Redirect to={`/${event.slug}`} />
     } else {
-      return <Redirect to={`/${event.id}/speakers`} />
+      return <Redirect to={`/${event.slug}/speakers`} />
     }
   }
 

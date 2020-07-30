@@ -11,9 +11,9 @@ const Exhibitor = ({ match }) => {
 
   if (isUndefined(exh)) {
     if (isEmpty(exhibitors)) {
-      return <Redirect to={`/${event.id}`} />
+      return <Redirect to={`/${event.slug}`} />
     } else {
-      return <Redirect to={`/${event.id}/exhibitors`} />
+      return <Redirect to={`/${event.slug}/exhibitors`} />
     }
   }
 

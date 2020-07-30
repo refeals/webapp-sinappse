@@ -10,7 +10,7 @@ const Livestream = () => {
     return lives.map((live) => {
       return (
         <Link
-          to={`/${event.id}/lives/${live.id}`}
+          to={`/${event.slug}/lives/${live.id}`}
           key={live.id}
           className="nounderline"
         >

@@ -9,7 +9,10 @@ const Speakers = () => {
   const renderSpeakerList = () => {
     return speakers.map((spk) => {
       return (
-        <Link to={`/${event.id}/speakers/${spk.speakerid}`} key={spk.speakerid}>
+        <Link
+          to={`/${event.slug}/speakers/${spk.speakerid}`}
+          key={spk.speakerid}
+        >
           <li className="speaker-block">
             <div
               className="speaker-img"

@@ -17,9 +17,9 @@ const Abstract = ({ match }) => {
 
   if (isUndefined(abs)) {
     if (isEmpty(abstracts)) {
-      return <Redirect to={`/${event.id}`} />
+      return <Redirect to={`/${event.slug}`} />
     } else {
-      return <Redirect to={`/${event.id}/abstracts`} />
+      return <Redirect to={`/${event.slug}/abstracts`} />
     }
   }
   if (localStorage.getItem(`abstract-${abs.abstractid}`)) {

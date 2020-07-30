@@ -9,7 +9,7 @@ const Sponsors = () => {
   const renderSponsorList = () => {
     return sponsors.map((spn) => {
       return (
-        <Link to={`/${event.id}/sponsors/${spn.id}`} key={spn.id}>
+        <Link to={`/${event.slug}/sponsors/${spn.id}`} key={spn.id}>
           <li className="sponsor-block">
             <img
               src={spn.image_url}

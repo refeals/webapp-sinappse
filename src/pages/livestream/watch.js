@@ -17,9 +17,9 @@ const Watch = ({ match }) => {
 
   if (isUndefined(live)) {
     if (isEmpty(lives)) {
-      return <Redirect to={`/${event.id}`} />
+      return <Redirect to={`/${event.slug}`} />
     } else {
-      return <Redirect to={`/${event.id}/lives`} />
+      return <Redirect to={`/${event.slug}/lives`} />
     }
   }
 

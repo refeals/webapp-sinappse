@@ -18,7 +18,7 @@ const Program = () => {
     return event["categories-list"].map((cat) => {
       return (
         <Link
-          to={`/${event.id}/program/${cat.categoryid}`}
+          to={`/${event.slug}/program/${cat.categoryid}`}
           key={cat.categoryid}
         >
           <li

@@ -26,9 +26,9 @@ const Talk = ({ match }) => {
 
   if (isUndefined(talk)) {
     if (isEmpty(programs)) {
-      return <Redirect to={`/${event.id}`} />
+      return <Redirect to={`/${event.slug}`} />
     } else {
-      return <Redirect to={`/${event.id}/program`} />
+      return <Redirect to={`/${event.slug}/program`} />
     }
   }
 
