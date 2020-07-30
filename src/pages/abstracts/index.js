@@ -11,7 +11,7 @@ const Abstracts = () => {
       return (
         <Link
           key={abs.abstractid}
-          to={`/${event.id}/abstracts/${abs.abstractid}`}
+          to={`/${event.slug}/abstracts/${abs.abstractid}`}
         >
           <li className="abstract-block">
             <div className="abstract-title">{abs.title}</div>

@@ -1,17 +1,18 @@
-import { api } from "../api"
 import { GET_EVENT } from "../actions/action_types"
-
+import { api } from "../api"
 import { getToken } from "../api/auth"
 
-export const getEvent = (event_id, callback) => (dispatch, getState) => {
+export const getEvent = (slug, callback, err) => (dispatch, getState) => {
   api
-    .get(`/act.php?action=evt-details&event=${event_id}`, {
+    .get(`/act.php?action=v2/event&slug=${slug}`, {
       headers: { Authorization: `Bearer ${getToken()}` }
     })
     .then((response) => {
-      if (response.data.success)
-        dispatch({ type: GET_EVENT, payload: response.data.msg })
-      else throw Object.assign(new Error(response.data.msg), { code: 401 })
+      if (response.data.success && response.data.data.id)
+        dispatch({ type: GET_EVENT, payload: response.data.data })
+      else {
+        if (err) err()
+      }
     })
     .then(() => callback && callback())
     .catch((err) => console.log(err))

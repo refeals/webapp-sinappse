@@ -20,9 +20,9 @@ const Category = ({ match }) => {
 
   if (isEmpty(cat)) {
     if (isEmpty(programs)) {
-      return <Redirect to={`/${event.id}`} />
+      return <Redirect to={`/${event.slug}`} />
     } else {
-      return <Redirect to={`/${event.id}/program`} />
+      return <Redirect to={`/${event.slug}/program`} />
     }
   }
 
@@ -30,7 +30,7 @@ const Category = ({ match }) => {
     return cat[index].value.map((c) => {
       return (
         <Link
-          to={`/${event.id}/program/${c.talkCategory}/${c.talkID}`}
+          to={`/${event.slug}/program/${c.talkCategory}/${c.talkID}`}
           key={c.talkID}
           className="nounderline"
         >

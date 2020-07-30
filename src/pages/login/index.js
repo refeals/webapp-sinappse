@@ -1,3 +1,4 @@
+import { isUndefined } from "lodash"
 import React, { useEffect, useState } from "react"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Link, useHistory } from "react-router-dom"
@@ -13,8 +14,7 @@ import bg from "../../images/bg_138.jpg"
 import { persistor } from "../../store"
 
 const Login = () => {
-  const state = useSelector((state) => state, shallowEqual)
-  const { event } = state
+  const event = useSelector((state) => state.event, shallowEqual)
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -30,7 +30,7 @@ const Login = () => {
 
   const handleLogin = () => {
     dispatch(
-      doLogin(email, passwd, event.id, () => {
+      doLogin(email, passwd, event.slug, () => {
         getEventInformation()
       })
     )
@@ -53,7 +53,7 @@ const Login = () => {
         .then((res) => {
           // console.log(res)
           dispatch({ type: SHOW_TOP_MENU })
-          history.push(`/${event.id}`)
+          history.push(`/${event.slug}`)
         })
         .catch((err) => {
           console.log(err)
@@ -79,7 +79,12 @@ const Login = () => {
             <strong>Desenvolvido por Sinappse</strong>
           </p>
           <div className="buttons">
-            <button onClick={() => setPage(1)}>Acessar</button>
+            <button
+              onClick={() => !isUndefined(event.id) && setPage(1)}
+              disabled={isUndefined(event.id)}
+            >
+              Acessar
+            </button>
             {/* <button onClick={() => setPage(2)}>Cadastrar</button> */}
           </div>
         </footer>

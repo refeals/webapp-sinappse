@@ -2,6 +2,7 @@ import { isUndefined } from "lodash"
 import React, { lazy, Suspense, useEffect } from "react"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Route, useHistory } from "react-router-dom"
+import { toast } from "react-toastify"
 import { GET_USER, SHOW_TOP_MENU } from "./actions/action_types"
 import { doLogout } from "./actions/auth_actions"
 import { getEvent } from "./actions/event_actions"
@@ -33,10 +34,14 @@ const RoutesEvent = ({ match }) => {
   const history = useHistory()
 
   useEffect(() => {
-    if (isUndefined(event.id) || event.id !== match.params.event_id) {
-      dispatch(getEvent(match.params.event_id))
+    if (isUndefined(event.id) || event.slug !== match.params.slug) {
+      dispatch(
+        getEvent(match.params.slug, null, () => {
+          toast(`Evento '${match.params.slug}' não encontrado`)
+        })
+      )
     }
-  }, [dispatch, match.params.event_id, event.id])
+  }, [dispatch, match.params.slug, event.id, event.slug])
 
   useEffect(() => {
     if (localStorage.getItem(`@sinappse-user-token`)) {
@@ -46,19 +51,21 @@ const RoutesEvent = ({ match }) => {
   }, [dispatch, event.id])
 
   useEffect(() => {
-    if (user.event && user.event !== match.params.event_id) {
+    if (user.event && user.event !== match.params.slug) {
       dispatch(doLogout())
-      history.push(`/${match.params.event_id}`)
+      history.push(`/${match.params.slug}`)
     }
-  }, [user.event, match.params.event_id, dispatch, history])
+  }, [user.event, match.params.slug, dispatch, history])
 
   useEffect(() => {
     document.getElementById("root").className = ""
   }, [])
 
-  if (event.id) {
-    setManifest(event)
-  }
+  useEffect(() => {
+    if (event.id) {
+      setManifest(event)
+    }
+  }, [event])
 
   if (!localStorage.getItem(`@sinappse-user-token`)) {
     return (
@@ -68,7 +75,7 @@ const RoutesEvent = ({ match }) => {
     )
   }
 
-  const hide = match.path === "/:event_id" && match.isExact ? "hide" : ""
+  const hide = match.path === "/:slug" && match.isExact ? "hide" : ""
 
   const sections = event.sections
     .filter((s) => s.type !== "WEBVIEW")

@@ -26,8 +26,8 @@ export const doLogin = (email, passwd, event, callback) => (
     .catch((err) => console.log(err))
 }
 
-export const doLogout = (event_id) => (dispatch, getState) => {
-  dispatch({ type: LOGOUT, payload: { event_id } })
+export const doLogout = () => (dispatch, getState) => {
+  dispatch({ type: LOGOUT, payload: {} })
 }
 
 export const doLogoutExpiredToken = () => (dispatch, getState) => {
