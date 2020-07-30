@@ -110,7 +110,6 @@ const Login = () => {
           <div className="social-media-buttons">
             <FacebookLogin
               appId={process.env.REACT_APP_FACEBOOK_APP_ID}
-              autoLoad
               fields="name,email,picture"
               render={({ onClick }) => (
                 <button onClick={() => onClick(facebookCallback)}>
