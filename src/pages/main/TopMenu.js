@@ -11,7 +11,7 @@ const TopMenu = () => {
   const history = useHistory()
 
   const redirectToHome = () => {
-    history.push(`/${event.id}`)
+    history.push(`/${event.slug}`)
   }
 
   const redirectToBack = () => {
@@ -20,8 +20,8 @@ const TopMenu = () => {
 
   const handleLogout = () => {
     dispatch({ type: HIDE_TOP_MENU })
-    dispatch(doLogout(event.id))
-    history.push(`/${event.id}`)
+    dispatch(doLogout())
+    history.push(`/${event.slug}`)
   }
 
   const style = {

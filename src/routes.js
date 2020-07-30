@@ -39,7 +39,7 @@ const Routes = () => {
         <TopMenu />
         <Switch>
           <Route path="/" exact render={redirectToSinappse} />
-          <Route path="/:event_id" component={RoutesEvent} />
+          <Route path="/:slug" component={RoutesEvent} />
           {/* <Route path="*" render={() => <Redirect to="/" />} /> */}
         </Switch>
       </BrowserRouter>

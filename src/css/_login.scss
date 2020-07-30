@@ -49,6 +49,12 @@
         &:focus {
           outline: none;
         }
+
+        &:disabled {
+          background-color: $color--inactive;
+          color: rgba(255, 255, 255, 0.5);
+          cursor: not-allowed;
+        }
       }
     }
   }
