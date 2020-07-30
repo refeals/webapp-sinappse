@@ -17,7 +17,7 @@ const Speakers = () => {
             <div
               className="speaker-img"
               style={{
-                background: `url(${spk.image_url}) no-repeat center center`
+                backgroundImage: `url(${spk.image_url})`
               }}
               alt={spk.name}
             />
