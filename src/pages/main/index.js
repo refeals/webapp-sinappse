@@ -10,24 +10,24 @@ const Main = () => {
   //   dispatch({ type: SHOW_TOP_MENU })
   // }, [dispatch])
 
-  const setSectionUrl = ({ type, eventid, params }) => {
+  const setSectionUrl = ({ type, params }) => {
     switch (type) {
       case "PROGRAM":
-        return `/${eventid}/program`
+        return `/${event.slug}/program`
       case "SPEAKERS":
-        return `/${eventid}/speakers`
+        return `/${event.slug}/speakers`
       case "ABSTRACTS":
-        return `/${eventid}/abstracts`
+        return `/${event.slug}/abstracts`
       case "EXHIBITORS":
-        return `/${eventid}/exhibitors`
+        return `/${event.slug}/exhibitors`
       case "SPONSORS":
-        return `/${eventid}/sponsors`
+        return `/${event.slug}/sponsors`
       case "MAP":
-        return `/${eventid}/map`
+        return `/${event.slug}/map`
       case "LIVESTREAM":
-        return `/${eventid}/lives`
+        return `/${event.slug}/lives`
       case "WEBVIEW":
-        return `/${eventid}/${params.type}`
+        return `/${event.slug}/${params.type}`
 
       default:
         return "#"
