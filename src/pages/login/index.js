@@ -6,7 +6,11 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Link, Redirect, useHistory } from "react-router-dom"
 import { toast } from "react-toastify"
 import { getAbstracts } from "../../actions/abstract_actions"
-import { SET_INITIAL, SHOW_TOP_MENU } from "../../actions/action_types"
+import {
+  HIDE_TOP_MENU,
+  SET_INITIAL,
+  SHOW_TOP_MENU
+} from "../../actions/action_types"
 import { doLogin, doSignUp } from "../../actions/auth_actions"
 import { getExhibitors } from "../../actions/exhibitor_actions"
 import { getLivestream } from "../../actions/livestream_actions"
@@ -16,7 +20,7 @@ import { getSponsors } from "../../actions/sponsor_actions"
 import bg from "../../images/bg_138.jpg"
 import { persistor } from "../../store"
 
-const Login = ({ location }) => {
+const Login = ({ match, location }) => {
   const event = useSelector((state) => state.event, shallowEqual)
   const dispatch = useDispatch()
   const history = useHistory()
@@ -26,8 +30,6 @@ const Login = ({ location }) => {
   const [email, setEmail] = useState("")
   const [passwd, setPasswd] = useState("")
 
-  const linkedinResponse = queryString.parse(location.search)
-
   useEffect(() => {
     dispatch({ type: SET_INITIAL })
     persistor.purge()
@@ -36,7 +38,6 @@ const Login = ({ location }) => {
   useEffect(() => {
     if (localStorage.linkedinCode && event.id) {
       const accessToken = localStorage.linkedinCode
-      localStorage.removeItem("linkedinCode")
 
       dispatch(
         doLogin(
@@ -47,7 +48,11 @@ const Login = ({ location }) => {
           },
           {
             onSuccess: () => getEventInformation(),
-            onError: (err) => toast(err)
+            onError: (err) => {
+              localStorage.removeItem("linkedinCode")
+              localStorage.removeItem("linkedinState")
+              toast(err)
+            }
           }
         )
       )
@@ -55,15 +60,23 @@ const Login = ({ location }) => {
   }, [event.id, dispatch])
 
   useEffect(() => {
+    const linkedinResponse = queryString.parse(location.search)
+
     if (
       !isEmpty(linkedinResponse) &&
       !isEmpty(linkedinResponse.code) &&
       !isEmpty(linkedinResponse.state)
     ) {
       localStorage.setItem("linkedinCode", linkedinResponse.code)
-      return <Redirect to={`/${linkedinResponse.state}`} />
+      localStorage.setItem("linkedinState", linkedinResponse.state)
     }
-  }, [linkedinResponse])
+  }, [location.search])
+
+  if (match.url === "/signin-linkedin") {
+    if (localStorage.getItem("linkedinState")) {
+      return <Redirect to={`/${localStorage.getItem("linkedinState")}`} />
+    }
+  }
 
   const handleLogin = () => {
     dispatch(
@@ -109,6 +122,7 @@ const Login = ({ location }) => {
 
   const getEventInformation = () => {
     if (event.id) {
+      dispatch({ type: SHOW_TOP_MENU })
       Promise.all([
         dispatch(getLivestream(event.id)),
         dispatch(getPrograms(event.id)),
@@ -118,11 +132,17 @@ const Login = ({ location }) => {
         dispatch(getSponsors(event.id))
       ])
         .then((res) => {
-          // console.log(res)
-          dispatch({ type: SHOW_TOP_MENU })
+          console.log("success")
+          localStorage.removeItem("linkedinCode")
+          localStorage.removeItem("linkedinState")
           history.push(`/${event.slug}`)
         })
         .catch((err) => {
+          dispatch({ type: HIDE_TOP_MENU })
+          console.log("fail")
+          localStorage.removeItem("linkedinCode")
+          localStorage.removeItem("linkedinState")
+          history.push(`/${event.slug}`)
           console.log(err)
         })
     } else {
@@ -146,13 +166,21 @@ const Login = ({ location }) => {
             <strong>Desenvolvido por Sinappse</strong>
           </p>
           <div className="buttons">
-            <button
-              onClick={() => !isUndefined(event.id) && setPage(1)}
-              disabled={isUndefined(event.id)}
-            >
-              Acessar
-            </button>
-            {/* <button onClick={() => setPage(2)}>Cadastrar</button> */}
+            {event.id ? (
+              <>
+                <button
+                  onClick={() => !isUndefined(event.id) && setPage(1)}
+                  disabled={isUndefined(event.id)}
+                >
+                  Acessar
+                </button>
+                {/* <button onClick={() => setPage(2)}>Cadastrar</button> */}
+              </>
+            ) : (
+              <button onClick={() => undefined} disabled={true}>
+                <i className="fa fa-spinner fa-spin" />
+              </button>
+            )}
           </div>
         </footer>
       </>

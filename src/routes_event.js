@@ -42,8 +42,8 @@ const RoutesEvent = ({ match }) => {
           })
         )
       }
-    }
-  }, [dispatch, match.params.slug, event.id, event.slug])
+    } // eslint-disable-next-line
+  }, [dispatch, match.params.slug, event.slug])
 
   useEffect(() => {
     if (localStorage.getItem(`@sinappse-user-token`)) {

@@ -1,4 +1,4 @@
-import { GET_EVENT, SET_INITIAL } from "../actions/action_types"
+import { GET_EVENT } from "../actions/action_types"
 
 const initialState = {
   sections: [],
@@ -36,8 +36,8 @@ export default (state = initialState, action) => {
     case GET_EVENT:
       return setWebviewParams(action.payload)
 
-    case SET_INITIAL:
-      return initialState
+    // case SET_INITIAL:
+    //   return initialState
     default:
       return state
   }
