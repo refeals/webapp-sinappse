@@ -1,9 +1,9 @@
-import { isUndefined } from "lodash"
+import { isEmpty, isUndefined } from "lodash"
+import queryString from "query-string"
 import React, { useEffect, useState } from "react"
 import FacebookLogin from "react-facebook-login"
-import { LinkedIn } from "react-linkedin-login-oauth2"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
-import { Link, useHistory } from "react-router-dom"
+import { Link, Redirect, useHistory } from "react-router-dom"
 import { toast } from "react-toastify"
 import { getAbstracts } from "../../actions/abstract_actions"
 import { SET_INITIAL, SHOW_TOP_MENU } from "../../actions/action_types"
@@ -16,7 +16,7 @@ import { getSponsors } from "../../actions/sponsor_actions"
 import bg from "../../images/bg_138.jpg"
 import { persistor } from "../../store"
 
-const Login = () => {
+const Login = ({ location }) => {
   const event = useSelector((state) => state.event, shallowEqual)
   const dispatch = useDispatch()
   const history = useHistory()
@@ -26,10 +26,44 @@ const Login = () => {
   const [email, setEmail] = useState("")
   const [passwd, setPasswd] = useState("")
 
+  const linkedinResponse = queryString.parse(location.search)
+
   useEffect(() => {
     dispatch({ type: SET_INITIAL })
     persistor.purge()
   }, [dispatch])
+
+  useEffect(() => {
+    if (localStorage.linkedinCode && event.id) {
+      const accessToken = localStorage.linkedinCode
+      localStorage.removeItem("linkedinCode")
+
+      dispatch(
+        doLogin(
+          {
+            data: { access_token: accessToken },
+            type: "linkedin",
+            event_id: event.id
+          },
+          {
+            onSuccess: () => getEventInformation(),
+            onError: (err) => toast(err)
+          }
+        )
+      )
+    } // eslint-disable-next-line
+  }, [event.id, dispatch])
+
+  useEffect(() => {
+    if (
+      !isEmpty(linkedinResponse) &&
+      !isEmpty(linkedinResponse.code) &&
+      !isEmpty(linkedinResponse.state)
+    ) {
+      localStorage.setItem("linkedinCode", linkedinResponse.code)
+      return <Redirect to={`/${linkedinResponse.state}`} />
+    }
+  }, [linkedinResponse])
 
   const handleLogin = () => {
     dispatch(
@@ -67,8 +101,10 @@ const Login = () => {
     )
   }
 
-  const requestLinkedin = (code) => {
-    console.log(code)
+  const requestLinkedin = () => {
+    window.location.replace(
+      `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.REACT_APP_LINKEDIN_CLIENT_ID}&scope=r_liteprofile&state=${event.slug}&redirect_uri=${process.env.REACT_APP_LINKEDIN_REDIRECT_URI}`
+    )
   }
 
   const getEventInformation = () => {
@@ -148,18 +184,9 @@ const Login = () => {
               icon={<i className="fab fa-facebook" />}
               textButton=""
             />
-            <LinkedIn
-              clientId={process.env.REACT_APP_LINKEDIN_CLIENT_ID}
-              onFailure={() => console.log("onFailure")}
-              onSuccess={requestLinkedin}
-              redirectUri="http://localhost:3000/signin-linkedin"
-              scope="r_liteprofile+r_emailaddress+w_member_social"
-              renderElement={({ onClick, disabled }) => (
-                <button onClick={onClick} disabled={disabled}>
-                  <i className="fab fa-linkedin" />
-                </button>
-              )}
-            />
+            <button onClick={requestLinkedin}>
+              <i className="fab fa-linkedin" />
+            </button>
           </div>
 
           <p>OU</p>
