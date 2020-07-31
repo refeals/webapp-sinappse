@@ -1,11 +1,13 @@
 import { isUndefined } from "lodash"
 import React, { useEffect, useState } from "react"
 import FacebookLogin from "react-facebook-login"
+import { LinkedIn } from "react-linkedin-login-oauth2"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Link, useHistory } from "react-router-dom"
+import { toast } from "react-toastify"
 import { getAbstracts } from "../../actions/abstract_actions"
 import { SET_INITIAL, SHOW_TOP_MENU } from "../../actions/action_types"
-import { doLogin } from "../../actions/auth_actions"
+import { doLogin, doSignUp } from "../../actions/auth_actions"
 import { getExhibitors } from "../../actions/exhibitor_actions"
 import { getLivestream } from "../../actions/livestream_actions"
 import { getPrograms } from "../../actions/programs_actions"
@@ -31,23 +33,42 @@ const Login = () => {
 
   const handleLogin = () => {
     dispatch(
-      doLogin(email, passwd, event.slug, () => {
+      doLogin(
+        { data: { email, passwd }, type: "email", event_id: event.id },
+        {
+          onSuccess: () => getEventInformation(),
+          onError: (err) => toast(err)
+        }
+      )
+    )
+  }
+
+  const handleSignUp = ({ user }) => {
+    dispatch(
+      doSignUp({ ...user, event_id: event.id }, () => {
         getEventInformation()
       })
     )
   }
 
-  const handleSignUp = () => {
-    console.log("handleSignUp")
+  const responseFacebook = ({ accessToken }) => {
+    dispatch(
+      doLogin(
+        {
+          data: { access_token: accessToken },
+          type: "facebook",
+          event_id: event.id
+        },
+        {
+          onSuccess: () => getEventInformation(),
+          onError: (err) => toast(err)
+        }
+      )
+    )
   }
 
-  const responseFacebook = (response) => {
-    console.log(response)
-    // if (response.accessToken) {
-    //   setLogin(true)
-    // } else {
-    //   setLogin(false)
-    // }
+  const requestLinkedin = (code) => {
+    console.log(code)
   }
 
   const getEventInformation = () => {
@@ -127,9 +148,22 @@ const Login = () => {
               icon={<i className="fab fa-facebook" />}
               textButton=""
             />
-            <button onClick={() => console.log("linkedin login")}>
-              <i className="fab fa-linkedin"></i>
-            </button>
+            <LinkedIn
+              clientId={process.env.REACT_APP_LINKEDIN_CLIENT_ID}
+              onFailure={() => console.log("onFailure")}
+              onSuccess={requestLinkedin}
+              redirectUri="https://sinappse.com"
+              // renderElement={({ onClick, disabled }) => (
+              //   <button onClick={onClick(requestLinkedin)}>
+              //     <i className="fab fa-linkedin"></i>
+              //   </button>
+              // )}
+              renderElement={({ onClick, disabled }) => (
+                <button onClick={onClick} disabled={disabled}>
+                  <i className="fab fa-linkedin" />
+                </button>
+              )}
+            />
           </div>
 
           <p>OU</p>

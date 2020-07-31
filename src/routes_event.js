@@ -51,11 +51,11 @@ const RoutesEvent = ({ match }) => {
   }, [dispatch, event.id])
 
   useEffect(() => {
-    if (user.event && user.event !== match.params.slug) {
+    if (user.event_slug && user.event_slug !== match.params.slug) {
       dispatch(doLogout())
       history.push(`/${match.params.slug}`)
     }
-  }, [user.event, match.params.slug, dispatch, history])
+  }, [user.event_slug, match.params.slug, dispatch, history])
 
   useEffect(() => {
     document.getElementById("root").className = ""

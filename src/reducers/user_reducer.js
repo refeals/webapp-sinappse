@@ -1,4 +1,10 @@
-import { GET_USER, LOGIN, LOGOUT, SET_INITIAL } from "../actions/action_types"
+import {
+  GET_USER,
+  LOGIN,
+  LOGOUT,
+  SET_INITIAL,
+  SIGNUP
+} from "../actions/action_types"
 
 const initialState = {}
 
@@ -12,11 +18,12 @@ const parseUserData = (user) => {
 export default (state = initialState, action) => {
   switch (action.type) {
     case LOGIN:
+    case SIGNUP:
       localStorage.setItem(
         `@sinappse-user-token`,
-        JSON.stringify({ ...action.payload, event: action.event })
+        JSON.stringify({ ...action.payload, event_slug: action.event_slug })
       )
-      return parseUserData(action.payload)
+      return parseUserData({ ...action.payload, event_slug: action.event_slug })
 
     case LOGOUT:
       localStorage.removeItem(`@sinappse-user-token`)
