@@ -27,9 +27,11 @@ import RoutesEvent from "./routes_event"
 // )
 
 const redirectToSinappse = () => {
-  if (process.env.NODE_ENV === "development") return <Redirect to="/138" />
+  if (process.env.NODE_ENV === "development") {
+    return <Redirect to="/dev" />
+  }
 
-  window.location.replace("http://www.sinappse.com.br")
+  window.location.replace("http://www.sinappse.com")
 }
 
 const Routes = () => {
