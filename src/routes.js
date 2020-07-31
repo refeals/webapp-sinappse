@@ -1,4 +1,5 @@
 import React from "react"
+import { LinkedInPopUp } from "react-linkedin-login-oauth2"
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom"
 import TopMenu from "./pages/main/TopMenu"
 import RoutesEvent from "./routes_event"
@@ -41,6 +42,7 @@ const Routes = () => {
         <TopMenu />
         <Switch>
           <Route path="/" exact render={redirectToSinappse} />
+          <Route path="/linkedin" exact render={LinkedInPopUp} />
           <Route path="/:slug" component={RoutesEvent} />
           {/* <Route path="*" render={() => <Redirect to="/" />} /> */}
         </Switch>

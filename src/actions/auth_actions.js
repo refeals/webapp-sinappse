@@ -2,18 +2,19 @@ import { toast } from "react-toastify"
 import { api } from "../api"
 import { LOGIN, LOGOUT, LOGOUT_EXPIRED_TOKEN, SIGNUP } from "./action_types"
 
-export const doLogin = (email, passwd, event_slug, { onSuccess, onError }) => (
+export const doLogin = ({ data, type, event_id }, { onSuccess, onError }) => (
   dispatch
 ) => {
   const form = new FormData()
-  form.set("email", email)
-  form.set("passwd", passwd)
+  form.set("data", JSON.stringify(data))
+  form.set("type", type)
+  form.set("event_id", event_id)
 
   api
-    .post(`/act.php?action=v2/login`, form)
+    .post(`/act.php`, form, { params: { action: "v2/login" } })
     .then(({ data }) => {
       if (data.success) {
-        dispatch({ type: LOGIN, payload: data.data, event_slug })
+        dispatch({ type: LOGIN, payload: data.data, event_id })
       } else {
         throw data.msg
       }
@@ -22,20 +23,15 @@ export const doLogin = (email, passwd, event_slug, { onSuccess, onError }) => (
     .catch((err) => onError(err))
 }
 
-export const doSignUp = ({ data, type, event }, { onSuccess, onError }) => (
+export const doSignUp = ({ data, event }, { onSuccess, onError }) => (
   dispatch
 ) => {
-  let form = new FormData()
-
-  form.set("data", data)
-  form.set("type", type)
+  const form = new FormData()
+  form.set("data", JSON.stringify(data))
   form.set("event_id", event.id)
 
   api
-    .post(`/act.php?`, form, {
-      params: { action: "v2/signup" },
-      headers: { "Content-Type": "multipart/form-data" }
-    })
+    .post(`/act.php`, form, { params: { action: "v2/signup" } })
     .then(({ data }) => {
       if (data.success) {
         dispatch({ type: SIGNUP, payload: data.data, event_slug: event.slug })

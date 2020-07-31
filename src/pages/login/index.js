@@ -1,6 +1,7 @@
 import { isUndefined } from "lodash"
 import React, { useEffect, useState } from "react"
 import FacebookLogin from "react-facebook-login"
+import { LinkedIn } from "react-linkedin-login-oauth2"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Link, useHistory } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -32,10 +33,13 @@ const Login = () => {
 
   const handleLogin = () => {
     dispatch(
-      doLogin(email, passwd, event.slug, {
-        onSuccess: () => getEventInformation(),
-        onError: (err) => toast(err)
-      })
+      doLogin(
+        { data: { email, passwd }, type: "email", event_id: event.id },
+        {
+          onSuccess: () => getEventInformation(),
+          onError: (err) => toast(err)
+        }
+      )
     )
   }
 
@@ -49,14 +53,22 @@ const Login = () => {
 
   const responseFacebook = ({ accessToken }) => {
     dispatch(
-      doSignUp(
-        { data: { accessToken }, type: "facebook", event },
+      doLogin(
+        {
+          data: { access_token: accessToken },
+          type: "facebook",
+          event_id: event.id
+        },
         {
           onSuccess: () => getEventInformation(),
           onError: (err) => toast(err)
         }
       )
     )
+  }
+
+  const requestLinkedin = (code) => {
+    console.log(code)
   }
 
   const getEventInformation = () => {
@@ -136,9 +148,22 @@ const Login = () => {
               icon={<i className="fab fa-facebook" />}
               textButton=""
             />
-            <button onClick={() => console.log("linkedin login")}>
-              <i className="fab fa-linkedin"></i>
-            </button>
+            <LinkedIn
+              clientId={process.env.REACT_APP_LINKEDIN_CLIENT_ID}
+              onFailure={() => console.log("onFailure")}
+              onSuccess={requestLinkedin}
+              redirectUri="https://sinappse.com"
+              // renderElement={({ onClick, disabled }) => (
+              //   <button onClick={onClick(requestLinkedin)}>
+              //     <i className="fab fa-linkedin"></i>
+              //   </button>
+              // )}
+              renderElement={({ onClick, disabled }) => (
+                <button onClick={onClick} disabled={disabled}>
+                  <i className="fab fa-linkedin" />
+                </button>
+              )}
+            />
           </div>
 
           <p>OU</p>
