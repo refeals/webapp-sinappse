@@ -152,12 +152,8 @@ const Login = () => {
               clientId={process.env.REACT_APP_LINKEDIN_CLIENT_ID}
               onFailure={() => console.log("onFailure")}
               onSuccess={requestLinkedin}
-              redirectUri="https://sinappse.com"
-              // renderElement={({ onClick, disabled }) => (
-              //   <button onClick={onClick(requestLinkedin)}>
-              //     <i className="fab fa-linkedin"></i>
-              //   </button>
-              // )}
+              redirectUri="http://localhost:3000/signin-linkedin"
+              scope="r_liteprofile+r_emailaddress+w_member_social"
               renderElement={({ onClick, disabled }) => (
                 <button onClick={onClick} disabled={disabled}>
                   <i className="fab fa-linkedin" />

@@ -42,7 +42,7 @@ const Routes = () => {
         <TopMenu />
         <Switch>
           <Route path="/" exact render={redirectToSinappse} />
-          <Route path="/linkedin" exact render={LinkedInPopUp} />
+          <Route path="/signin-linkedin" exact render={LinkedInPopUp} />
           <Route path="/:slug" component={RoutesEvent} />
           {/* <Route path="*" render={() => <Redirect to="/" />} /> */}
         </Switch>
