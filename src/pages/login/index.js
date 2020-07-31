@@ -3,9 +3,10 @@ import React, { useEffect, useState } from "react"
 import FacebookLogin from "react-facebook-login"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Link, useHistory } from "react-router-dom"
+import { toast } from "react-toastify"
 import { getAbstracts } from "../../actions/abstract_actions"
 import { SET_INITIAL, SHOW_TOP_MENU } from "../../actions/action_types"
-import { doLogin } from "../../actions/auth_actions"
+import { doLogin, doSignUp } from "../../actions/auth_actions"
 import { getExhibitors } from "../../actions/exhibitor_actions"
 import { getLivestream } from "../../actions/livestream_actions"
 import { getPrograms } from "../../actions/programs_actions"
@@ -31,23 +32,31 @@ const Login = () => {
 
   const handleLogin = () => {
     dispatch(
-      doLogin(email, passwd, event.slug, () => {
+      doLogin(email, passwd, event.slug, {
+        onSuccess: () => getEventInformation(),
+        onError: (err) => toast(err)
+      })
+    )
+  }
+
+  const handleSignUp = ({ user }) => {
+    dispatch(
+      doSignUp({ ...user, event_id: event.id }, () => {
         getEventInformation()
       })
     )
   }
 
-  const handleSignUp = () => {
-    console.log("handleSignUp")
-  }
-
-  const responseFacebook = (response) => {
-    console.log(response)
-    // if (response.accessToken) {
-    //   setLogin(true)
-    // } else {
-    //   setLogin(false)
-    // }
+  const responseFacebook = ({ accessToken }) => {
+    dispatch(
+      doSignUp(
+        { data: { accessToken }, type: "facebook", event },
+        {
+          onSuccess: () => getEventInformation(),
+          onError: (err) => toast(err)
+        }
+      )
+    )
   }
 
   const getEventInformation = () => {
