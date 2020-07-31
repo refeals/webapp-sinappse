@@ -35,11 +35,13 @@ const RoutesEvent = ({ match }) => {
 
   useEffect(() => {
     if (isUndefined(event.id) || event.slug !== match.params.slug) {
-      dispatch(
-        getEvent(match.params.slug, null, () => {
-          toast(`Evento '${match.params.slug}' não encontrado`)
-        })
-      )
+      if (match.params.slug !== "signin-linkedin") {
+        dispatch(
+          getEvent(match.params.slug, null, () => {
+            toast(`Evento '${match.params.slug}' não encontrado`)
+          })
+        )
+      }
     }
   }, [dispatch, match.params.slug, event.id, event.slug])
 
