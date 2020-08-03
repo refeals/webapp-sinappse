@@ -151,14 +151,12 @@ const Login = ({ match, location }) => {
         dispatch(getSponsors(event.id))
       ])
         .then((res) => {
-          console.log("success")
           localStorage.removeItem("linkedinCode")
           localStorage.removeItem("linkedinState")
           history.push(`/${event.slug}`)
         })
         .catch((err) => {
           dispatch({ type: HIDE_TOP_MENU })
-          console.log("fail")
           localStorage.removeItem("linkedinCode")
           localStorage.removeItem("linkedinState")
           history.push(`/${event.slug}`)
