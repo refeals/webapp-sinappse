@@ -8,7 +8,6 @@ import { GET_USER, SHOW_TOP_MENU } from "./actions/action_types"
 import { doLogout } from "./actions/auth_actions"
 import { getEvent } from "./actions/event_actions"
 import "./css/load.scss"
-import setManifest from "./setManifest"
 import ViewerLoading from "./ViewerLoading"
 
 const Main = lazy(() => import("./pages/main"))
@@ -64,11 +63,11 @@ const RoutesEvent = ({ match }) => {
     document.getElementById("root").className = ""
   }, [])
 
-  useEffect(() => {
-    if (event.id) {
-      setManifest(event)
-    }
-  }, [event])
+  // useEffect(() => {
+  //   if (event.id) {
+  //     setManifest(event)
+  //   }
+  // }, [event])
 
   useEffect(() => {
     if (event.id === 138) {
