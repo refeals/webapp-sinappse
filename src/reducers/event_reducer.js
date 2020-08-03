@@ -1,3 +1,4 @@
+import { isNaN } from "lodash"
 import { GET_EVENT } from "../actions/action_types"
 
 const initialState = {
@@ -10,6 +11,7 @@ const initialState = {
 const setWebviewParams = (event) => {
   const ev = {
     ...event,
+    id: !isNaN(parseInt(event.id)) ? parseInt(event.id) : event.id,
     eventColor: event["event-color"],
     textColor: event["text-color"],
     sections: event.sections.map((s) => {
