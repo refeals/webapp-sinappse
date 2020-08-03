@@ -324,9 +324,11 @@ const Login = ({ match, location }) => {
           icon={<i className="fab fa-facebook" />}
           textButton=""
         />
-        <button onClick={requestLinkedin}>
-          <i className="fab fa-linkedin" />
-        </button>
+        <span style={{ transition: "opacity 0.5s ease 0s" }}>
+          <button onClick={requestLinkedin} className="linkedin">
+            <i className="fab fa-linkedin" />
+          </button>
+        </span>
       </div>
     )
   }
