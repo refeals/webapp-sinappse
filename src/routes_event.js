@@ -69,6 +69,15 @@ const RoutesEvent = ({ match }) => {
     }
   }, [event])
 
+  useEffect(() => {
+    if (event.id === 138) {
+      if (process.env.NODE_ENV === "production") {
+        console.log("Build time log: ")
+        console.log(preval`module.exports = new Date().toLocaleString();`)
+      }
+    }
+  }, [event.id])
+
   if (!localStorage.getItem(`@sinappse-user-token`)) {
     return (
       <Suspense fallback={<ViewerLoading />}>
