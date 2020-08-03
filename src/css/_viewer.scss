@@ -2,12 +2,26 @@
   position: fixed;
   height: 100vh;
   width: 100vw;
-  background: #00a157 url("../images/logo-white.png") 50% 50% no-repeat;
+  background: #00a157;
+  // background: #00a157 url("../images/logo-white.png") 50% 50% no-repeat;
   top: 0px;
   left: 0px;
   right: 0px;
   bottom: 0px;
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 90%;
+  }
+
+  i {
+    margin-top: 24px;
+    font-size: 24px;
+  }
 }
 a.nounderline {
   text-decoration: none;
