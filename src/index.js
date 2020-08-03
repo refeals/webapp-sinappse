@@ -1,3 +1,4 @@
+import preval from "preval.macro"
 import React from "react"
 import ReactDOM from "react-dom"
 import { Provider } from "react-redux"
@@ -7,6 +8,10 @@ import "./index.css"
 import * as serviceWorker from "./serviceWorker"
 import { persistor, store } from "./store"
 import ViewerLoading from "./ViewerLoading"
+
+if (process.env.NODE_ENV === "production") {
+  console.log(preval`module.exports = new Date().toLocaleString();`)
+}
 
 ReactDOM.render(
   <React.StrictMode>
