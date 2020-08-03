@@ -1,4 +1,5 @@
 import { isUndefined } from "lodash"
+import preval from "preval.macro"
 import React, { lazy, Suspense, useEffect } from "react"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Route, useHistory } from "react-router-dom"
