@@ -84,6 +84,10 @@
     .social-media-buttons {
       margin: 8px 0 20px;
 
+      > span {
+        transition: none !important;
+      }
+
       button,
       .button {
         position: relative;
