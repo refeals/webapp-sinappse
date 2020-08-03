@@ -4,17 +4,17 @@ const setManifest = (event) => {
     name: event["event-name"],
     icons: [
       {
-        src: "favicon.ico",
+        src: event.favicon ?? "favicon.ico",
         sizes: "64x64 32x32 24x24 16x16",
         type: "image/x-icon"
       },
       {
-        src: "logo192.png",
+        src: event.logo192 ?? "logo192.png",
         type: "image/png",
         sizes: "192x192"
       },
       {
-        src: "logo512.png",
+        src: event.logo512 ?? "logo512.png",
         type: "image/png",
         sizes: "512x512"
       }
