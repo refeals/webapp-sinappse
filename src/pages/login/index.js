@@ -1,6 +1,6 @@
 import { isEmpty, isUndefined } from "lodash"
 import queryString from "query-string"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import FacebookLogin from "react-facebook-login"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Link, Redirect, useHistory } from "react-router-dom"
@@ -33,6 +33,9 @@ const Login = ({ match, location }) => {
   const [confirmPasswd, setConfirmPasswd] = useState("")
 
   const [canClick, setCanClick] = useState(false)
+
+  const loginEmailInput = useRef(null)
+  const signupNameInput = useRef(null)
 
   useEffect(() => {
     dispatch({ type: SET_INITIAL })
@@ -86,6 +89,24 @@ const Login = ({ match, location }) => {
       }
     }
   }, [event.id])
+
+  useEffect(() => {
+    // login
+    if (page === 1) {
+      setEmail("")
+      setPasswd("")
+      loginEmailInput.current.focus()
+    }
+
+    // signup
+    if (page === 2) {
+      setName("")
+      setEmail("")
+      setPasswd("")
+      setConfirmPasswd("")
+      signupNameInput.current.focus()
+    }
+  }, [page])
 
   if (match.url === "/signin-linkedin") {
     if (localStorage.getItem("linkedinState")) {
@@ -239,6 +260,7 @@ const Login = ({ match, location }) => {
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              ref={loginEmailInput}
             />
             <input
               type="password"
@@ -287,6 +309,7 @@ const Login = ({ match, location }) => {
               placeholder="Nome"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              ref={signupNameInput}
             />
             <input
               type="text"
