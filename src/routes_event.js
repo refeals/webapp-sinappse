@@ -63,12 +63,6 @@ const RoutesEvent = ({ match }) => {
     document.getElementById("root").className = ""
   }, [])
 
-  // useEffect(() => {
-  //   if (event.id) {
-  //     setManifest(event)
-  //   }
-  // }, [event])
-
   useEffect(() => {
     if (event.id === 138) {
       if (process.env.NODE_ENV === "production") {
