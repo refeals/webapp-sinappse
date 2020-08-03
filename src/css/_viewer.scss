@@ -16,6 +16,10 @@
 
   img {
     width: 90%;
+
+    @media (min-width: 420px) {
+      width: auto;
+    }
   }
 
   i {
