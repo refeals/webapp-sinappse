@@ -21,8 +21,19 @@
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" id="manifest" />
-    <!-- <script src="https://meet.jit.si/external_api.js"></script> -->
+    <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" id="manifest" /> -->
+    <script>
+      const full = window.location.pathname
+      const parts = full.split("/")
+      const slug = parts[1]
+      link = document.createElement("link")
+      link.href =
+        "https://api2.sinappse.com/odb/act.php?action=v2%2Fmanifest&slug=" +
+        slug
+      // link.href = "https://src.getstudioyou.com/api/webstore/manifest/" + slug
+      link.rel = "manifest"
+      document.getElementsByTagName("head")[0].appendChild(link)
+    </script>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
