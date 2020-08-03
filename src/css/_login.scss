@@ -95,10 +95,16 @@
         font-size: 28px;
         width: 54px;
         height: 54px;
+        padding: 0;
 
         &:first-child {
           border-bottom-left-radius: 12px;
           border-top-left-radius: 12px;
+
+          &.linkedin {
+            border-bottom-left-radius: 0;
+            border-top-left-radius: 0;
+          }
         }
         &:last-child {
           border-right: 1px solid #fff;

@@ -32,6 +32,8 @@ const Login = ({ match, location }) => {
   const [passwd, setPasswd] = useState("")
   const [confirmPasswd, setConfirmPasswd] = useState("")
 
+  const [canClick, setCanClick] = useState(false)
+
   useEffect(() => {
     dispatch({ type: SET_INITIAL })
     persistor.purge()
@@ -76,6 +78,14 @@ const Login = ({ match, location }) => {
       localStorage.setItem("linkedinState", linkedinResponse.state)
     }
   }, [location.search])
+
+  useEffect(() => {
+    if (!isUndefined(event.id)) {
+      if (isUndefined(localStorage.linkedinCode)) {
+        setCanClick(true)
+      }
+    }
+  }, [event.id])
 
   if (match.url === "/signin-linkedin") {
     if (localStorage.getItem("linkedinState")) {
@@ -175,7 +185,7 @@ const Login = ({ match, location }) => {
             <strong>Desenvolvido por Sinappse</strong>
           </p>
           <div className="buttons">
-            {event.id ? (
+            {canClick ? (
               <>
                 <button
                   onClick={() => !isUndefined(event.id) && setPage(1)}
@@ -312,21 +322,17 @@ const Login = ({ match, location }) => {
         <FacebookLogin
           appId={process.env.REACT_APP_FACEBOOK_APP_ID}
           fields="name,email,picture"
-          // render={({ onClick }) => (
-          //   <button onClick={() => onClick(facebookCallback)}>
-          //     <i className="fab fa-facebook" />
-          //   </button>
-          // )}
-          // onFailure={() => toast("Não foi possível logar com seu Facebook")}
           disableMobileRedirect
           isMobile
           callback={responseFacebook}
           icon={<i className="fab fa-facebook" />}
           textButton=""
         />
-        <button onClick={requestLinkedin}>
-          <i className="fab fa-linkedin" />
-        </button>
+        <span style={{ transition: "opacity 0.5s ease 0s" }}>
+          <button onClick={requestLinkedin} className="linkedin">
+            <i className="fab fa-linkedin" />
+          </button>
+        </span>
       </div>
     )
   }
