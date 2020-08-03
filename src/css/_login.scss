@@ -74,7 +74,7 @@
   .form-content {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 70px);
+    height: 100vh;
 
     .text {
       margin-top: 25%;
@@ -128,11 +128,11 @@
     }
 
     .login-form {
-      width: 90%;
-      margin: 24px auto 0;
+      width: 100%;
+      margin: 0 auto;
 
       input {
-        width: 100%;
+        width: 90%;
         color: rgba(0, 0, 0, 0.8);
         background-color: #fff;
         margin-bottom: 4px;

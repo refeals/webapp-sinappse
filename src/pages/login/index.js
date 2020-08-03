@@ -105,10 +105,15 @@ const Login = ({ match, location }) => {
     )
   }
 
-  const handleSignUp = (user) => {
+  const handleSignUp = () => {
+    if (passwd !== confirmPasswd) {
+      toast("Senha e Confirmação não são iguais")
+      return
+    }
+
     dispatch(
       doSignUp(
-        { data: { ...user }, event },
+        { data: { name, email, passwd, confirmPasswd }, event },
         {
           onSuccess: () => getEventInformation(),
           onError: (err) => toast(err)
@@ -241,25 +246,23 @@ const Login = ({ match, location }) => {
               value={passwd}
               onChange={(e) => setPasswd(e.target.value)}
             />
-          </form>
 
-          <p className="forgot-signup">
-            <span onClick={() => setPage(3)}>Esqueci minha senha</span>
-            <span onClick={() => setPage(2)}>Cadastrar nova conta</span>
-          </p>
+            <p className="forgot-signup">
+              <span onClick={() => setPage(3)}>Esqueci minha senha</span>
+              <span onClick={() => setPage(2)}>Cadastrar nova conta</span>
+            </p>
+            <footer>
+              <div className="buttons">
+                <button type="submit">Entrar</button>
+              </div>
+            </footer>
+          </form>
         </div>
-        <footer>
-          <div className="buttons">
-            <button onClick={handleLogin}>Entrar</button>
-          </div>
-        </footer>
       </>
     )
   }
 
   const renderSignUpPage = () => {
-    const user = { name, email, passwd, confirm_password: confirmPasswd }
-
     return (
       <>
         <div className="back-icon" onClick={() => setPage(0)}>
@@ -276,7 +279,7 @@ const Login = ({ match, location }) => {
             className="login-form"
             onSubmit={(e) => {
               e.preventDefault()
-              handleSignUp(user)
+              handleSignUp()
             }}
           >
             <input
@@ -303,13 +306,13 @@ const Login = ({ match, location }) => {
               value={confirmPasswd}
               onChange={(e) => setConfirmPasswd(e.target.value)}
             />
+            <footer>
+              <div className="buttons">
+                <button type="submit">Cadastrar</button>
+              </div>
+            </footer>
           </form>
         </div>
-        <footer>
-          <div className="buttons">
-            <button onClick={() => handleSignUp(user)}>Cadastrar</button>
-          </div>
-        </footer>
       </>
     )
   }
