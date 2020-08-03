@@ -19,7 +19,7 @@ const setManifest = (event) => {
         sizes: "512x512"
       }
     ],
-    start_url: `/${event.slug}`,
+    start_url: `https://webapp.sinappse.com/${event.slug}`,
     display: "standalone",
     theme_color: "#000000",
     background_color: "#ffffff"
