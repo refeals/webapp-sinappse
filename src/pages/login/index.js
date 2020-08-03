@@ -27,8 +27,10 @@ const Login = ({ match, location }) => {
 
   const [page, setPage] = useState(0)
 
+  const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [passwd, setPasswd] = useState("")
+  const [confirmPasswd, setConfirmPasswd] = useState("")
 
   useEffect(() => {
     dispatch({ type: SET_INITIAL })
@@ -42,7 +44,10 @@ const Login = ({ match, location }) => {
       dispatch(
         doLogin(
           {
-            data: { access_token: accessToken },
+            data: {
+              access_token: accessToken,
+              redirect_uri: process.env.REACT_APP_LINKEDIN_REDIRECT_URI
+            },
             type: "linkedin",
             event_id: event.id
           },
@@ -90,11 +95,15 @@ const Login = ({ match, location }) => {
     )
   }
 
-  const handleSignUp = ({ user }) => {
+  const handleSignUp = (user) => {
     dispatch(
-      doSignUp({ ...user, event_id: event.id }, () => {
-        getEventInformation()
-      })
+      doSignUp(
+        { data: { ...user }, event },
+        {
+          onSuccess: () => getEventInformation(),
+          onError: (err) => toast(err)
+        }
+      )
     )
   }
 
@@ -116,7 +125,7 @@ const Login = ({ match, location }) => {
 
   const requestLinkedin = () => {
     window.location.replace(
-      `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.REACT_APP_LINKEDIN_CLIENT_ID}&scope=r_liteprofile&state=${event.slug}&redirect_uri=${process.env.REACT_APP_LINKEDIN_REDIRECT_URI}`
+      `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.REACT_APP_LINKEDIN_CLIENT_ID}&scope=r_emailaddress,r_liteprofile,w_member_social&state=${event.slug}&redirect_uri=${process.env.REACT_APP_LINKEDIN_REDIRECT_URI}`
     )
   }
 
@@ -174,7 +183,12 @@ const Login = ({ match, location }) => {
                 >
                   Acessar
                 </button>
-                {/* <button onClick={() => setPage(2)}>Cadastrar</button> */}
+                <button
+                  onClick={() => setPage(2)}
+                  disabled={isUndefined(event.id)}
+                >
+                  Cadastrar
+                </button>
               </>
             ) : (
               <button onClick={() => undefined} disabled={true}>
@@ -196,26 +210,7 @@ const Login = ({ match, location }) => {
         <div className="form-content">
           <p className="text">Acesse sua conta</p>
 
-          <div className="social-media-buttons">
-            <FacebookLogin
-              appId={process.env.REACT_APP_FACEBOOK_APP_ID}
-              fields="name,email,picture"
-              // render={({ onClick }) => (
-              //   <button onClick={() => onClick(facebookCallback)}>
-              //     <i className="fab fa-facebook" />
-              //   </button>
-              // )}
-              // onFailure={() => toast("Não foi possível logar com seu Facebook")}
-              disableMobileRedirect
-              isMobile
-              callback={responseFacebook}
-              icon={<i className="fab fa-facebook" />}
-              textButton=""
-            />
-            <button onClick={requestLinkedin}>
-              <i className="fab fa-linkedin" />
-            </button>
-          </div>
+          {renderSocialMediaButtons()}
 
           <p>OU</p>
 
@@ -255,17 +250,84 @@ const Login = ({ match, location }) => {
   }
 
   const renderSignUpPage = () => {
+    const user = { name, email, passwd, confirm_password: confirmPasswd }
+
     return (
       <>
         <div className="back-icon" onClick={() => setPage(0)}>
           <i className="fas fa-arrow-left"></i>
         </div>
+        <div className="form-content">
+          <p className="text">Acesse sua conta</p>
+
+          {renderSocialMediaButtons()}
+
+          <p>OU</p>
+
+          <form
+            className="login-form"
+            onSubmit={(e) => {
+              e.preventDefault()
+              handleSignUp(user)
+            }}
+          >
+            <input
+              type="text"
+              placeholder="Nome"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Senha"
+              value={passwd}
+              onChange={(e) => setPasswd(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Confirmar Senha"
+              value={confirmPasswd}
+              onChange={(e) => setConfirmPasswd(e.target.value)}
+            />
+          </form>
+        </div>
         <footer>
           <div className="buttons">
-            <button onClick={handleSignUp}>Cadastrar</button>
+            <button onClick={() => handleSignUp(user)}>Cadastrar</button>
           </div>
         </footer>
       </>
+    )
+  }
+
+  const renderSocialMediaButtons = () => {
+    return (
+      <div className="social-media-buttons">
+        <FacebookLogin
+          appId={process.env.REACT_APP_FACEBOOK_APP_ID}
+          fields="name,email,picture"
+          // render={({ onClick }) => (
+          //   <button onClick={() => onClick(facebookCallback)}>
+          //     <i className="fab fa-facebook" />
+          //   </button>
+          // )}
+          // onFailure={() => toast("Não foi possível logar com seu Facebook")}
+          disableMobileRedirect
+          isMobile
+          callback={responseFacebook}
+          icon={<i className="fab fa-facebook" />}
+          textButton=""
+        />
+        <button onClick={requestLinkedin}>
+          <i className="fab fa-linkedin" />
+        </button>
+      </div>
     )
   }
 
