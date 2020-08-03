@@ -1,6 +1,8 @@
+import { isEmpty } from "lodash"
 import React from "react"
 import { shallowEqual, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
+import ViewerLoading from "../../ViewerLoading"
 
 const Main = () => {
   const event = useSelector((state) => state.event, shallowEqual)
@@ -32,6 +34,10 @@ const Main = () => {
       default:
         return "#"
     }
+  }
+
+  if (isEmpty(event.sections)) {
+    return <ViewerLoading />
   }
 
   return event.sections.map((section) => {
