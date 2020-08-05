@@ -5,6 +5,7 @@
   background-size: cover;
   text-align: center;
   height: 100vh;
+  // overflow-y: auto;
   position: relative;
 
   /* MAIN */
@@ -20,6 +21,13 @@
     width: 100%;
     max-width: $viewer-max-size;
     margin: auto;
+    transform: translateY(0);
+    transition: transform 0.2s ease;
+
+    &.hide-footer {
+      transform: translateY(100%);
+      transition: none;
+    }
 
     a {
       color: rgba(255, 255, 255, 0.8);

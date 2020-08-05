@@ -33,6 +33,8 @@ const Login = ({ match, location }) => {
   const [confirmPasswd, setConfirmPasswd] = useState("")
 
   const [canClick, setCanClick] = useState(false)
+  const [showFooter, setShowFooter] = useState(true)
+  const [documentHeight] = useState(document.documentElement.clientHeight)
 
   const loginEmailInput = useRef(null)
   const signupNameInput = useRef(null)
@@ -107,6 +109,16 @@ const Login = ({ match, location }) => {
       signupNameInput.current.focus()
     }
   }, [page])
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      if (document.documentElement.clientHeight >= documentHeight) {
+        setShowFooter(true)
+      } else {
+        setShowFooter(false)
+      }
+    })
+  }, [documentHeight])
 
   if (match.url === "/signin-linkedin") {
     if (localStorage.getItem("linkedinState")) {
@@ -197,7 +209,7 @@ const Login = ({ match, location }) => {
   const renderMainPage = () => {
     return (
       <>
-        <h1>[seu logo aqui]</h1>
+        <h1>{event.eventName}</h1>
         <footer>
           <Link to="#" className="nounderline">
             <p className="terms">
@@ -273,7 +285,7 @@ const Login = ({ match, location }) => {
               <span onClick={() => setPage(3)}>Esqueci minha senha</span>
               <span onClick={() => setPage(2)}>Cadastrar nova conta</span>
             </p>
-            <footer>
+            <footer className={showFooter ? "" : "hide-footer"}>
               <div className="buttons">
                 <button type="submit">Entrar</button>
               </div>
@@ -329,7 +341,7 @@ const Login = ({ match, location }) => {
               value={confirmPasswd}
               onChange={(e) => setConfirmPasswd(e.target.value)}
             />
-            <footer>
+            <footer className={showFooter ? "" : "hide-footer"}>
               <div className="buttons">
                 <button type="submit">Cadastrar</button>
               </div>
