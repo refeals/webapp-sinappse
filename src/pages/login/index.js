@@ -118,7 +118,7 @@ const Login = ({ match, location }) => {
         setShowFooter(false)
       }
     })
-  }, [])
+  }, [documentHeight])
 
   if (match.url === "/signin-linkedin") {
     if (localStorage.getItem("linkedinState")) {
