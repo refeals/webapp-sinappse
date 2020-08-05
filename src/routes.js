@@ -2,6 +2,7 @@ import React from "react"
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom"
 import TopMenu from "./pages/main/TopMenu"
 import RoutesEvent from "./routes_event"
+import ViewerLoading from "./ViewerLoading"
 
 // import { store } from "../index"
 // import { isAuthenticated, isTokenExpired } from "../api/auth"
@@ -41,6 +42,11 @@ const Routes = () => {
         <TopMenu />
         <Switch>
           <Route path="/" exact render={redirectToSinappse} />
+          <Route
+            path="/404"
+            exact
+            render={() => <ViewerLoading hideLoading />}
+          />
           <Route path="/:slug" component={RoutesEvent} />
           {/* <Route path="*" render={() => <Redirect to="/" />} /> */}
         </Switch>

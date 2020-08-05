@@ -1,6 +1,6 @@
 import { isUndefined } from "lodash"
 import preval from "preval.macro"
-import React, { lazy, Suspense, useEffect } from "react"
+import React, { lazy, Suspense, useEffect, useState } from "react"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Route, useHistory } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -33,18 +33,24 @@ const RoutesEvent = ({ match }) => {
   const dispatch = useDispatch()
   const history = useHistory()
 
-  useEffect(() => {
-    if (isUndefined(event.id) || event.slug !== match.params.slug) {
-      if (match.params.slug !== "signin-linkedin") {
-        dispatch(
-          getEvent(match.params.slug, null, () => {
-            toast(`Evento '${match.params.slug}' não encontrado`)
-          })
-        )
-      }
-    } // eslint-disable-next-line
-  }, [dispatch, match.params.slug, event.slug])
+  const [loaded, setLoaded] = useState(false)
 
+  useEffect(() => {
+    if (match.params.slug !== "signin-linkedin") {
+      dispatch(
+        getEvent(match.params.slug, {
+          onSuccess: () => setLoaded(true),
+          onError: (msg) => {
+            toast(`Evento '${match.params.slug}' não encontrado`)
+            history.push("/404")
+          },
+          onNetWorkError: (msg) => console.log(msg)
+        })
+      )
+    } // eslint-disable-next-line
+  }, [dispatch, match.params.slug])
+
+  // user is logged in
   useEffect(() => {
     if (localStorage.getItem(`@sinappse-user-token`)) {
       dispatch({ type: SHOW_TOP_MENU })
@@ -52,6 +58,7 @@ const RoutesEvent = ({ match }) => {
     }
   }, [dispatch, event.id])
 
+  // user is logged on event 1 and goes to event 2
   useEffect(() => {
     if (user.event_slug && user.event_slug !== match.params.slug) {
       dispatch(doLogout())
@@ -59,10 +66,7 @@ const RoutesEvent = ({ match }) => {
     }
   }, [user.event_slug, match.params.slug, dispatch, history])
 
-  useEffect(() => {
-    document.getElementById("root").className = ""
-  }, [])
-
+  // set build log time
   useEffect(() => {
     if (event.id === 138) {
       if (process.env.NODE_ENV === "production") {
@@ -72,6 +76,17 @@ const RoutesEvent = ({ match }) => {
     }
   }, [event.id])
 
+  // show viewer loading if event api call is not done
+  if (!loaded) {
+    return <ViewerLoading />
+  }
+
+  // show viewer loading if event does not exist
+  if (isUndefined(event.id)) {
+    return <ViewerLoading hideLoading />
+  }
+
+  // first render -> if user not logged in
   if (!localStorage.getItem(`@sinappse-user-token`)) {
     return (
       <Suspense fallback={<ViewerLoading />}>
@@ -89,6 +104,7 @@ const RoutesEvent = ({ match }) => {
     .filter((s) => s.type === "WEBVIEW")
     .map((s) => ({ type: s.type, params: s.params }))
 
+  // second render -> if user logged in
   return (
     <Suspense fallback={<ViewerLoading />}>
       <div

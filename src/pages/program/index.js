@@ -7,7 +7,7 @@ const Program = () => {
   const event = useSelector((state) => state.event, shallowEqual)
 
   const renderProgramList = () => {
-    if (isEmpty(event["categories-list"])) {
+    if (isEmpty(event.categoriesList)) {
       return (
         <li>
           <i className="fa fa-spinner fa-spin"></i>
@@ -15,7 +15,7 @@ const Program = () => {
       )
     }
 
-    return event["categories-list"].map((cat) => {
+    return event.categoriesList.map((cat) => {
       return (
         <Link
           to={`/${event.slug}/program/${cat.categoryid}`}
