@@ -272,8 +272,6 @@ const Login = ({ match, location }) => {
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              // onFocus={() => setShowFooter(false)}
-              // onBlur={() => setShowFooter(true)}
               ref={loginEmailInput}
             />
             <input
@@ -281,8 +279,6 @@ const Login = ({ match, location }) => {
               placeholder="Senha"
               value={passwd}
               onChange={(e) => setPasswd(e.target.value)}
-              // onFocus={() => setShowFooter(false)}
-              // onBlur={() => setShowFooter(true)}
             />
 
             <p className="forgot-signup">
@@ -325,8 +321,6 @@ const Login = ({ match, location }) => {
               placeholder="Nome"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              // onFocus={() => setShowFooter(false)}
-              // onBlur={() => setShowFooter(true)}
               ref={signupNameInput}
             />
             <input
@@ -334,24 +328,18 @@ const Login = ({ match, location }) => {
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              // onFocus={() => setShowFooter(false)}
-              // onBlur={() => setShowFooter(true)}
             />
             <input
               type="password"
               placeholder="Senha"
               value={passwd}
               onChange={(e) => setPasswd(e.target.value)}
-              // onFocus={() => setShowFooter(false)}
-              // onBlur={() => setShowFooter(true)}
             />
             <input
               type="password"
               placeholder="Confirmar Senha"
               value={confirmPasswd}
               onChange={(e) => setConfirmPasswd(e.target.value)}
-              // onFocus={() => setShowFooter(false)}
-              // onBlur={() => setShowFooter(true)}
             />
             <footer className={showFooter ? "" : "hide-footer"}>
               <div className="buttons">
