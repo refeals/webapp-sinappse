@@ -3,7 +3,7 @@ import { GET_EVENT } from "../actions/action_types"
 
 const initialState = {
   sections: [],
-  "categories-list": [],
+  categoriesList: [],
   map: {},
   rooms: []
 }
@@ -12,8 +12,6 @@ const setWebviewParams = (event) => {
   const ev = {
     ...event,
     id: !isNaN(parseInt(event.id)) ? parseInt(event.id) : event.id,
-    eventColor: event["event-color"],
-    textColor: event["text-color"],
     sections: event.sections.map((s) => {
       if (s.type !== "WEBVIEW") {
         return s
