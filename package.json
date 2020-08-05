@@ -16,6 +16,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-facebook-login": "^4.1.1",
+    "react-map-interaction": "^2.0.0",
     "react-minimal-pie-chart": "^8.0.1",
     "react-modal": "^3.11.2",
     "react-player": "^2.5.0",
