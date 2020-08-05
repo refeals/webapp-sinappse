@@ -541,19 +541,4 @@ body.viewermode {
       color: #222;
     }
   }
-  #viewer-map {
-    height: calc(100vh - 46px);
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-    #vmap {
-      height: 100%;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: 50%;
-      cursor: grab;
-      cursor: -o-grab;
-      cursor: -moz-grab;
-      cursor: -webkit-grab;
-    }
-  }
 }
