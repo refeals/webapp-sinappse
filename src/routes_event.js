@@ -44,7 +44,12 @@ const RoutesEvent = ({ match }) => {
             toast(`Evento '${match.params.slug}' não encontrado`)
             history.push("/404")
           },
-          onNetWorkError: (msg) => console.log(msg)
+          onNetWorkError: (msg) => {
+            if (!!event.id) {
+              setLoaded(true)
+            }
+            console.log(msg)
+          }
         })
       )
     } // eslint-disable-next-line
