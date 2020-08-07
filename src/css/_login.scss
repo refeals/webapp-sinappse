@@ -46,7 +46,8 @@
     .buttons {
       display: flex;
 
-      button {
+      button,
+      a {
         flex: 1;
         background-color: $color--main;
         border: 0;
@@ -58,9 +59,11 @@
           border-right: 0;
         }
 
+        &:hover,
         &:active,
         &:focus {
           outline: none;
+          text-decoration: none;
         }
 
         &:disabled {
@@ -161,8 +164,16 @@
       justify-content: space-between;
       margin: 0 auto;
 
-      span {
+      a {
         padding: 6px 0;
+        color: #fff;
+
+        &:hover,
+        &:active,
+        &:focus {
+          outline: none;
+          text-decoration: none;
+        }
       }
     }
   }

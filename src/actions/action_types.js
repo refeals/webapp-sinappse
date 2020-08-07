@@ -4,6 +4,8 @@ export const LOGOUT = "LOGOUT"
 export const LOGOUT_EXPIRED_TOKEN = "LOGOUT_EXPIRED_TOKEN"
 export const SIGNUP = "SIGNUP"
 export const GET_USER = "GET_USER"
+export const FORGOT_PASSWORD = "FORGOT_PASSWORD"
+export const CHANGE_USER_PASSWORD = "CHANGE_USER_PASSWORD"
 
 // event
 export const GET_EVENT = "GET_EVENT"

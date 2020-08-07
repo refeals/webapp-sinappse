@@ -3,7 +3,7 @@ import queryString from "query-string"
 import React, { useEffect, useRef, useState } from "react"
 import FacebookLogin from "react-facebook-login"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
-import { Link, Redirect, useHistory } from "react-router-dom"
+import { Link, Redirect, Route, useHistory } from "react-router-dom"
 import { toast } from "react-toastify"
 import { getAbstracts } from "../../actions/abstract_actions"
 import {
@@ -19,13 +19,13 @@ import { getSpeakers } from "../../actions/speaker_actions"
 import { getSponsors } from "../../actions/sponsor_actions"
 import bg from "../../images/bg_138.jpg"
 import { persistor } from "../../store"
+import ChangePassword from "./change_password"
+import ForgotPassword from "./forgot"
 
-const Login = ({ match, location }) => {
+const MainAccess = ({ match, location }) => {
   const event = useSelector((state) => state.event, shallowEqual)
   const dispatch = useDispatch()
   const history = useHistory()
-
-  const [page, setPage] = useState(0)
 
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
@@ -93,22 +93,24 @@ const Login = ({ match, location }) => {
   }, [event.id])
 
   useEffect(() => {
+    const { pathname } = history.location
+
     // login
-    if (page === 1) {
+    if (pathname === `/${event.slug}/login`) {
       setEmail("")
       setPasswd("")
       loginEmailInput.current.focus()
     }
 
     // signup
-    if (page === 2) {
+    if (pathname === `/${event.slug}/signup`) {
       setName("")
       setEmail("")
       setPasswd("")
       setConfirmPasswd("")
       signupNameInput.current.focus()
     }
-  }, [page])
+  }, [history.location, event.slug])
 
   useEffect(() => {
     window.addEventListener("resize", () => {
@@ -139,6 +141,10 @@ const Login = ({ match, location }) => {
   }
 
   const handleSignUp = () => {
+    if (passwd.length < 6) {
+      toast("Senha deve conter pelo menos 6 dígitos")
+      return
+    }
     if (passwd !== confirmPasswd) {
       toast("Senha e Confirmação não são iguais")
       return
@@ -223,18 +229,8 @@ const Login = ({ match, location }) => {
           <div className="buttons">
             {canClick ? (
               <>
-                <button
-                  onClick={() => !isUndefined(event.id) && setPage(1)}
-                  disabled={isUndefined(event.id)}
-                >
-                  Acessar
-                </button>
-                <button
-                  onClick={() => setPage(2)}
-                  disabled={isUndefined(event.id)}
-                >
-                  Cadastrar
-                </button>
+                <Link to={`/${event.slug}/login`}>Acessar</Link>
+                <Link to={`/${event.slug}/signup`}>Cadastrar</Link>
               </>
             ) : (
               <button onClick={() => undefined} disabled={true}>
@@ -250,7 +246,7 @@ const Login = ({ match, location }) => {
   const renderLoginPage = () => {
     return (
       <>
-        <div className="back-icon" onClick={() => setPage(0)}>
+        <div className="back-icon" onClick={() => history.goBack()}>
           <i className="fas fa-arrow-left"></i>
         </div>
         <div className="form-content">
@@ -282,8 +278,8 @@ const Login = ({ match, location }) => {
             />
 
             <p className="forgot-signup">
-              <span onClick={() => setPage(3)}>Esqueci minha senha</span>
-              <span onClick={() => setPage(2)}>Cadastrar nova conta</span>
+              <Link to={`/${event.slug}/forgot`}>Esqueci minha senha</Link>
+              <Link to={`/${event.slug}/signup`}>Cadastrar nova conta</Link>
             </p>
             <footer className={showFooter ? "" : "hide-footer"}>
               <div className="buttons">
@@ -299,7 +295,7 @@ const Login = ({ match, location }) => {
   const renderSignUpPage = () => {
     return (
       <>
-        <div className="back-icon" onClick={() => setPage(0)}>
+        <div className="back-icon" onClick={() => history.goBack()}>
           <i className="fas fa-arrow-left"></i>
         </div>
         <div className="form-content">
@@ -352,20 +348,23 @@ const Login = ({ match, location }) => {
     )
   }
 
-  const renderSocialMediaButtons = () => {
+  const renderSocialMediaButtons = (show = true) => {
     return (
-      <div className="social-media-buttons">
+      <div className="social-media-buttons" style={{ opacity: show ? 1 : 0 }}>
         <FacebookLogin
           appId={process.env.REACT_APP_FACEBOOK_APP_ID}
           fields="name,email,picture"
           disableMobileRedirect
           isMobile
-          callback={responseFacebook}
+          callback={show ? responseFacebook : undefined}
           icon={<i className="fab fa-facebook" />}
           textButton=""
         />
         <span>
-          <button onClick={requestLinkedin} className="linkedin">
+          <button
+            onClick={show ? requestLinkedin : undefined}
+            className="linkedin"
+          >
             <i className="fab fa-linkedin" />
           </button>
         </span>
@@ -381,11 +380,33 @@ const Login = ({ match, location }) => {
         backgroundColor: event.eventColor
       }}
     >
-      {page === 0 && renderMainPage()}
-      {page === 1 && renderLoginPage()}
-      {page === 2 && renderSignUpPage()}
+      <Route exact path={`/${event.slug}`} render={renderMainPage} />
+      <Route exact path={`/${event.slug}/login`} render={renderLoginPage} />
+      <Route exact path={`/${event.slug}/signup`} render={renderSignUpPage} />
+      <Route
+        exact
+        path={`/${event.slug}/forgot`}
+        render={(props) => (
+          <ForgotPassword
+            {...props}
+            showFooter={renderSocialMediaButtons}
+            socialMediaButtons={renderSocialMediaButtons}
+          />
+        )}
+      />
+      <Route
+        exact
+        path={`/${event.slug}/rescue`}
+        render={(props) => (
+          <ChangePassword
+            {...props}
+            showFooter={renderSocialMediaButtons}
+            socialMediaButtons={renderSocialMediaButtons}
+          />
+        )}
+      />
     </div>
   )
 }
 
-export default Login
+export default MainAccess
