@@ -6,7 +6,8 @@ export const getEvent = (slug, { onSuccess, onError, onNetWorkError }) => (
   dispatch
 ) => {
   api
-    .get(`/act.php?action=v2/webapp-event&slug=${slug}`, {
+    .get(`/act.php`, {
+      params: { action: "v2/webapp-event", slug },
       headers: { Authorization: `Bearer ${getToken()}` }
     })
     .then((response) => {
