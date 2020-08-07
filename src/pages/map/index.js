@@ -8,7 +8,7 @@ const Map = () => {
   return (
     <section id="viewer-map">
       <MapInteractionCSS>
-        <img src={event.map} alt="Mapa" onClick={() => console.log("asdasd")} />
+        <img src={event.map} alt="Mapa" />
       </MapInteractionCSS>
     </section>
   )

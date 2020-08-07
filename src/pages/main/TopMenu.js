@@ -41,7 +41,7 @@ const TopMenu = () => {
       >
         <i className="fa fa-home" />
       </button>
-      <h1 className="event-name">{event["event-name"]}</h1>
+      <h1 className="event-name">{event.eventName}</h1>
       <button className="va-logout" onClick={handleLogout}>
         <i className="fas fa-sign-out-alt" />
       </button>

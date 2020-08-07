@@ -95,7 +95,7 @@ const RoutesEvent = ({ match }) => {
   if (!localStorage.getItem(`@sinappse-user-token`)) {
     return (
       <Suspense fallback={<ViewerLoading />}>
-        <Route exact path="/:event_id" component={Login} />
+        <Route path="/:event_id" component={Login} />
       </Suspense>
     )
   }
