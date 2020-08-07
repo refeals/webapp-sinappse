@@ -1,15 +1,41 @@
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
+import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { useHistory } from "react-router-dom"
+import { toast } from "react-toastify"
+import { doForgotPassword } from "../../actions/auth_actions"
 
 function ForgotPassword({ showFooter, socialMediaButtons }) {
+  const event = useSelector((state) => state.event, shallowEqual)
   const [email, setEmail] = useState("")
+
   const history = useHistory()
+  const dispatch = useDispatch()
+
   const emailInput = useRef(null)
 
   const handleForgotPassword = (e) => {
     e.preventDefault()
-    console.log("handleForgotPassword")
+    if (email.length > 0) {
+      dispatch(
+        doForgotPassword(
+          { email },
+          {
+            onSuccess: (msg) => {
+              toast(msg)
+              history.push(`/${event.slug}`)
+            },
+            onError: (err) => {
+              toast(err)
+            }
+          }
+        )
+      )
+    }
   }
+
+  useEffect(() => {
+    emailInput.current.focus()
+  }, [])
 
   return (
     <>

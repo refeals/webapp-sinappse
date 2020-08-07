@@ -19,6 +19,7 @@ import { getSpeakers } from "../../actions/speaker_actions"
 import { getSponsors } from "../../actions/sponsor_actions"
 import bg from "../../images/bg_138.jpg"
 import { persistor } from "../../store"
+import ChangePassword from "./change_password"
 import ForgotPassword from "./forgot"
 
 const MainAccess = ({ match, location }) => {
@@ -140,6 +141,10 @@ const MainAccess = ({ match, location }) => {
   }
 
   const handleSignUp = () => {
+    if (passwd.length < 6) {
+      toast("Senha deve conter pelo menos 6 dígitos")
+      return
+    }
     if (passwd !== confirmPasswd) {
       toast("Senha e Confirmação não são iguais")
       return
@@ -343,20 +348,23 @@ const MainAccess = ({ match, location }) => {
     )
   }
 
-  const renderSocialMediaButtons = () => {
+  const renderSocialMediaButtons = (show = true) => {
     return (
-      <div className="social-media-buttons">
+      <div className="social-media-buttons" style={{ opacity: show ? 1 : 0 }}>
         <FacebookLogin
           appId={process.env.REACT_APP_FACEBOOK_APP_ID}
           fields="name,email,picture"
           disableMobileRedirect
           isMobile
-          callback={responseFacebook}
+          callback={show ? responseFacebook : undefined}
           icon={<i className="fab fa-facebook" />}
           textButton=""
         />
         <span>
-          <button onClick={requestLinkedin} className="linkedin">
+          <button
+            onClick={show ? requestLinkedin : undefined}
+            className="linkedin"
+          >
             <i className="fab fa-linkedin" />
           </button>
         </span>
@@ -380,6 +388,17 @@ const MainAccess = ({ match, location }) => {
         path={`/${event.slug}/forgot`}
         render={(props) => (
           <ForgotPassword
+            {...props}
+            showFooter={renderSocialMediaButtons}
+            socialMediaButtons={renderSocialMediaButtons}
+          />
+        )}
+      />
+      <Route
+        exact
+        path={`/${event.slug}/rescue`}
+        render={(props) => (
+          <ChangePassword
             {...props}
             showFooter={renderSocialMediaButtons}
             socialMediaButtons={renderSocialMediaButtons}
