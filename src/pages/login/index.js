@@ -9,7 +9,7 @@ import { getAbstracts } from "../../actions/abstract_actions"
 import {
   HIDE_TOP_MENU,
   SET_INITIAL,
-  SHOW_TOP_MENU
+  SHOW_TOP_MENU,
 } from "../../actions/action_types"
 import { doLogin, doSignUp } from "../../actions/auth_actions"
 import { getExhibitors } from "../../actions/exhibitor_actions"
@@ -52,23 +52,28 @@ const MainAccess = ({ match, location }) => {
           {
             data: {
               access_token: accessToken,
-              redirect_uri: process.env.REACT_APP_LINKEDIN_REDIRECT_URI
+              redirect_uri: process.env.REACT_APP_LINKEDIN_REDIRECT_URI,
             },
             type: "linkedin",
-            event_id: event.id
+            event_id: event.id,
           },
           {
-            onSuccess: () => getEventInformation(),
+            onSuccess: () => {
+              dispatch({ type: SHOW_TOP_MENU })
+              console.log("linkedin logged in")
+              getEventInformation()
+            },
             onError: (err) => {
+              console.log("err")
               localStorage.removeItem("linkedinCode")
               localStorage.removeItem("linkedinState")
               toast(err)
-            }
-          }
-        )
+            },
+          },
+        ),
       )
     } // eslint-disable-next-line
-  }, [event.id, dispatch])
+  }, [event.id, localStorage.linkedinCode])
 
   useEffect(() => {
     const linkedinResponse = queryString.parse(location.search)
@@ -133,9 +138,9 @@ const MainAccess = ({ match, location }) => {
         { data: { email, passwd }, type: "email", event_id: event.id },
         {
           onSuccess: () => getEventInformation(),
-          onError: (err) => toast(err)
-        }
-      )
+          onError: (err) => toast(err),
+        },
+      ),
     )
   }
 
@@ -154,9 +159,9 @@ const MainAccess = ({ match, location }) => {
         { data: { name, email, passwd, confirmPasswd }, event },
         {
           onSuccess: () => getEventInformation(),
-          onError: (err) => toast(err)
-        }
-      )
+          onError: (err) => toast(err),
+        },
+      ),
     )
   }
 
@@ -166,19 +171,19 @@ const MainAccess = ({ match, location }) => {
         {
           data: { access_token: accessToken },
           type: "facebook",
-          event_id: event.id
+          event_id: event.id,
         },
         {
           onSuccess: () => getEventInformation(),
-          onError: (err) => toast(err)
-        }
-      )
+          onError: (err) => toast(err),
+        },
+      ),
     )
   }
 
   const requestLinkedin = () => {
     window.location.replace(
-      `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.REACT_APP_LINKEDIN_CLIENT_ID}&scope=r_emailaddress,r_liteprofile,w_member_social&state=${event.slug}&redirect_uri=${process.env.REACT_APP_LINKEDIN_REDIRECT_URI}`
+      `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.REACT_APP_LINKEDIN_CLIENT_ID}&scope=r_emailaddress,r_liteprofile,w_member_social&state=${event.slug}&redirect_uri=${process.env.REACT_APP_LINKEDIN_REDIRECT_URI}`,
     )
   }
 
@@ -191,7 +196,7 @@ const MainAccess = ({ match, location }) => {
         dispatch(getSpeakers(event.id)),
         dispatch(getAbstracts(event.id)),
         dispatch(getExhibitors(event.id)),
-        dispatch(getSponsors(event.id))
+        dispatch(getSponsors(event.id)),
       ])
         .then((res) => {
           localStorage.removeItem("linkedinCode")
@@ -398,7 +403,7 @@ const MainAccess = ({ match, location }) => {
       className="login-page"
       style={{
         backgroundImage: `url(${event.bg})`,
-        backgroundColor: event.eventColor
+        backgroundColor: event.eventColor,
       }}
     >
       <Route exact path={`/${event.slug}`} render={renderMainPage} />

@@ -58,6 +58,8 @@ const RoutesEvent = ({ match }) => {
           },
         }),
       )
+    } else {
+      setLoaded(true)
     } // eslint-disable-next-line
   }, [dispatch, match.params.slug])
 
