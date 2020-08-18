@@ -10,7 +10,7 @@ const ViewerLoading = ({ hideLoading }) => {
         className="viewer-loading"
         style={{ backgroundColor: event.eventColor }}
       >
-        <img src={event.logo} alt="Event Logo" />
+        {event.logo && <img src={event.logo} alt={event.eventName} />}
         <div className="loading-icon">
           {!hideLoading && <i className="fa fa-spinner fa-spin" />}
         </div>
