@@ -15,6 +15,18 @@
     padding-top: 40%;
   }
 
+  .logo-container {
+    height: calc(100vh - 154px);
+    max-height: 100vh;
+    display: flex;
+
+    img {
+      width: 75%;
+      object-fit: contain;
+      margin: auto;
+    }
+  }
+
   footer {
     position: fixed;
     bottom: 0;

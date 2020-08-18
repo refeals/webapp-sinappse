@@ -215,7 +215,9 @@ const MainAccess = ({ match, location }) => {
   const renderMainPage = () => {
     return (
       <>
-        <h1>{event.eventName}</h1>
+        <div className="logo-container">
+          <img src={event.logo} alt={event.eventName} />
+        </div>
         <footer>
           <Link to="#" className="nounderline">
             <p className="terms">
