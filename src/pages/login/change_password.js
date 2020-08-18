@@ -81,7 +81,12 @@ function ChangePassword({ showFooter, socialMediaButtons }) {
           />
           <footer className={showFooter ? "" : "hide-footer"}>
             <div className="buttons">
-              <button type="submit">Atualizar Senha</button>
+              <button
+                type="submit"
+                style={{ backgroundColor: event.eventColor }}
+              >
+                Atualizar Senha
+              </button>
             </div>
           </footer>
         </form>

@@ -58,7 +58,12 @@ function ForgotPassword({ showFooter, socialMediaButtons }) {
           />
           <footer className={showFooter ? "" : "hide-footer"}>
             <div className="buttons">
-              <button type="submit">Enviar</button>
+              <button
+                type="submit"
+                style={{ backgroundColor: event.eventColor }}
+              >
+                Enviar
+              </button>
             </div>
           </footer>
         </form>

@@ -17,7 +17,6 @@ import { getLivestream } from "../../actions/livestream_actions"
 import { getPrograms } from "../../actions/programs_actions"
 import { getSpeakers } from "../../actions/speaker_actions"
 import { getSponsors } from "../../actions/sponsor_actions"
-import bg from "../../images/bg_138.jpg"
 import { persistor } from "../../store"
 import ChangePassword from "./change_password"
 import ForgotPassword from "./forgot"
@@ -231,8 +230,18 @@ const MainAccess = ({ match, location }) => {
           <div className="buttons">
             {canClick ? (
               <>
-                <Link to={`/${event.slug}/login`}>Acessar</Link>
-                <Link to={`/${event.slug}/signup`}>Cadastrar</Link>
+                <Link
+                  to={`/${event.slug}/login`}
+                  style={{ backgroundColor: event.eventColor }}
+                >
+                  Acessar
+                </Link>
+                <Link
+                  to={`/${event.slug}/signup`}
+                  style={{ backgroundColor: event.eventColor }}
+                >
+                  Cadastrar
+                </Link>
               </>
             ) : (
               <button onClick={() => undefined} disabled={true}>
@@ -285,7 +294,12 @@ const MainAccess = ({ match, location }) => {
             </p>
             <footer className={showFooter ? "" : "hide-footer"}>
               <div className="buttons">
-                <button type="submit">Entrar</button>
+                <button
+                  type="submit"
+                  style={{ backgroundColor: event.eventColor }}
+                >
+                  Entrar
+                </button>
               </div>
             </footer>
           </form>
@@ -341,7 +355,12 @@ const MainAccess = ({ match, location }) => {
             />
             <footer className={showFooter ? "" : "hide-footer"}>
               <div className="buttons">
-                <button type="submit">Cadastrar</button>
+                <button
+                  type="submit"
+                  style={{ backgroundColor: event.eventColor }}
+                >
+                  Cadastrar
+                </button>
               </div>
             </footer>
           </form>
@@ -378,7 +397,7 @@ const MainAccess = ({ match, location }) => {
     <div
       className="login-page"
       style={{
-        backgroundImage: `url(${bg})`,
+        backgroundImage: `url(${event.bg})`,
         backgroundColor: event.eventColor
       }}
     >
