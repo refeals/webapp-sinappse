@@ -6,11 +6,11 @@ import {
   LOGIN,
   LOGOUT,
   LOGOUT_EXPIRED_TOKEN,
-  SIGNUP
+  SIGNUP,
 } from "./action_types"
 
 export const doLogin = ({ data, type, event_id }, { onSuccess, onError }) => (
-  dispatch
+  dispatch,
 ) => {
   const form = new FormData()
   form.set("data", JSON.stringify(data))
@@ -31,7 +31,7 @@ export const doLogin = ({ data, type, event_id }, { onSuccess, onError }) => (
 }
 
 export const doSignUp = ({ data, event }, { onSuccess, onError }) => (
-  dispatch
+  dispatch,
 ) => {
   const form = new FormData()
   form.set("data", JSON.stringify(data))
@@ -60,7 +60,7 @@ export const doLogoutExpiredToken = () => (dispatch, getState) => {
 }
 
 export const doForgotPassword = ({ email }, { onSuccess, onError }) => (
-  dispatch
+  dispatch,
 ) => {
   const form = new FormData()
   form.set("email", email)
@@ -80,7 +80,7 @@ export const doForgotPassword = ({ email }, { onSuccess, onError }) => (
 }
 
 export const doChangePassword = ({ code, passwd }, { onSuccess, onError }) => (
-  dispatch
+  dispatch,
 ) => {
   const form = new FormData()
   form.set("code", code)
