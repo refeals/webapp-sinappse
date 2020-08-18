@@ -4,9 +4,15 @@ import React, { lazy, Suspense, useEffect, useState } from "react"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Route, useHistory } from "react-router-dom"
 import { toast } from "react-toastify"
+import { getAbstracts } from "./actions/abstract_actions"
 import { GET_USER, SHOW_TOP_MENU } from "./actions/action_types"
 import { doLogout } from "./actions/auth_actions"
 import { getEvent } from "./actions/event_actions"
+import { getExhibitors } from "./actions/exhibitor_actions"
+import { getLivestream } from "./actions/livestream_actions"
+import { getPrograms } from "./actions/programs_actions"
+import { getSpeakers } from "./actions/speaker_actions"
+import { getSponsors } from "./actions/sponsor_actions"
 import "./css/load.scss"
 import ViewerLoading from "./ViewerLoading"
 
@@ -39,7 +45,7 @@ const RoutesEvent = ({ match }) => {
     if (match.params.slug !== "signin-linkedin") {
       dispatch(
         getEvent(match.params.slug, {
-          onSuccess: () => setLoaded(true),
+          onSuccess: () => getEventInformation(),
           onError: (msg) => {
             toast(`Evento '${match.params.slug}' não encontrado`)
             history.push("/404")
@@ -49,8 +55,8 @@ const RoutesEvent = ({ match }) => {
               setLoaded(true)
             }
             console.log(msg)
-          }
-        })
+          },
+        }),
       )
     } // eslint-disable-next-line
   }, [dispatch, match.params.slug])
@@ -80,6 +86,33 @@ const RoutesEvent = ({ match }) => {
       }
     }
   }, [event.id])
+
+  // function to get all event information
+  const getEventInformation = () => {
+    setLoaded(true)
+
+    if (navigator.onLine) {
+      if (event.id) {
+        Promise.all([
+          dispatch(getLivestream(event.id)),
+          dispatch(getPrograms(event.id)),
+          dispatch(getSpeakers(event.id)),
+          dispatch(getAbstracts(event.id)),
+          dispatch(getExhibitors(event.id)),
+          dispatch(getSponsors(event.id)),
+        ])
+          .then((res) => {
+            console.log("data loaded")
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      } else {
+        // setLoaded(true)
+        console.log("no event.id")
+      }
+    }
+  }
 
   // show viewer loading if event api call is not done
   if (!loaded) {
