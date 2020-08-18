@@ -231,8 +231,18 @@ const MainAccess = ({ match, location }) => {
           <div className="buttons">
             {canClick ? (
               <>
-                <Link to={`/${event.slug}/login`}>Acessar</Link>
-                <Link to={`/${event.slug}/signup`}>Cadastrar</Link>
+                <Link
+                  to={`/${event.slug}/login`}
+                  style={{ backgroundColor: event.eventColor }}
+                >
+                  Acessar
+                </Link>
+                <Link
+                  to={`/${event.slug}/signup`}
+                  style={{ backgroundColor: event.eventColor }}
+                >
+                  Cadastrar
+                </Link>
               </>
             ) : (
               <button onClick={() => undefined} disabled={true}>
@@ -285,7 +295,12 @@ const MainAccess = ({ match, location }) => {
             </p>
             <footer className={showFooter ? "" : "hide-footer"}>
               <div className="buttons">
-                <button type="submit">Entrar</button>
+                <button
+                  type="submit"
+                  style={{ backgroundColor: event.eventColor }}
+                >
+                  Entrar
+                </button>
               </div>
             </footer>
           </form>
@@ -341,7 +356,12 @@ const MainAccess = ({ match, location }) => {
             />
             <footer className={showFooter ? "" : "hide-footer"}>
               <div className="buttons">
-                <button type="submit">Cadastrar</button>
+                <button
+                  type="submit"
+                  style={{ backgroundColor: event.eventColor }}
+                >
+                  Cadastrar
+                </button>
               </div>
             </footer>
           </form>
