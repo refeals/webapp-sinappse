@@ -2,6 +2,7 @@ import { find, isEmpty, isNull, isUndefined } from "lodash"
 import React, { useState } from "react"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Redirect } from "react-router-dom"
+import { toast } from "react-toastify"
 import { saveAbstractEval } from "../../actions/abstract_actions"
 
 const Abstract = ({ match }) => {
@@ -40,17 +41,19 @@ const Abstract = ({ match }) => {
 
   const handleSaveAbstractEval = () => {
     dispatch(
-      saveAbstractEval(
-        {
-          abstract: abs.abstractid,
-          user: user.id,
-          score: evaluation
+      saveAbstractEval({
+        data: {
+          abstract_id: abs.abstractid,
+          user_id: user.id,
+          score: evaluation,
         },
-        () => {
+        onSuccess: (msg) => {
           setCanVote(false)
           localStorage.setItem(`abstract-${abs.abstractid}`, evaluation)
-        }
-      )
+          toast(msg)
+        },
+        onError: (msg) => toast(msg),
+      }),
     )
   }
 
@@ -82,13 +85,15 @@ const Abstract = ({ match }) => {
           <>
             <br />
             <br />
-            <div className="eval-section">
-              <div className="over-subtitle">Avalie o material</div>
-              {renderEvalStars(1)}
-              {renderEvalStars(2)}
-              {renderEvalStars(3)}
-              {renderEvalStars(4)}
-              {renderEvalStars(5)}
+            <div className="abstract-eval">
+              <div className="eval-section">
+                <div className="over-subtitle">Avalie o material</div>
+                {renderEvalStars(1)}
+                {renderEvalStars(2)}
+                {renderEvalStars(3)}
+                {renderEvalStars(4)}
+                {renderEvalStars(5)}
+              </div>
             </div>
             <br />
             <br />

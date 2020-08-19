@@ -440,6 +440,21 @@ body.viewermode {
       }
     }
   }
+  #viewer-abstract {
+    .abstract-eval {
+      color: #aaa;
+      text-align: center;
+      padding-bottom: 20px;
+      cursor: pointer;
+      .eval {
+        font-size: 20px;
+        margin-right: 4px;
+        &.active {
+          color: rgb(197, 211, 0);
+        }
+      }
+    }
+  }
 
   .btn.btn-viewer {
     background: #fff;

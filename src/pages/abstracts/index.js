@@ -16,7 +16,7 @@ const Abstracts = () => {
           <li className="abstract-block">
             <div className="abstract-title">{abs.title}</div>
             <div className="abstract-authors">
-              Autor(es):
+              Autor(es):{" "}
               {abs.authors.map((author) => (
                 <span className="abstract-author" key={author.name}>
                   {author.name}
