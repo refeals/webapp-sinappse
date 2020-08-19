@@ -14,13 +14,7 @@ const Speakers = () => {
           key={spk.speakerid}
         >
           <li className="speaker-block">
-            <div
-              className="speaker-img"
-              style={{
-                backgroundImage: `url(${spk.image_url})`
-              }}
-              alt={spk.name}
-            />
+            <img src={spk.image_url} alt={spk.name} className="speaker-img" />
             <div className="speaker-name">{spk.name}</div>
           </li>
         </Link>

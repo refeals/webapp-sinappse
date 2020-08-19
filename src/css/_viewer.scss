@@ -275,22 +275,20 @@ body.viewermode {
           align-self: center;
           li.speaker-block {
             width: 100%;
-            height: 200px;
             display: flex;
             flex-direction: column;
             margin: 0px -1px;
             text-align: center;
+            position: relative;
             .speaker-img {
-              width: calc(85vw / 2);
-              height: calc(85vw / 2);
+              width: 100%;
               border-radius: 50%;
-              margin: 0 auto;
-              background: no-repeat center center;
-              background-size: contain;
             }
             .speaker-name {
               color: #222;
               margin-top: 10px;
+              bottom: 0;
+              width: 100%;
             }
           }
         }
