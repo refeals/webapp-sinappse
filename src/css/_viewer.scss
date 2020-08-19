@@ -249,8 +249,13 @@ body.viewermode {
           color: #aaa;
           text-align: center;
           padding-bottom: 20px;
-          .eval.active {
-            color: rgb(208, 255, 0);
+          cursor: pointer;
+          .eval {
+            font-size: 20px;
+            margin-right: 4px;
+            &.active {
+              color: rgb(197, 211, 0);
+            }
           }
         }
       }
@@ -298,7 +303,7 @@ body.viewermode {
     #viewer-speaker {
       .over-mainarea {
         .over-image {
-          width: 160px;
+          width: 50%;
           border-radius: 100%;
         }
       }
@@ -431,6 +436,21 @@ body.viewermode {
               content: "";
             }
           }
+        }
+      }
+    }
+  }
+  #viewer-abstract {
+    .abstract-eval {
+      color: #aaa;
+      text-align: center;
+      padding-bottom: 20px;
+      cursor: pointer;
+      .eval {
+        font-size: 20px;
+        margin-right: 4px;
+        &.active {
+          color: rgb(197, 211, 0);
         }
       }
     }

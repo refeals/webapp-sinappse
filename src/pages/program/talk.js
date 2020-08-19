@@ -1,5 +1,6 @@
 import { find, flatten, isEmpty, isNull, isUndefined, map } from "lodash"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
+import ReactModal from "react-modal"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Redirect } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -14,8 +15,7 @@ const Talk = ({ match }) => {
   const [evaluation, setEval] = useState(null)
   const [canVote, setCanVote] = useState(true)
 
-  const [showQuestionModal, setShowQuestionModal] = useState(false)
-  const [name, setName] = useState("")
+  const [isOpen, setIsOpen] = useState(false)
   const [question, setQuestion] = useState("")
 
   const programArr = map(programs, (val) => {
@@ -27,6 +27,13 @@ const Talk = ({ match }) => {
   const catFlatten = flatten(catArr)
   const talk = find(catFlatten, ["talkID", match.params.talk_id])
 
+  useEffect(() => {
+    if (localStorage.getItem(`talk-${talk.talkID}`)) {
+      setEval(localStorage.getItem(`talk-${talk.talkID}`))
+      setCanVote(false)
+    }
+  }, [talk.talkID])
+
   if (isUndefined(talk)) {
     if (isEmpty(programs)) {
       return <Redirect to={`/${event.slug}`} />
@@ -35,48 +42,46 @@ const Talk = ({ match }) => {
     }
   }
 
-  if (localStorage.getItem(`talk-${talk.talkID}`)) {
-    setEval(localStorage.getItem(`talk-${talk.talkID}`))
-    setCanVote(false)
-  }
-
   const handleSaveEval = () => {
     dispatch(
-      talkVote(
-        {
-          talk: talk.talkID,
-          user: user.id,
+      talkVote({
+        data: {
+          talk_id: talk.talkID,
+          user_id: user.id,
           score: evaluation,
         },
-        () => {
+        onSuccess: (msg) => {
           setCanVote(false)
           localStorage.setItem(`talk-${talk.talkID}`, evaluation)
-          toast("Pergunta enviada")
+          toast(msg)
         },
-      ),
+        onError: (err) => {
+          toast(err)
+        },
+      }),
     )
   }
 
   const handleSendQuestion = () => {
-    if (name.length < 5) {
-      toast("Seu nome deve ter ao menos 5 caracteres")
-      return
-    }
     if (question.length < 10) {
       toast("A pergunta deve ter ao menos 10 caracteres")
       return
     }
     dispatch(
-      askSend(
-        {
-          talk: talk.talkID,
-          name,
+      askSend({
+        data: {
+          talk_id: talk.talkID,
+          user_id: user.id,
           question,
         },
-        () => {
-          setShowQuestionModal(false)
+        onSuccess: (msg) => {
+          setIsOpen(false)
+          toast(msg)
         },
-      ),
+        onError: (err) => {
+          toast(err)
+        },
+      }),
     )
   }
 
@@ -87,7 +92,7 @@ const Talk = ({ match }) => {
         onClick={() => {
           if (canVote) {
             setEval(value)
-            setShowQuestionModal(false)
+            setIsOpen(false)
           }
         }}
       >
@@ -115,7 +120,7 @@ const Talk = ({ match }) => {
             <button
               className="btn btn-viewer"
               onClick={() => {
-                setShowQuestionModal(true)
+                setIsOpen(true)
                 setEval(null)
               }}
             >
@@ -132,7 +137,7 @@ const Talk = ({ match }) => {
           </div>
         </div>
       </section>
-      {!isNull(evaluation) && (
+      {!isNull(evaluation) && canVote && (
         <section id="viewer-eval" className="active">
           <div className="question-form">
             <div className="form-group">
@@ -157,20 +162,13 @@ const Talk = ({ match }) => {
           </div>
         </section>
       )}
-      {showQuestionModal && (
+      <ReactModal
+        isOpen={isOpen}
+        onRequestClose={() => setIsOpen(false)}
+        style={{ content: { bottom: "auto" } }}
+      >
         <section id="viewer-asker" className="active">
           <div className="question-form">
-            <div className="form-group">
-              <label>Seu nome</label>
-              <input
-                type="text"
-                className="form-control"
-                id="asker-name"
-                placeholder="Seu nome"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
             <div className="form-group">
               <label data-i18n="Sua pergunta">Sua pergunta</label>
               <textarea
@@ -192,14 +190,14 @@ const Talk = ({ match }) => {
               </button>
               <button
                 className="asker-cancel btn btn-viewer btn-danger"
-                onClick={() => setShowQuestionModal(false)}
+                onClick={() => setIsOpen(false)}
               >
                 Cancelar
               </button>
             </div>
           </div>
         </section>
-      )}
+      </ReactModal>
     </>
   )
 }
