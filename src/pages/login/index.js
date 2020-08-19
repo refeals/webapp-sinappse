@@ -5,18 +5,8 @@ import FacebookLogin from "react-facebook-login"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Link, Redirect, Route, useHistory } from "react-router-dom"
 import { toast } from "react-toastify"
-import { getAbstracts } from "../../actions/abstract_actions"
-import {
-  HIDE_TOP_MENU,
-  SET_INITIAL,
-  SHOW_TOP_MENU,
-} from "../../actions/action_types"
+import { SET_INITIAL } from "../../actions/action_types"
 import { doLogin, doSignUp } from "../../actions/auth_actions"
-import { getExhibitors } from "../../actions/exhibitor_actions"
-import { getLivestream } from "../../actions/livestream_actions"
-import { getPrograms } from "../../actions/programs_actions"
-import { getSpeakers } from "../../actions/speaker_actions"
-import { getSponsors } from "../../actions/sponsor_actions"
 import { persistor } from "../../store"
 import ChangePassword from "./change_password"
 import ForgotPassword from "./forgot"
@@ -43,6 +33,16 @@ const MainAccess = ({ match, location }) => {
     persistor.purge()
   }, [dispatch])
 
+  const pushToHome = () => {
+    if (event.id) {
+      localStorage.removeItem("linkedinCode")
+      localStorage.removeItem("linkedinState")
+      history.push(`/${event.slug}`)
+    } else {
+      console.log("no event.id")
+    }
+  }
+
   useEffect(() => {
     if (localStorage.linkedinCode && event.id) {
       const accessToken = localStorage.linkedinCode
@@ -58,13 +58,8 @@ const MainAccess = ({ match, location }) => {
             event_id: event.id,
           },
           {
-            onSuccess: () => {
-              dispatch({ type: SHOW_TOP_MENU })
-              console.log("linkedin logged in")
-              getEventInformation()
-            },
+            onSuccess: () => pushToHome(),
             onError: (err) => {
-              console.log("err")
               localStorage.removeItem("linkedinCode")
               localStorage.removeItem("linkedinState")
               toast(err)
@@ -137,7 +132,7 @@ const MainAccess = ({ match, location }) => {
       doLogin(
         { data: { email, passwd }, type: "email", event_id: event.id },
         {
-          onSuccess: () => getEventInformation(),
+          onSuccess: () => pushToHome(),
           onError: (err) => toast(err),
         },
       ),
@@ -158,7 +153,7 @@ const MainAccess = ({ match, location }) => {
       doSignUp(
         { data: { name, email, passwd, confirmPasswd }, event },
         {
-          onSuccess: () => getEventInformation(),
+          onSuccess: () => pushToHome(),
           onError: (err) => toast(err),
         },
       ),
@@ -174,7 +169,7 @@ const MainAccess = ({ match, location }) => {
           event_id: event.id,
         },
         {
-          onSuccess: () => getEventInformation(),
+          onSuccess: () => pushToHome(),
           onError: (err) => toast(err),
         },
       ),
@@ -185,35 +180,6 @@ const MainAccess = ({ match, location }) => {
     window.location.replace(
       `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.REACT_APP_LINKEDIN_CLIENT_ID}&scope=r_emailaddress,r_liteprofile,w_member_social&state=${event.slug}&redirect_uri=${process.env.REACT_APP_LINKEDIN_REDIRECT_URI}`,
     )
-  }
-
-  const getEventInformation = () => {
-    if (event.id) {
-      dispatch({ type: SHOW_TOP_MENU })
-      Promise.all([
-        dispatch(getLivestream(event.id)),
-        dispatch(getPrograms(event.id)),
-        dispatch(getSpeakers(event.id)),
-        dispatch(getAbstracts(event.id)),
-        dispatch(getExhibitors(event.id)),
-        dispatch(getSponsors(event.id)),
-      ])
-        .then((res) => {
-          localStorage.removeItem("linkedinCode")
-          localStorage.removeItem("linkedinState")
-          history.push(`/${event.slug}`)
-        })
-        .catch((err) => {
-          dispatch({ type: HIDE_TOP_MENU })
-          localStorage.removeItem("linkedinCode")
-          localStorage.removeItem("linkedinState")
-          history.push(`/${event.slug}`)
-          console.log(err)
-        })
-    } else {
-      // setLoaded(true)
-      console.log("no event.id")
-    }
   }
 
   const renderMainPage = () => {

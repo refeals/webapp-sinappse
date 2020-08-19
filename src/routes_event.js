@@ -1,4 +1,4 @@
-import { isUndefined } from "lodash"
+import { isEmpty, isUndefined } from "lodash"
 import preval from "preval.macro"
 import React, { lazy, Suspense, useEffect, useState } from "react"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
@@ -35,7 +35,9 @@ const Watch = lazy(() => import("./pages/livestream/watch"))
 const Login = lazy(() => import("./pages/login"))
 
 const RoutesEvent = ({ match }) => {
-  const { event, user, topMenu } = useSelector((state) => state, shallowEqual)
+  const event = useSelector((state) => state.event, shallowEqual)
+  const user = useSelector((state) => state.user, shallowEqual)
+  const topMenu = useSelector((state) => state.topMenu, shallowEqual)
   const dispatch = useDispatch()
   const history = useHistory()
 
@@ -45,7 +47,7 @@ const RoutesEvent = ({ match }) => {
     if (match.params.slug !== "signin-linkedin") {
       dispatch(
         getEvent(match.params.slug, {
-          onSuccess: () => getEventInformation(),
+          onSuccess: () => setLoaded(true),
           onError: (msg) => {
             toast(`Evento '${match.params.slug}' não encontrado`)
             history.push("/404")
@@ -90,31 +92,31 @@ const RoutesEvent = ({ match }) => {
   }, [event.id])
 
   // function to get all event information
-  const getEventInformation = () => {
-    setLoaded(true)
-
-    if (navigator.onLine) {
-      if (event.id) {
-        Promise.all([
-          dispatch(getLivestream(event.id)),
-          dispatch(getPrograms(event.id)),
-          dispatch(getSpeakers(event.id)),
-          dispatch(getAbstracts(event.id)),
-          dispatch(getExhibitors(event.id)),
-          dispatch(getSponsors(event.id)),
-        ])
-          .then((res) => {
-            console.log("data loaded")
-          })
-          .catch((err) => {
-            console.log(err)
-          })
-      } else {
-        // setLoaded(true)
-        console.log("no event.id")
+  useEffect(() => {
+    if (!isEmpty(user)) {
+      if (navigator.onLine) {
+        if (event.id) {
+          Promise.all([
+            dispatch(getLivestream(event.id)),
+            dispatch(getPrograms(event.id)),
+            dispatch(getSpeakers(event.id)),
+            dispatch(getAbstracts(event.id)),
+            dispatch(getExhibitors(event.id)),
+            dispatch(getSponsors(event.id)),
+          ])
+            .then((res) => {
+              console.log("data loaded")
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+        } else {
+          // setLoaded(true)
+          console.log("no event.id")
+        }
       }
-    }
-  }
+    } // eslint-disable-next-line
+  }, [user])
 
   // show viewer loading if event api call is not done
   if (!loaded) {

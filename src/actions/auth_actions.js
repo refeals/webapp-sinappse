@@ -26,8 +26,8 @@ export const doLogin = ({ data, type, event_id }, { onSuccess, onError }) => (
         throw data.msg
       }
     })
-    .then(() => onSuccess())
-    .catch((err) => onError(err))
+    .then(() => onSuccess && onSuccess())
+    .catch((err) => onError && onError(err))
 }
 
 export const doSignUp = ({ data, event }, { onSuccess, onError }) => (
