@@ -1,5 +1,5 @@
 import { find, isEmpty, isNull, isUndefined } from "lodash"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Redirect } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -16,16 +16,19 @@ const Abstract = ({ match }) => {
 
   const abs = find(abstracts, (e) => e.abstractid === match.params.abstract_id)
 
+  useEffect(() => {
+    if (localStorage.getItem(`abstract-${abs.abstractid}`)) {
+      setEval(localStorage.getItem(`abstract-${abs.abstractid}`))
+      setCanVote(false)
+    }
+  }, [abs.abstractid])
+
   if (isUndefined(abs)) {
     if (isEmpty(abstracts)) {
       return <Redirect to={`/${event.slug}`} />
     } else {
       return <Redirect to={`/${event.slug}/abstracts`} />
     }
-  }
-  if (localStorage.getItem(`abstract-${abs.abstractid}`)) {
-    setEval(localStorage.getItem(`abstract-${abs.abstractid}`))
-    setCanVote(false)
   }
 
   const renderEvalStars = (value) => {

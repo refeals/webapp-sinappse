@@ -3,7 +3,7 @@ import {
   LOGIN,
   LOGOUT,
   SET_INITIAL,
-  SIGNUP
+  SIGNUP,
 } from "../actions/action_types"
 
 const initialState = {}
@@ -11,7 +11,7 @@ const initialState = {}
 const parseUserData = (user) => {
   return {
     ...user,
-    id: parseInt(user.id)
+    id: parseInt(user.id),
   }
 }
 
@@ -21,12 +21,17 @@ export default (state = initialState, action) => {
     case SIGNUP:
       localStorage.setItem(
         `@sinappse-user-token`,
-        JSON.stringify({ ...action.payload, event_slug: action.event_slug })
+        JSON.stringify({ ...action.payload, event_slug: action.event_slug }),
+      )
+      localStorage.setItem(
+        `@sinappse-${action.event_slug}-token`,
+        action.payload.token,
       )
       return parseUserData({ ...action.payload, event_slug: action.event_slug })
 
     case LOGOUT:
       localStorage.removeItem(`@sinappse-user-token`)
+      localStorage.removeItem(`@sinappse-${action.payload.slug}-token`)
       return initialState
 
     case GET_USER:

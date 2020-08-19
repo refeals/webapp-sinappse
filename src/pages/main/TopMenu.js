@@ -31,7 +31,7 @@ const TopMenu = () => {
 
   const handleLogout = () => {
     dispatch({ type: HIDE_TOP_MENU })
-    dispatch(doLogout())
+    dispatch(doLogout(event.slug))
     history.push(`/${event.slug}`)
   }
 
