@@ -338,28 +338,57 @@ body.viewermode {
     }
 
     #viewer-sponsors {
-      li.sponsor-block {
-        width: 50%;
-        display: inline-block;
-        margin: 0px -1px;
-        padding: 10px 2px;
-        vertical-align: top;
-        height: 200px;
-        text-align: center;
-        overflow: hidden;
-        img.sponsor-image {
-          height: 160px;
-          width: 160px;
-          background-size: cover;
-          background-repeat: no-repeat;
-          background-position: 50%;
-          margin: 0px auto;
-        }
-        div.sponsor-type {
-          color: #222;
-          font-size: 0.8em;
+      .viewer-blocklist {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        padding: 8px;
+        justify-content: center;
+        align-content: center;
+        a {
+          align-self: center;
+          li.sponsor-block {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            margin: 0px -1px;
+            text-align: center;
+            position: relative;
+            .sponsor-img {
+              width: 100%;
+              border-radius: 50%;
+            }
+            .sponsor-type {
+              color: #222;
+              margin-top: 10px;
+              bottom: 0;
+              width: 100%;
+            }
+          }
         }
       }
+      // li.sponsor-block {
+      //   width: 50%;
+      //   display: inline-block;
+      //   margin: 0px -1px;
+      //   padding: 10px 2px;
+      //   vertical-align: top;
+      //   height: 200px;
+      //   text-align: center;
+      //   overflow: hidden;
+      //   img.sponsor-image {
+      //     height: 160px;
+      //     width: 160px;
+      //     background-size: cover;
+      //     background-repeat: no-repeat;
+      //     background-position: 50%;
+      //     margin: 0px auto;
+      //   }
+      //   div.sponsor-type {
+      //     color: #222;
+      //     font-size: 0.8em;
+      //   }
+      // }
     }
 
     #viewer-abstracts {
