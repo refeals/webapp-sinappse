@@ -6,17 +6,17 @@ import App from "./App"
 import "./index.css"
 import * as serviceWorker from "./serviceWorker"
 import { persistor, store } from "./store"
-import ViewerLoading from "./ViewerLoading"
+import ViewerLoadingSinappse from "./ViewerLoadingSinappse"
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <PersistGate loading={<ViewerLoading />} persistor={persistor}>
+      <PersistGate loading={<ViewerLoadingSinappse />} persistor={persistor}>
         <App />
       </PersistGate>
     </Provider>
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById("root"),
 )
 
 // If you want your app to work offline and load faster, you can change
