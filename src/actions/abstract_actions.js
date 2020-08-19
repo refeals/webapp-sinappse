@@ -27,6 +27,7 @@ export const getAbstracts = (event_id) => {
 }
 export const saveAbstractEval = ({ data, onSuccess, onError }) => (
   dispatch,
+  getState,
 ) => {
   const form = new FormData()
   const { abstract_id, user_id, score } = data
