@@ -1,6 +1,6 @@
 import React from "react"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
-import { useHistory } from "react-router-dom"
+import { useHistory, useLocation } from "react-router-dom"
 import { HIDE_TOP_MENU } from "../../actions/action_types"
 import { doLogout } from "../../actions/auth_actions"
 
@@ -9,6 +9,17 @@ const TopMenu = () => {
   const topMenu = useSelector((state) => state.topMenu, shallowEqual)
   const dispatch = useDispatch()
   const history = useHistory()
+  const location = useLocation()
+
+  const setGoHome = () => {
+    const { pathname } = location
+    const splittedPathname = pathname.split("/")
+    const { length } = splittedPathname
+
+    return length > 2
+  }
+
+  const goHome = setGoHome()
 
   const redirectToHome = () => {
     history.push(`/${event.slug}`)
@@ -26,7 +37,7 @@ const TopMenu = () => {
 
   const style = {
     backgroundColor: event.eventColor,
-    color: event.textColor
+    color: event.textColor,
   }
 
   if (topMenu.hide) {
@@ -35,12 +46,15 @@ const TopMenu = () => {
 
   return (
     <div className="topmenu" style={style}>
-      <button
-        className="va-home"
-        onClick={topMenu.goBack ? redirectToBack : redirectToHome}
-      >
-        <i className="fa fa-home" />
-      </button>
+      {goHome ? (
+        <button className="va-home" onClick={redirectToBack}>
+          <i className="fas fa-chevron-left"></i>
+        </button>
+      ) : (
+        <button className="va-home" onClick={redirectToHome}>
+          <i className="fa fa-home" />
+        </button>
+      )}
       <h1 className="event-name">{event.eventName}</h1>
       <button className="va-logout" onClick={handleLogout}>
         <i className="fas fa-sign-out-alt" />
