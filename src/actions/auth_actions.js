@@ -9,9 +9,10 @@ import {
   SIGNUP,
 } from "./action_types"
 
-export const doLogin = ({ data, type, event_id }, { onSuccess, onError }) => (
-  dispatch,
-) => {
+export const doLogin = (
+  { data, type, event_id, event_slug },
+  { onSuccess, onError },
+) => (dispatch) => {
   const form = new FormData()
   form.set("data", JSON.stringify(data))
   form.set("type", type)
@@ -21,7 +22,7 @@ export const doLogin = ({ data, type, event_id }, { onSuccess, onError }) => (
     .post(`/act.php`, form, { params: { action: "v2/login" } })
     .then(({ data }) => {
       if (data.success) {
-        dispatch({ type: LOGIN, payload: data.data, event_id })
+        dispatch({ type: LOGIN, payload: data.data, event_id, event_slug })
       } else {
         throw data.msg
       }
@@ -50,8 +51,8 @@ export const doSignUp = ({ data, event }, { onSuccess, onError }) => (
     .catch((err) => onError && onError(err))
 }
 
-export const doLogout = () => (dispatch, getState) => {
-  dispatch({ type: LOGOUT, payload: {} })
+export const doLogout = (slug) => (dispatch, getState) => {
+  dispatch({ type: LOGOUT, payload: { slug } })
 }
 
 export const doLogoutExpiredToken = () => (dispatch, getState) => {

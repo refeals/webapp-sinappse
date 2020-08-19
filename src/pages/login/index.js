@@ -57,6 +57,7 @@ const MainAccess = ({ match, location }) => {
             },
             type: "linkedin",
             event_id: event.id,
+            event_slug: event.slug,
           },
           {
             onSuccess: () => pushToHome(),
@@ -131,7 +132,12 @@ const MainAccess = ({ match, location }) => {
   const handleLogin = () => {
     dispatch(
       doLogin(
-        { data: { email, passwd }, type: "email", event_id: event.id },
+        {
+          data: { email, passwd },
+          type: "email",
+          event_id: event.id,
+          event_slug: event.slug,
+        },
         {
           onSuccess: () => pushToHome(),
           onError: (err) => toast(err),
@@ -168,6 +174,7 @@ const MainAccess = ({ match, location }) => {
           data: { access_token: accessToken },
           type: "facebook",
           event_id: event.id,
+          event_slug: event.slug,
         },
         {
           onSuccess: () => pushToHome(),

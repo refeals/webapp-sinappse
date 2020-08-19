@@ -76,7 +76,7 @@ const RoutesEvent = ({ match }) => {
   // user is logged on event 1 and goes to event 2
   useEffect(() => {
     if (user.event_slug && user.event_slug !== match.params.slug) {
-      dispatch(doLogout())
+      dispatch(doLogout(match.params.slug))
       history.push(`/${match.params.slug}`)
     }
   }, [user.event_slug, match.params.slug, dispatch, history])
