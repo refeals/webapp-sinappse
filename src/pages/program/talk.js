@@ -1,5 +1,5 @@
 import { find, flatten, isEmpty, isNull, isUndefined, map } from "lodash"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import ReactModal from "react-modal"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Redirect } from "react-router-dom"
@@ -27,6 +27,13 @@ const Talk = ({ match }) => {
   const catFlatten = flatten(catArr)
   const talk = find(catFlatten, ["talkID", match.params.talk_id])
 
+  useEffect(() => {
+    if (localStorage.getItem(`talk-${talk.talkID}`)) {
+      setEval(localStorage.getItem(`talk-${talk.talkID}`))
+      setCanVote(false)
+    }
+  }, [talk.talkID])
+
   if (isUndefined(talk)) {
     if (isEmpty(programs)) {
       return <Redirect to={`/${event.slug}`} />
@@ -35,25 +42,23 @@ const Talk = ({ match }) => {
     }
   }
 
-  if (localStorage.getItem(`talk-${talk.talkID}`)) {
-    setEval(localStorage.getItem(`talk-${talk.talkID}`))
-    setCanVote(false)
-  }
-
   const handleSaveEval = () => {
     dispatch(
-      talkVote(
-        {
-          talk: talk.talkID,
-          user: user.id,
+      talkVote({
+        data: {
+          talk_id: talk.talkID,
+          user_id: user.id,
           score: evaluation,
         },
-        () => {
+        onSuccess: (msg) => {
           setCanVote(false)
           localStorage.setItem(`talk-${talk.talkID}`, evaluation)
-          toast("Pergunta enviada")
+          toast(msg)
         },
-      ),
+        onError: (err) => {
+          toast(err)
+        },
+      }),
     )
   }
 
@@ -69,8 +74,9 @@ const Talk = ({ match }) => {
           user_id: user.id,
           question,
         },
-        onSuccess: () => {
+        onSuccess: (msg) => {
           setIsOpen(false)
+          toast(msg)
         },
         onError: (err) => {
           toast(err)
@@ -131,7 +137,7 @@ const Talk = ({ match }) => {
           </div>
         </div>
       </section>
-      {!isNull(evaluation) && (
+      {!isNull(evaluation) && canVote && (
         <section id="viewer-eval" className="active">
           <div className="question-form">
             <div className="form-group">
