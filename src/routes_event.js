@@ -165,11 +165,7 @@ const RoutesEvent = ({ match }) => {
                 path="/:event_id/program/:category_id"
                 component={Category}
               />
-              <Route
-                exact
-                path="/:event_id/program/:category_id/:talk_id"
-                component={Talk}
-              />
+              <Route exact path="/:event_id/talk/:talk_id" component={Talk} />
             </>
           )}
           {sections.includes("SPEAKERS") && (

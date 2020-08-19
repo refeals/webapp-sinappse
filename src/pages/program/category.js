@@ -13,7 +13,7 @@ const Category = ({ match }) => {
   const catArr = map(programs[match.params.category_id], (val, key) => {
     return {
       value: map(val, (v) => ({ ...v })),
-      key
+      key,
     }
   })
   const cat = sortBy(catArr, ["key"])
@@ -30,7 +30,7 @@ const Category = ({ match }) => {
     return cat[index].value.map((c) => {
       return (
         <Link
-          to={`/${event.slug}/program/${c.talkCategory}/${c.talkID}`}
+          to={`/${event.slug}/talk/${c.talkID}`}
           key={c.talkID}
           className="nounderline"
         >

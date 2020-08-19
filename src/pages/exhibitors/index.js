@@ -11,10 +11,7 @@ const Exhibitors = () => {
       return (
         <Link to={`/${event.slug}/exhibitors/${exh.id}`} key={exh.id}>
           <li className="exhibitor-block">
-            <div
-              className="exhibitor-image"
-              style={{ backgroundImage: `url(${exh.image_url})` }}
-            ></div>
+            <img src={exh.image_url} alt={exh.name} className="exhibitor-img" />
           </li>
         </Link>
       )

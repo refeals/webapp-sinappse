@@ -14,7 +14,7 @@ const Sponsors = () => {
             <img
               src={spn.image_url}
               alt={spn.description}
-              className="sponsor-image"
+              className="sponsor-img"
             />
             <div className="sponsor-type">{spn.description}</div>
           </li>

@@ -1,7 +1,7 @@
 import { find, isEmpty, isUndefined } from "lodash"
 import React from "react"
 import { shallowEqual, useSelector } from "react-redux"
-import { Redirect } from "react-router-dom"
+import { Link, Redirect } from "react-router-dom"
 
 const Speaker = ({ match }) => {
   const event = useSelector((state) => state.event, shallowEqual)
@@ -20,13 +20,16 @@ const Speaker = ({ match }) => {
   const renderTalks = () => {
     return spk.talks.map((talk) => {
       return (
-        <div className="speaker-talk" key={talk.talkid}>
+        <Link
+          to={`/${event.slug}/talk/${talk.talkid}`}
+          key={talk.talkid}
+          className="speaker-talk nounderline"
+        >
           <div className="speaker-talktime">
-            <i className="fa fa-clock" />
-            {talk.talkStart}
+            <i className="fa fa-clock" /> {talk.talkStart}
           </div>
           <div className="speaker-talktitle">{talk.title}</div>
-        </div>
+        </Link>
       )
     })
   }

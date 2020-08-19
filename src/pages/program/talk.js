@@ -18,8 +18,11 @@ const Talk = ({ match }) => {
   const [name, setName] = useState("")
   const [question, setQuestion] = useState("")
 
-  const catArr = map(programs[match.params.category_id], (val, key) => {
+  const programArr = map(programs, (val) => {
     return map(val, (v) => ({ ...v }))
+  })
+  const catArr = map(programArr, (val) => {
+    return map(val, (v) => ({ ...v[0] }))
   })
   const catFlatten = flatten(catArr)
   const talk = find(catFlatten, ["talkID", match.params.talk_id])
@@ -43,14 +46,14 @@ const Talk = ({ match }) => {
         {
           talk: talk.talkID,
           user: user.id,
-          score: evaluation
+          score: evaluation,
         },
         () => {
           setCanVote(false)
           localStorage.setItem(`talk-${talk.talkID}`, evaluation)
           toast("Pergunta enviada")
-        }
-      )
+        },
+      ),
     )
   }
 
@@ -68,12 +71,12 @@ const Talk = ({ match }) => {
         {
           talk: talk.talkID,
           name,
-          question
+          question,
         },
         () => {
           setShowQuestionModal(false)
-        }
-      )
+        },
+      ),
     )
   }
 
