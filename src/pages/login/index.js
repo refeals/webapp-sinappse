@@ -5,7 +5,7 @@ import FacebookLogin from "react-facebook-login"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Link, Redirect, Route, useHistory } from "react-router-dom"
 import { toast } from "react-toastify"
-import { SET_INITIAL } from "../../actions/action_types"
+import { SET_INITIAL, SHOW_TOP_MENU } from "../../actions/action_types"
 import { doLogin, doSignUp } from "../../actions/auth_actions"
 import { persistor } from "../../store"
 import ChangePassword from "./change_password"
@@ -35,6 +35,7 @@ const MainAccess = ({ match, location }) => {
 
   const pushToHome = () => {
     if (event.id) {
+      dispatch({ type: SHOW_TOP_MENU })
       localStorage.removeItem("linkedinCode")
       localStorage.removeItem("linkedinState")
       history.push(`/${event.slug}`)
