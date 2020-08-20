@@ -1,10 +1,15 @@
 import { isEmpty } from "lodash"
 import React from "react"
 import { shallowEqual, useSelector } from "react-redux"
-import { Link } from "react-router-dom"
+import { Link, Redirect } from "react-router-dom"
 
 const Program = () => {
   const event = useSelector((state) => state.event, shallowEqual)
+
+  if (event.categoriesList.length === 1) {
+    const cat = event.categoriesList[0]
+    return <Redirect to={`/${event.slug}/program/${cat.categoryid}`} />
+  }
 
   const renderProgramList = () => {
     if (isEmpty(event.categoriesList)) {
