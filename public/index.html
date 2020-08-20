@@ -93,12 +93,14 @@
       const full = window.location.pathname
       const parts = full.split("/")
       const slug = parts[1]
-      link = document.createElement("link")
-      link.href =
-        "https://api2.sinappse.com/odb/act.php?action=v2%2Fmanifest&slug=" +
-        slug
-      link.rel = "manifest"
-      document.getElementsByTagName("head")[0].appendChild(link)
+      if (slug !== "signin-linkedin") {
+        link = document.createElement("link")
+        link.href =
+          "https://api2.sinappse.com/odb/act.php?action=v2%2Fmanifest&slug=" +
+          slug
+        link.rel = "manifest"
+        document.getElementsByTagName("head")[0].appendChild(link)
+      }
     </script>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
