@@ -1,4 +1,4 @@
-import { isEmpty, isUndefined } from "lodash"
+import { isEmpty, isNull, isUndefined } from "lodash"
 import queryString from "query-string"
 import React, { useEffect, useRef, useState } from "react"
 import FacebookLogin from "react-facebook-login"
@@ -21,6 +21,8 @@ const MainAccess = ({ match, location }) => {
   const [passwd, setPasswd] = useState("")
   const [confirmPasswd, setConfirmPasswd] = useState("")
 
+  const [linkedinCode, setLinkedinCode] = useState(null)
+
   const [canClick, setCanClick] = useState(false)
   const [showFooter, setShowFooter] = useState(true)
   const [documentHeight] = useState(document.documentElement.clientHeight)
@@ -36,8 +38,8 @@ const MainAccess = ({ match, location }) => {
   const pushToHome = () => {
     if (event.id) {
       dispatch({ type: SHOW_TOP_MENU })
-      localStorage.removeItem("linkedinCode")
-      localStorage.removeItem("linkedinState")
+      // localStorage.removeItem("linkedinCode")
+      localStorage.removeItem("linkedinRedirect")
       history.push(`/${event.slug}`)
     } else {
       console.log("no event.id")
@@ -45,14 +47,12 @@ const MainAccess = ({ match, location }) => {
   }
 
   useEffect(() => {
-    if (localStorage.linkedinCode && event.id) {
-      const accessToken = localStorage.linkedinCode
-
+    if (linkedinCode && event.id) {
       dispatch(
         doLogin(
           {
             data: {
-              access_token: accessToken,
+              access_token: linkedinCode,
               redirect_uri: process.env.REACT_APP_LINKEDIN_REDIRECT_URI,
             },
             type: "linkedin",
@@ -62,15 +62,15 @@ const MainAccess = ({ match, location }) => {
           {
             onSuccess: () => pushToHome(),
             onError: (err) => {
-              localStorage.removeItem("linkedinCode")
-              localStorage.removeItem("linkedinState")
+              // localStorage.removeItem("linkedinCode")
+              localStorage.removeItem("linkedinRedirect")
               toast(err)
             },
           },
         ),
       )
     } // eslint-disable-next-line
-  }, [event.id, localStorage.linkedinCode])
+  }, [event.id, linkedinCode])
 
   useEffect(() => {
     const linkedinResponse = queryString.parse(location.search)
@@ -80,17 +80,18 @@ const MainAccess = ({ match, location }) => {
       !isEmpty(linkedinResponse.code) &&
       !isEmpty(linkedinResponse.state)
     ) {
-      localStorage.setItem("linkedinCode", linkedinResponse.code)
-      localStorage.setItem("linkedinState", linkedinResponse.state)
+      // localStorage.setItem("linkedinCode", linkedinResponse.code)
+      setLinkedinCode(linkedinResponse.code)
+      localStorage.setItem("linkedinRedirect", linkedinResponse.state)
     }
   }, [location.search])
 
   useEffect(() => {
     if (!isUndefined(event.id)) {
-      if (isUndefined(localStorage.linkedinCode)) {
+      if (isNull(localStorage.getItem("linkedinRedirect"))) {
         setCanClick(true)
       }
-    }
+    } // eslint-disable-next-line
   }, [event.id])
 
   useEffect(() => {
@@ -124,8 +125,8 @@ const MainAccess = ({ match, location }) => {
   }, [documentHeight])
 
   if (match.url === "/signin-linkedin") {
-    if (localStorage.getItem("linkedinState")) {
-      return <Redirect to={`/${localStorage.getItem("linkedinState")}`} />
+    if (localStorage.getItem("linkedinRedirect")) {
+      return <Redirect to={`/${localStorage.getItem("linkedinRedirect")}`} />
     }
   }
 
