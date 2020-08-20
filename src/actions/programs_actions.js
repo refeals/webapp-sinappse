@@ -68,7 +68,7 @@ export const askSend = ({ data, onSuccess, onError }) => (
       params: { action: "v2/ask-send" },
       // headers: { Authorization: `Bearer ${getToken()}` },
     })
-    .then((data) => {
+    .then(({ data }) => {
       if (data.success) {
         dispatch({ type: ASK_SEND_QUESTION })
         return data.msg
