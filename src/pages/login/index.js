@@ -365,6 +365,7 @@ const MainAccess = ({ match, location }) => {
           <button
             onClick={show ? requestLinkedin : undefined}
             className="linkedin"
+            disabled={process.env.NODE_ENV === "production" && event.id !== 138}
           >
             <i className="fab fa-linkedin" />
           </button>
