@@ -1,4 +1,4 @@
-import { GET_ABSTRACTS, SAVE_ABSTRACT_EVAL } from "../actions/action_types"
+import { GET_ABSTRACTS } from "../actions/action_types"
 import { api } from "../api"
 
 // export const getAbstracts = (event_id, callback) => (dispatch, getState) => {
@@ -40,7 +40,8 @@ export const saveAbstractEval = ({ data, onSuccess, onError }) => (
     })
     .then(({ data }) => {
       if (data.success) {
-        dispatch({ type: SAVE_ABSTRACT_EVAL })
+        // dispatch is breaking the flux for some unknown reason
+        // dispatch({ type: SAVE_ABSTRACT_EVAL })
         return data.msg
       } else {
         throw data.msg

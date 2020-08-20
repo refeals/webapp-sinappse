@@ -115,7 +115,7 @@ const Abstract = ({ match }) => {
           </div>
         )}
       </section>
-      {!isNull(evaluation) && (
+      {!isNull(evaluation) && canVote && (
         <section id="viewer-eval" className="active">
           <div className="question-form">
             <div className="form-group">
