@@ -19,8 +19,9 @@ export const getLivestream = (event_id) => {
     type: GET_LIVESTREAM_ROOMS,
     payload: {
       request: {
-        url: `/act.php?action=live-get&event=${event_id}`
-      }
-    }
+        url: `/act.php`,
+        params: { action: "v2/live-get", event_id },
+      },
+    },
   }
 }
