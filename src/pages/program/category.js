@@ -30,7 +30,7 @@ const Category = ({ match }) => {
     return cat[index].value.map((c) => {
       return (
         <Link
-          to={`/${event.slug}/talk/${c.talkID}`}
+          to={`/${event.slug}/talk/${c.talkID}?cat=${match.params.category_id}`}
           key={c.talkID}
           className="nounderline"
         >

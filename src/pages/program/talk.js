@@ -1,8 +1,9 @@
-import { find, flatten, isEmpty, isNull, isUndefined, map } from "lodash"
+import { find, flatten, isEmpty, isNull, isUndefined } from "lodash"
+import queryString from "query-string"
 import React, { useEffect, useState } from "react"
 import ReactModal from "react-modal"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
-import { Redirect } from "react-router-dom"
+import { Redirect, useLocation } from "react-router-dom"
 import { toast } from "react-toastify"
 import { askSend, talkVote } from "../../actions/programs_actions"
 
@@ -11,6 +12,7 @@ const Talk = ({ match }) => {
   const user = useSelector((state) => state.user, shallowEqual)
   const programs = useSelector((state) => state.programs, shallowEqual)
   const dispatch = useDispatch()
+  const location = useLocation()
 
   const [evaluation, setEval] = useState(null)
   const [canVote, setCanVote] = useState(true)
@@ -18,21 +20,21 @@ const Talk = ({ match }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [question, setQuestion] = useState("")
 
-  const programArr = map(programs, (val) => {
-    return map(val, (v) => ({ ...v }))
-  })
-  const catArr = map(programArr, (val) => {
-    return map(val, (v) => ({ ...v[0] }))
-  })
-  const catFlatten = flatten(catArr)
-  const talk = find(catFlatten, ["talkID", match.params.talk_id])
+  const { cat } = queryString.parse(location.search)
+
+  const catArr = programs[cat]
+  const placesArr = Object.values(catArr)
+  const talksArr = flatten(placesArr)
+  const talk = find(talksArr, ["talkID", match.params.talk_id])
 
   useEffect(() => {
-    if (localStorage.getItem(`talk-${talk.talkID}`)) {
-      setEval(localStorage.getItem(`talk-${talk.talkID}`))
-      setCanVote(false)
+    if (talk && talk.talkID) {
+      if (localStorage.getItem(`talk-${talk.talkID}`)) {
+        setEval(localStorage.getItem(`talk-${talk.talkID}`))
+        setCanVote(false)
+      }
     }
-  }, [talk.talkID])
+  }, [talk])
 
   if (isUndefined(talk)) {
     if (isEmpty(programs)) {
