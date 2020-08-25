@@ -15,10 +15,10 @@ function ForgotPassword({ showFooter, socialMediaButtons }) {
 
   const handleForgotPassword = (e) => {
     e.preventDefault()
-    if (email.length > 0) {
+    if (email.length > 0 && event.id) {
       dispatch(
         doForgotPassword(
-          { email },
+          { email, event_id: event.id },
           {
             onSuccess: (msg) => {
               toast(msg)
@@ -26,9 +26,9 @@ function ForgotPassword({ showFooter, socialMediaButtons }) {
             },
             onError: (err) => {
               toast(err)
-            }
-          }
-        )
+            },
+          },
+        ),
       )
     }
   }

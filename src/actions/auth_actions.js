@@ -60,11 +60,13 @@ export const doLogoutExpiredToken = () => (dispatch, getState) => {
   toast("Token expirado! Por favor, entre novamente.")
 }
 
-export const doForgotPassword = ({ email }, { onSuccess, onError }) => (
-  dispatch,
-) => {
+export const doForgotPassword = (
+  { email, event_id },
+  { onSuccess, onError },
+) => (dispatch) => {
   const form = new FormData()
   form.set("email", email)
+  form.set("event_id", event_id)
 
   api
     .post(`/act.php`, form, { params: { action: "v2/forgot-password" } })
