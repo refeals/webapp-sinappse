@@ -25,7 +25,7 @@ const Watch = ({ match }) => {
   useEffect(() => {
     db.ref(liveRefStr).on("value", (snapshot) => {
       const active = snapshot.val()
-      if (!active) {
+      if (active === false) {
         dispatch(getLivestream(event.id))
         history.push(`/${event.slug}/`)
       }
