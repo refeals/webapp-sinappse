@@ -1,19 +1,36 @@
 import { isEmpty, isUndefined } from "lodash"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import ReactPlayer from "react-player"
-import { shallowEqual, useSelector } from "react-redux"
-import { Redirect } from "react-router-dom"
+import { shallowEqual, useDispatch, useSelector } from "react-redux"
+import { Redirect, useHistory } from "react-router-dom"
+import { getLivestream } from "../../actions/livestream_actions"
+import { db } from "../../firebase"
 import LivestreamAds from "./ads"
 import LivestreamChat from "./chat"
 
 const Watch = ({ match }) => {
   const event = useSelector((state) => state.event, shallowEqual)
   const lives = useSelector((state) => state.lives, shallowEqual)
+  const dispatch = useDispatch()
+  const history = useHistory()
 
   const [playing, setPlaying] = useState(process.env.NODE_ENV === "production")
   const [iframeReady, setIframeReady] = useState(false)
 
   const live = lives.find((l) => l.id === parseInt(match.params.live_id))
+
+  const liveRefStr = `event/${event.id}/livestream/${live.id}/active`
+
+  // redirect to /slug if room is deactivated
+  useEffect(() => {
+    db.ref(liveRefStr).on("value", (snapshot) => {
+      const active = snapshot.val()
+      if (!active) {
+        dispatch(getLivestream(event.id))
+        history.push(`/${event.slug}/`)
+      }
+    })
+  }, [liveRefStr, dispatch, event.id, event.slug, history])
 
   if (isUndefined(live)) {
     if (isEmpty(lives)) {
@@ -47,9 +64,9 @@ const Watch = ({ match }) => {
                 rel: 0,
                 iv_load_policy: 3,
                 fs: 0,
-                modestbranding: 1
-              }
-            }
+                modestbranding: 1,
+              },
+            },
           }}
           onReady={() => setIframeReady(true)}
         />
