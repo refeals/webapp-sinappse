@@ -6,6 +6,7 @@ import {
   LOGIN,
   LOGOUT,
   LOGOUT_EXPIRED_TOKEN,
+  SEND_ACCESS_CODE,
   SIGNUP,
 } from "./action_types"
 
@@ -94,6 +95,29 @@ export const doChangePassword = ({ code, passwd }, { onSuccess, onError }) => (
     .then(({ data }) => {
       if (data.success) {
         dispatch({ type: CHANGE_USER_PASSWORD, payload: data.data })
+        return data.msg
+      } else {
+        throw data.msg
+      }
+    })
+    .then((msg) => onSuccess(msg))
+    .catch((err) => onError(err))
+}
+
+export const doSendAccessCode = (
+  { code, event, user },
+  { onSuccess, onError },
+) => (dispatch) => {
+  const form = new FormData()
+  form.set("code", code)
+  form.set("event", event)
+  form.set("user", user)
+
+  api
+    .post(`/act.php`, form, { params: { action: "code-authorize" } })
+    .then(({ data }) => {
+      if (data.success) {
+        dispatch({ type: SEND_ACCESS_CODE })
         return data.msg
       } else {
         throw data.msg

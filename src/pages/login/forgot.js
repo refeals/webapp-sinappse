@@ -50,7 +50,7 @@ function ForgotPassword({ showFooter, socialMediaButtons }) {
         <p style={{ opacity: 0 }}>OU</p>
         <form className="login-form forgot" onSubmit={handleForgotPassword}>
           <input
-            type="text"
+            type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}

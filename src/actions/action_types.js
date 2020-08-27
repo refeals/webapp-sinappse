@@ -6,6 +6,7 @@ export const SIGNUP = "SIGNUP"
 export const GET_USER = "GET_USER"
 export const FORGOT_PASSWORD = "FORGOT_PASSWORD"
 export const CHANGE_USER_PASSWORD = "CHANGE_USER_PASSWORD"
+export const SEND_ACCESS_CODE = "SEND_ACCESS_CODE"
 
 // event
 export const GET_EVENT = "GET_EVENT"

@@ -37,9 +37,16 @@ const MainAccess = ({ match, location }) => {
 
   const pushToHome = () => {
     if (event.id) {
-      dispatch({ type: SHOW_TOP_MENU })
       // localStorage.removeItem("linkedinCode")
       localStorage.removeItem("linkedinRedirect")
+      if (isEmpty(event.code)) {
+        dispatch({ type: SHOW_TOP_MENU })
+      }
+
+      if (localStorage.getItem(`@sinappse-${event.slug}-access-code`)) {
+        dispatch({ type: SHOW_TOP_MENU })
+      }
+
       history.push(`/${event.slug}`)
     } else {
       console.log("no event.id")
@@ -255,7 +262,7 @@ const MainAccess = ({ match, location }) => {
             }}
           >
             <input
-              type="text"
+              type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -316,7 +323,7 @@ const MainAccess = ({ match, location }) => {
               ref={signupNameInput}
             />
             <input
-              type="text"
+              type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -391,7 +398,7 @@ const MainAccess = ({ match, location }) => {
         render={(props) => (
           <ForgotPassword
             {...props}
-            showFooter={renderSocialMediaButtons}
+            showFooter={true}
             socialMediaButtons={renderSocialMediaButtons}
           />
         )}
@@ -402,7 +409,7 @@ const MainAccess = ({ match, location }) => {
         render={(props) => (
           <ChangePassword
             {...props}
-            showFooter={renderSocialMediaButtons}
+            showFooter={true}
             socialMediaButtons={renderSocialMediaButtons}
           />
         )}
