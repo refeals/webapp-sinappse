@@ -14,6 +14,7 @@ import { getPrograms } from "./actions/programs_actions"
 import { getSpeakers } from "./actions/speaker_actions"
 import { getSponsors } from "./actions/sponsor_actions"
 import "./css/load.scss"
+import Code from "./pages/login/code"
 import ViewerLoading from "./ViewerLoading"
 
 const Main = lazy(() => import("./pages/main"))
@@ -134,6 +135,19 @@ const RoutesEvent = ({ match }) => {
       <Suspense fallback={<ViewerLoading />}>
         <Route path="/:event_id" component={Login} />
       </Suspense>
+    )
+  }
+
+  // event has access code
+  if (
+    !isEmpty(event.code) &&
+    !localStorage.getItem(`@sinappse-${event.slug}-access-code`)
+  ) {
+    return (
+      <Route
+        path={`/${event.slug}/`}
+        render={(props) => <Code {...props} showFooter={true} />}
+      />
     )
   }
 
