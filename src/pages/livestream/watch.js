@@ -1,4 +1,4 @@
-import { isEmpty, isUndefined } from "lodash"
+import { isEmpty, isNull, isUndefined } from "lodash"
 import React, { useEffect, useState } from "react"
 import ReactPlayer from "react-player"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
@@ -7,6 +7,7 @@ import { getLivestream } from "../../actions/livestream_actions"
 import { db } from "../../firebase"
 import LivestreamAds from "./ads"
 import LivestreamChat from "./chat"
+import LivestreamCode from "./code"
 
 const Watch = ({ match }) => {
   const event = useSelector((state) => state.event, shallowEqual)
@@ -16,6 +17,10 @@ const Watch = ({ match }) => {
 
   const [playing, setPlaying] = useState(process.env.NODE_ENV === "production")
   const [iframeReady, setIframeReady] = useState(false)
+
+  const [hasPrivateCode, setHasPrivateCode] = useState(
+    localStorage.getItem(`@sinappse-${event.slug}-livestream-lock`),
+  )
 
   const live = lives.find((l) => l.id === parseInt(match.params.live_id))
 
@@ -42,6 +47,12 @@ const Watch = ({ match }) => {
 
   const togglePlayPause = () => {
     setPlaying(!playing)
+  }
+
+  if (live.is_private) {
+    if (isNull(hasPrivateCode)) {
+      return <LivestreamCode setHasPrivateCode={setHasPrivateCode} />
+    }
   }
 
   return (

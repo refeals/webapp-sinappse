@@ -17,7 +17,7 @@ const Livestream = () => {
           <li className="livestream-list-item">
             <p className="live-name">
               {live.name}
-              <i className="fas fa-broadcast-tower live-icon" />
+              {live.is_private && <i className="fas fa-lock live-icon" />}
             </p>
           </li>
         </Link>
