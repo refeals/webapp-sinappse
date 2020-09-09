@@ -30,7 +30,7 @@ const Watch = ({ match }) => {
   useEffect(() => {
     db.ref(liveRefStr).on("value", (snapshot) => {
       const active = snapshot.val()
-      if (!isNull(active) || active === false) {
+      if (active === false) {
         dispatch(getLivestream(event.id))
         history.push(`/${event.slug}/`)
       }
