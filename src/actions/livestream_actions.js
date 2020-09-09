@@ -1,4 +1,5 @@
-import { GET_LIVESTREAM_ROOMS } from "../actions/action_types"
+import { GET_LIVESTREAM_ROOMS, SEND_REDEEM_CODE } from "../actions/action_types"
+import { api } from "../api"
 
 // export const getLivestream = (event_id, callback) => (dispatch, getState) => {
 //   api
@@ -24,4 +25,27 @@ export const getLivestream = (event_id) => {
       },
     },
   }
+}
+
+export const doSendRedeemCode = (
+  { code, event_id, user_id },
+  { onSuccess, onError },
+) => (dispatch) => {
+  const form = new FormData()
+  form.set("code", code)
+  form.set("event_id", event_id)
+  form.set("user_id", user_id)
+
+  api
+    .post(`/act.php`, form, { params: { action: "v2/live-redeem-user-code" } })
+    .then(({ data }) => {
+      if (data.success) {
+        dispatch({ type: SEND_REDEEM_CODE })
+        return data.msg
+      } else {
+        throw data.msg
+      }
+    })
+    .then((msg) => onSuccess(msg))
+    .catch((err) => onError(err))
 }
