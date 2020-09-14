@@ -158,7 +158,7 @@ const RoutesEvent = ({ match }) => {
     .map((s) => s.type)
   const sections_webview = event.sections
     .filter((s) => s.type === "WEBVIEW")
-    .map((s) => ({ type: s.type, params: s.params }))
+    .map((s) => ({ type: s.type, params: s.params, id: s.sectionid }))
 
   // second render -> if user logged in
   return (
@@ -242,7 +242,7 @@ const RoutesEvent = ({ match }) => {
                 exact
                 path={`/:event_id/${s.params.type}`}
                 render={(props) => <WebView {...props} {...s.params} />}
-                key={s.params.type}
+                key={s.id}
               />
             )
           })}
