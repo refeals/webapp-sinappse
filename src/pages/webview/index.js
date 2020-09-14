@@ -1,6 +1,9 @@
 import React from "react"
+import { useHistory } from "react-router-dom"
 
 const WebView = ({ type, value }) => {
+  const history = useHistory()
+
   const renderWebview = () => {
     switch (type) {
       case "news":
@@ -12,7 +15,7 @@ const WebView = ({ type, value }) => {
       case "video-api":
         return renderVideoApi()
       case "url":
-        return renderUrl()
+        return renderUrl(value)
       default:
         return <></>
     }
@@ -68,7 +71,9 @@ const WebView = ({ type, value }) => {
     return <></>
   }
 
-  const renderUrl = () => {
+  const renderUrl = (value) => {
+    window.open(value, "_blank")
+    history.goBack()
     return <></>
   }
 
