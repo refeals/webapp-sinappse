@@ -6,6 +6,10 @@ const Livestream = () => {
   const event = useSelector((state) => state.event, shallowEqual)
   const lives = useSelector((state) => state.lives, shallowEqual)
 
+  const userCode = localStorage.getItem(
+    `@sinappse-${event.slug}-livestream-lock`,
+  )
+
   const renderLivestreamList = () => {
     return lives.map((live) => {
       return (
@@ -17,7 +21,12 @@ const Livestream = () => {
           <li className="livestream-list-item">
             <p className="live-name">
               {live.name}
-              {live.is_private && <i className="fas fa-lock live-icon" />}
+              {live.is_private &&
+                (userCode ? (
+                  <i className="fas fa-lock-open live-icon" />
+                ) : (
+                  <i className="fas fa-lock live-icon" />
+                ))}
             </p>
           </li>
         </Link>
