@@ -2,6 +2,7 @@ import { isUndefined } from "lodash"
 import React from "react"
 import { shallowEqual, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
+// import logo_white from "../../images/logo-white.png"
 import ViewerLoading from "../../ViewerLoading"
 
 const Main = () => {
@@ -35,24 +36,48 @@ const Main = () => {
     return <ViewerLoading />
   }
 
-  return event.sections.map((section) => {
-    return (
-      <Link
-        to={setSectionUrl(section)}
-        key={section.sectionid}
-        className="nounderline"
-      >
-        <li
-          style={{
-            backgroundImage: `url(${section.image})`,
-            backgroundColor: "#000"
-          }}
+  const renderSections = () => {
+    return event.sections.map((section) => {
+      return (
+        <Link
+          to={setSectionUrl(section)}
+          key={section.sectionid}
+          className="nounderline"
         >
-          {section.name}
-        </li>
-      </Link>
-    )
-  })
+          <li
+            style={{
+              backgroundImage: `url(${section.image})`,
+              backgroundColor: "#000",
+            }}
+          >
+            {section.name}
+          </li>
+        </Link>
+      )
+    })
+  }
+
+  const renderFooterImage = () => {
+    if (event.footer_img_url) {
+      return (
+        <img
+          src={event.footer_img_url}
+          alt={event.name}
+          className="footer-image"
+        />
+      )
+    } else {
+      // return <img src={logo_white} alt="Desenvolvido por Sinappse" />
+      return null
+    }
+  }
+
+  return (
+    <>
+      {renderSections()}
+      {renderFooterImage()}
+    </>
+  )
 }
 
 export default Main
