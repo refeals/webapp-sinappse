@@ -21,7 +21,7 @@ const Speaker = ({ match }) => {
     return spk.talks.map((talk) => {
       return (
         <Link
-          to={`/${event.slug}/talk/${talk.talkid}`}
+          to={`/${event.slug}/talk/${talk.talkid}?cat=${talk.categoryid}`}
           key={talk.talkid}
           className="speaker-talk nounderline"
         >
