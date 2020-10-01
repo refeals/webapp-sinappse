@@ -1,10 +1,21 @@
-import React from "react"
-import { shallowEqual, useSelector } from "react-redux"
+import React, { useEffect, useState } from "react"
+import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
+import { getLivestream } from "../../actions/livestream_actions"
 
 const Livestream = () => {
   const event = useSelector((state) => state.event, shallowEqual)
   const lives = useSelector((state) => state.lives, shallowEqual)
+
+  const [isLoading, setIsLoading] = useState(true)
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    Promise.all([dispatch(getLivestream(event.id))]).then((res) => {
+      setIsLoading(false)
+    })
+  }, [dispatch, event.id])
 
   const userCode = localStorage.getItem(
     `@sinappse-${event.slug}-livestream-lock`,
@@ -32,6 +43,14 @@ const Livestream = () => {
         </Link>
       )
     })
+  }
+
+  if (isLoading) {
+    return (
+      <div className="loading-icon">
+        <i className="fa fa-spinner fa-spin" />
+      </div>
+    )
   }
 
   return <ul className="livestream-list">{renderLivestreamList()}</ul>
