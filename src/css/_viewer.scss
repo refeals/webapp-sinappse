@@ -388,7 +388,8 @@ body.viewermode {
             position: relative;
             .sponsor-img {
               width: 100%;
-              border-radius: 50%;
+              // border-radius: 50%;
+              padding: 12px;
             }
             .sponsor-type {
               color: #222;
