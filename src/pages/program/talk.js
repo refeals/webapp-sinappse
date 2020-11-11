@@ -118,7 +118,7 @@ const Talk = ({ match }) => {
             <div className="talk-time"></div>
           </div>
           <div className="talk-description">{talk.talkDescription}</div>
-          <div className="talk-ask">
+          {/* <div className="talk-ask">
             <button
               className="btn btn-viewer"
               onClick={() => {
@@ -128,7 +128,7 @@ const Talk = ({ match }) => {
             >
               Faça uma pergunta ao palestrante
             </button>
-          </div>
+          </div> */}
           <div className="talk-eval">
             <div className="eval-title">Avalie</div>
             {renderEvalStars(1)}
