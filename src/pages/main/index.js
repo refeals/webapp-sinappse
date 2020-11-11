@@ -8,7 +8,7 @@ import ViewerLoading from "../../ViewerLoading"
 const Main = () => {
   const event = useSelector((state) => state.event, shallowEqual)
 
-  const setSectionUrl = ({ type, params }) => {
+  const setSectionUrl = ({ sectionid, type, params }) => {
     switch (type) {
       case "PROGRAM":
         return `/${event.slug}/program`
@@ -25,7 +25,7 @@ const Main = () => {
       case "LIVESTREAM":
         return `/${event.slug}/lives`
       case "WEBVIEW":
-        return `/${event.slug}/${params.type}`
+        return `/${event.slug}/${params.type}/${sectionid}`
 
       default:
         return "#"
