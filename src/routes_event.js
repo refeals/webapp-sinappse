@@ -240,7 +240,7 @@ const RoutesEvent = ({ match }) => {
             return (
               <Route
                 exact
-                path={`/:event_id/${s.params.type}`}
+                path={`/:event_id/${s.params.type}/${s.id}`}
                 render={(props) => <WebView {...props} {...s.params} />}
                 key={s.id}
               />
