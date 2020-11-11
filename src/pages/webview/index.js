@@ -73,7 +73,7 @@ const WebView = ({ type, value }) => {
 
   const renderUrl = (value) => {
     window.open(value, "_blank")
-    history.goBack()
+    setTimeout(() => history.goBack(), 1000)
     return <></>
   }
 
